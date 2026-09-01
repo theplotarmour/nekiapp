@@ -1,0 +1,6 @@
+{
+  "outputDirectory": "build/web",
+  "buildCommand": null,
+  "framework": null,
+  "trailingSlash": true
+}
