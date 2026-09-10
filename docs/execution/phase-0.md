@@ -37,10 +37,10 @@ Each row is the matching `NK-GAP-<nn>` ticket; original G definitions remain in 
 | G06 / NK-GAP-06 | Closed | Product + design | F3/F9 now require D7 approval; F4 uses Delhi NCR. Reapplication/revocation policies tracked separately in G14/G29. | P0 |
 | G07 / NK-GAP-07 | Partial | Product + design | PRD FR-11 and F3 specify metadata only; audit original specs/design screen actions and annotate any remaining launch PDF promises. | P0 |
 | G08 / NK-GAP-08 | Open | Product + backend | Review separate skills-interest proposal, consent/CRUD and optional mission relation; then amend schema/API. | P0; G29 |
-| G09 / NK-GAP-09 | Open | Backend + Finance | Prototype same-table allocation/locking constraints with concurrent payout/refund tests; record chosen design. | P3; G10 |
-| G10 / NK-GAP-10 | Open | Finance + backend | Define immutable monetary facts, reserves, subsidy, refund/reversal and available-balance equations with examples. | P3; Finance policy |
-| G11 / NK-GAP-11 | Open | Backend | Specify intent/order/attempt cardinality, retries, expiry and late capture transitions. | P0 design / P3 proof |
-| G12 / NK-GAP-12 | Open | Backend | Design recoverable provider order orchestration and uncertain-outcome reconciliation. | P3; G11/provider spike |
+| G09 / NK-GAP-09 | Partial | Backend + Finance | Prototype same-table allocation/locking constraints with concurrent payout/refund tests; record chosen design. | P3; G10 |
+| G10 / NK-GAP-10 | Partial | Finance + backend | Define immutable monetary facts, reserves, subsidy, refund/reversal and available-balance equations with examples. | P3; Finance policy |
+| G11 / NK-GAP-11 | Partial | Backend | Specify intent/order/attempt cardinality, retries, expiry and late capture transitions. | P0 design / P3 proof |
+| G12 / NK-GAP-12 | Partial | Backend | Design recoverable provider order orchestration and uncertain-outcome reconciliation. | P3; G11/provider spike |
 | G13 / NK-GAP-13 | Open | Backend | Specify sequence/ownership/receipt transaction, poison events and crash recovery; reconcile ADR-014. | P0–P1 |
 | G14 / NK-GAP-14 | Partial | Backend + ops | [Initial transition drafts](../state-machines/README.md) cover org, volunteer approval and mission; 13 decisions remain open and other aggregate catalogues remain missing. | P0 |
 | G15 / NK-GAP-15 | Open | Product + backend | Approve per-need availability, overfill, reservation and mixed-need completion rules; update all contracts. | P0; G11/G14 |
@@ -92,7 +92,7 @@ Ordered by dependency; estimates are provisional focused authoring time, exclude
 |---|---|---|---|---|
 | NK-DOC-1.01 | Verify checkout and ADR existence, correct stale instructions, establish all 30 gap rows and 17 FR mappings. | Existing plan | Tech lead / 1 day | Delivered in this slice; review pending |
 | NK-DOC-3.01 | Draft org/application/mission transition tables with actor, prior version, guards, evidence, effects, event, copy, notification and error per row; unresolved policy choices explicitly linked. | G14/G25/G29 review input | Backend + ops / 2 days | Draft delivered; policy/source reconciliation pending |
-| NK-DOC-3.02 | Draft per-type contribution/payment attempt/refund/payout transitions and money invariants, including late capture and concurrent reservations. | G10/G11 policy design | Payments + Finance / 3 days | Open |
+| NK-DOC-3.02 | Draft per-type contribution/payment attempt/refund/payout transitions and money invariants, including late capture and concurrent reservations. | G10/G11 policy design | Payments + Finance / 3 days | Draft delivered; FD/CD decisions and database/provider proof pending |
 | NK-DOC-3.03 | Draft shipment/assignment/proof/correction transitions and typed event envelope/receipt/replay semantics. | NK-DOC-3.01/.02; G13/G17 | Backend + ops / 3 days | Open |
 | NK-DOC-2.01 | Inspect first four named research repositories at pinned commits; record licenses, architecture/test evidence and rejected ideas. | Public source availability | Tech lead / 2 days | Ready for research |
 | NK-DOC-2.02 | Inspect remaining four repositories with the same evidence; qualify unsupported ADR comparisons. | NK-DOC-2.01 format | Tech lead / 2 days | Open |
@@ -108,8 +108,8 @@ Ordered by dependency; estimates are provisional focused authoring time, exclude
 |---|---|
 | Scope/source/decision register | Initial register delivered; policy decisions still open. |
 | All MVP behaviors have contract owner and acceptance | FR coverage mapped to roles/scenarios; detailed contracts and named owners missing. |
-| Research/provider/version evidence | Missing; accepted versions are not newly validated recommendations. |
-| Transition/event catalogue and revised schema | Partial: 43 org/volunteer/mission command rows, shared rules, 13 open decisions and 20 planned cases. Remaining aggregates, accepted event catalogue and schema reconciliation missing. |
+| Research/provider/version evidence | Partial: Razorpay primary documentation inspected, retry conflict recorded, seven sandbox probes specified but not executed. Other provider/version and eight-repository evidence missing. |
+| Transition/event catalogue and revised schema | Partial: 43 org/volunteer/mission rows plus 22 contribution and 29 checkout/payment/refund/payout rows; 13 PD, six FD and four CD decisions open, 45 planned cases. Remaining aggregates, accepted event catalogue and revised DDL missing. |
 | OpenAPI/errors/auth matrix | Missing; NK-DOC-4 queue above. |
 | Design states/prototypes/assets/usability evidence | Missing; no design validation claimed. |
 | Operating policy drafts and approved foundation blockers | Missing; no operational thresholds silently adopted. |
@@ -117,4 +117,4 @@ Ordered by dependency; estimates are provisional focused authoring time, exclude
 | Sized Phase 1 backlog and staffing/cost model | Missing; original tickets are scope references, not ready sprint commitments. |
 | Named external/legal/provider owners and dates | Unassigned. Live-funds approval remains a later explicit gate. |
 
-NK-DOC-3.01 draft delivered: [catalogue](../state-machines/README.md), [open decisions and planned cases](../state-machines/review-decisions.md). Source-backed rules and proposed resolutions are distinguished; no policy approvals or runtime tests are claimed. Next execution slice: **NK-DOC-3.02 contribution/payment/refund/payout contracts**, with immutable monetary facts and late-capture/concurrent-reservation cases. Research and screen-state drafting can proceed independently. P0 remains open.
+NK-DOC-3.01 draft delivered: [catalogue](../state-machines/README.md), [open decisions and planned cases](../state-machines/review-decisions.md). Source-backed rules and proposed resolutions are distinguished; no policy approvals or runtime tests are claimed. NK-DOC-3.02 draft delivered: [contributions](../state-machines/contributions.md), [financial commands](../state-machines/payments-and-payouts.md), [money invariants](../state-machines/money-invariants.md), [25 planned cases](../state-machines/money-acceptance.md) and [provider evidence](../rnd/payment-provider-spike.md). G09–G12 are partial: proposed fixes exist, but no SQL/sandbox proof or Finance review. Next execution slice: **NK-DOC-3.03 shipment/assignment/proof/correction and event contracts**. Research and screen-state drafting can proceed independently. P0 remains open.

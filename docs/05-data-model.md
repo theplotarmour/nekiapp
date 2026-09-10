@@ -258,6 +258,8 @@ Indexes: `(user_id, created_at desc)`; `(mission_id, status)`; `(status, expires
 **contribution_status_history** (as mission history).
 
 **payments**
+
+**P0 implementation blocker (G09–G12):** The unique contribution/payment relation, parent-status payout uniqueness and status-based liability formula below are historical draft contracts awaiting replacement. [Money identity/constraint proposal](state-machines/money-invariants.md) defines multiple checkout/provider observations, durable capture/refund facts and same-row allocation balances. [Command tables](state-machines/payments-and-payouts.md) define uncertain external effects. Do not implement the historical constraints/formula as written; revised DDL and real Postgres proof are still required.
 | column | type | notes |
 |---|---|---|
 | id, public_id | | `pay_…` |

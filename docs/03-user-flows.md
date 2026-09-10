@@ -43,6 +43,8 @@ Exit criteria: ≤ 6 taps; Home visible with location label.
 
 ## F1 — Money contribution (Journey A; FR-06, FR-07, FR-10, FR-11)
 
+**P0 review:** [Contribution draft CD-01/CD-02](state-machines/contributions.md) tracks order-before-Review timing and independent payout/refund/execution projections. Provider cancellation/failure callbacks are reconciliation hints, not proof that no capture occurred. The diagram's failed branch must resolve through server-confirmed status. Confirmation analytics must not be interpreted as verified impact completion; final completion occurs only after verified record issuance. These source ambiguities remain open until the contracts are reconciled.
+
 ```mermaid
 flowchart TD
   H[Home] --> M[Mission Detail]

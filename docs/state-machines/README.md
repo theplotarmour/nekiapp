@@ -7,9 +7,13 @@ These contracts expand [TDD §6](../02-tdd.md), [data model](../05-data-model.md
 - [Organization review](organization-review.md)
 - [Volunteer approval](volunteer-approval.md)
 - [Mission lifecycle](mission-lifecycle.md)
+- [Contribution lifecycle by type](contributions.md)
+- [Checkout, refund and payout commands](payments-and-payouts.md)
+- [Money facts and allocation invariants](money-invariants.md)
+- [Planned money/contribution acceptance cases](money-acceptance.md)
 - [Decision register and acceptance cases](review-decisions.md)
 
-Contribution, payment/refund/payout, shipment, assignment, proof-review, impact-correction and complete event catalogues remain subsequent tickets. Mission rows reference those contracts without claiming to define them.
+NK-DOC-3.02 now has initial contribution/payment/refund/payout drafts with [Razorpay documentation evidence and unexecuted sandbox probes](../rnd/payment-provider-spike.md). Shipment, assignment, proof-review, impact-correction and complete event catalogues remain subsequent tickets. Mission and contribution rows reference those contracts without claiming to define them. Financial FD and contribution CD decisions remain open alongside the PD register.
 
 ## Reading a transition row
 

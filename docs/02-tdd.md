@@ -215,6 +215,8 @@ Illegal transitions return `409 MISSION_STATE_CONFLICT`. Every transition writes
 
 ### 6.2 Contribution
 
+**P0 contract review:** [Per-type contribution draft](state-machines/contributions.md) separates execution from refunds/payouts and pending Activity from final records. The linear money status sequence below cannot represent every partial-refund or delivery-before-payout case; CD-02 must be resolved before implementation. SKILL/REGISTERED remains subject to G08's separate interest model.
+
 ```
 MONEY:  INITIATED → PENDING_PAYMENT → CONFIRMED → ALLOCATED → FULFILLED → VERIFIED → COMPLETED
                                  ↓ PAYMENT_FAILED / EXPIRED (30 min)        ↓ REFUND_PENDING → REFUNDED
@@ -224,6 +226,8 @@ SKILL:  INITIATED → REGISTERED (MVP terminal)
 ```
 
 ### 6.3 Payment
+
+**P0 contract review:** [Payment/refund/payout commands](state-machines/payments-and-payouts.md) preserve capture facts separately from settlement/refund state and include uncertain order recovery. See [money invariants](state-machines/money-invariants.md) for the proposed replacement of status-based liability calculations in §10; FD decisions and database/provider proof remain open.
 
 ```
 CREATED → AUTHORIZED → CAPTURED → SETTLED

@@ -22,4 +22,4 @@ For the proposed delivery sequence and revised staffing/timing assumptions, star
 
 Execution started on 2026-09-10. The [Phase 0 execution register](execution/phase-0.md) tracks the current checkout, gap ownership, requirement acceptance coverage, next tickets, and gate evidence. Phase 0 remains open.
 
-The first [transition contract drafts](state-machines/README.md) cover organization review, volunteer approval and mission lifecycle, with shared command rules, unresolved decisions and planned acceptance cases. They do not amend accepted source contracts until reviewed.
+The [transition contract drafts](state-machines/README.md) cover organization review, volunteer approval, mission and contribution lifecycles, checkout, refunds and manual payouts, with shared command rules, unresolved decisions and planned acceptance cases. [Razorpay evidence](rnd/payment-provider-spike.md) records documentation findings and required sandbox probes. Drafts do not amend accepted source contracts until reviewed.
