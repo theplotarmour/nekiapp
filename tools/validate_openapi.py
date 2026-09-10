@@ -14,6 +14,7 @@ from referencing import Registry, Resource
 from referencing.jsonschema import DRAFT202012
 
 import contract_identity as identity
+import contract_discovery as discovery
 
 ROOT = Path(__file__).resolve().parents[1]
 API = ROOT / "docs" / "api"
@@ -47,8 +48,12 @@ def main():
             assert operation["x-neki-policy"] == row["policy"], op_id
             if row["policy"] not in {"public", "challenge"}:
                 assert operation.get("security", doc["security"]) == [{"BearerAuth": []}], op_id
-            if row["policy"] == "self_sensitive":
+            if row["policy"] == "public":
+                assert operation.get("security") == [], op_id
+            if row["policy"] in {"self_sensitive", "org_sensitive", "finance_sensitive", "ops_lead", "security"}:
                 assert any(p["name"] == "X-Step-Up-Grant" and p["required"] for p in operation["parameters"]), op_id
+            if row["profile"] == "query":
+                assert not any(p["name"] in {"Idempotency-Key", "If-Match"} for p in operation["parameters"]), op_id
             bodies = [operation.get("requestBody", {})] + list(operation["responses"].values())
             for body in bodies:
                 for media in body.get("content", {}).values():
@@ -96,10 +101,17 @@ def main():
     duplicated = deepcopy(good["NotificationPreferencesUpdate"]["categories"])
     duplicated[-1] = deepcopy(duplicated[0])
     reject("NotificationPreferencesUpdate", {"categories": duplicated}, "duplicate category")
+    cases += discovery.negative_cases()
     for schema, value, label in cases:
         assert not validator(identity.ref(schema)).is_valid(value), f"negative case accepted: {label}"
+    parameter_cases = [("/search", "q", ""), ("/missions", "radius_km", 51),
+                       ("/missions", "min_amount_paise", 1.5), ("/categories", "limit", 51),
+                       ("/missions", "contribution_type", "SKILL")]
+    for path, name, value in parameter_cases:
+        parameter = next(p for p in doc["paths"][path]["get"]["parameters"] if p["name"] == name)
+        assert not Draft202012Validator(parameter["schema"]).is_valid(value), (path, name, value)
     print(f"PASS: OpenAPI 3.1 validation; {len(actual)} operations; {example_count} request/response/error examples")
-    print(f"PASS: {len(cases)} negative schema cases; inventory coverage and sensitive-operation grant parameters")
+    print(f"PASS: {len(cases)} negative schema cases, {len(parameter_cases)} negative query cases; coverage and policy parameters")
     print(f"NOT COMPLETE: {len(coverage['remaining_operations'])} inventory operations still need typed contracts")
     print("LIMIT: no runtime security, SMS, session reuse, browser CSRF or database behavior tested")
     if args.require_complete and coverage["remaining_operations"]:

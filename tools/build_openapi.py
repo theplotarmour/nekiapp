@@ -4,11 +4,13 @@ from __future__ import annotations
 
 import argparse
 import csv
+import hashlib
 import json
 import re
 from pathlib import Path
 
 import contract_identity as identity
+import contract_discovery as discovery
 
 ROOT = Path(__file__).resolve().parents[1]
 API = ROOT / "docs" / "api"
@@ -16,15 +18,19 @@ API = ROOT / "docs" / "api"
 
 def build():
     inventory = list(csv.DictReader((API / "operations.tsv").open(encoding="utf-8-sig"), delimiter="\t"))
-    definitions = identity.definitions()
-    examples = identity.examples()
-    schemas = identity.schemas()
+    definitions, examples, schemas = {}, {}, {}
+    for module in (identity, discovery):
+        for target, values in [(definitions, module.definitions()), (examples, module.examples()), (schemas, module.schemas())]:
+            duplicates = target.keys() & values.keys()
+            if duplicates:
+                raise ValueError(f"Duplicate contract definitions: {duplicates}")
+            target.update(values)
     errors = {
         "400": ["REQUEST_INVALID", "CURSOR_INVALID"],
         "401": ["AUTH_REQUIRED", "SESSION_EXPIRED", "REFRESH_INVALID", "REFRESH_REUSED"],
-        "403": ["ACTION_FORBIDDEN", "STEP_UP_REQUIRED", "OTP_LOCKED"],
+        "403": ["ACTION_FORBIDDEN", "STEP_UP_REQUIRED", "OTP_LOCKED", "ASSIGNMENT_ACCESS_EXPIRED"],
         "404": ["NOT_FOUND", "LOCALITY_NOT_FOUND"],
-        "409": ["VERSION_CONFLICT", "IDEMPOTENCY_KEY_REUSED", "REQUEST_IN_PROGRESS", "DELETION_NOT_CANCELLABLE", "CONSENT_VERSION_CHANGED"],
+        "409": ["VERSION_CONFLICT", "IDEMPOTENCY_KEY_REUSED", "REQUEST_IN_PROGRESS", "DELETION_NOT_CANCELLABLE", "CONSENT_VERSION_CHANGED", "ADDRESS_IN_USE"],
         "410": ["CURSOR_EXPIRED"],
         "422": ["EVIDENCE_REQUIRED", "OTP_INVALID", "OTP_EXPIRED", "MEDIA_NOT_READY"],
         "429": ["RATE_LIMITED", "OTP_RATE_LIMITED"],
@@ -32,7 +38,7 @@ def build():
     }
     code_status = {code: status for status, codes in errors.items() for code in codes}
     doc = {"openapi": "3.1.1", "info": {"title": "NEKI API — partial P0 review contract", "version": "0.0.1-draft",
-           "description": "Explicit identity/preference slice only. No server exists; uncovered inventory operations are reported separately."},
+           "description": "Explicit typed P0 slices only. No server exists; uncovered inventory operations are reported separately."},
            "servers": [{"url": "/v1"}], "security": [{"BearerAuth": []}], "paths": {},
            "components": {"securitySchemes": {"BearerAuth": {"type": "http", "scheme": "bearer", "bearerFormat": "JWT"}}, "schemas": schemas},
            "x-neki-status": "partial-review-draft"}
@@ -44,7 +50,7 @@ def build():
         op = {"operationId": op_id, "summary": op_id.replace("_", " ").capitalize(), "tags": [row["family"]],
               "description": effects, "x-neki-policy": row["policy"], "x-neki-projection": row["projection"],
               "x-neki-source": row["contract"], "x-neki-effects": effects,
-              "x-neki-rate-class": "auth_challenge" if row["profile"] == "auth" else "private_read" if row["method"] == "GET" else "write",
+              "x-neki-rate-class": "auth_challenge" if row["profile"] == "auth" else "public_read" if row["policy"] == "public" else "private_read" if row["method"] == "GET" or row["profile"] == "query" else "write",
               "parameters": [], "responses": {}}
         if row["policy"] == "public" or op_id in {"request_otp", "verify_otp", "refresh_session"}:
             op["security"] = []
@@ -53,9 +59,10 @@ def build():
         if row["profile"] == "list":
             op["parameters"] += [{"name": "cursor", "in": "query", "schema": identity.text(1, 2048)},
                                  {"name": "limit", "in": "query", "schema": {**identity.integer(1, 50), "default": 20}}]
-        if row["method"] != "GET" and row["profile"] != "auth":
+        op["parameters"] += discovery.parameters().get(op_id, [])
+        if row["method"] != "GET" and row["profile"] not in {"auth", "query"}:
             op["parameters"].append({"name": "Idempotency-Key", "in": "header", "required": True, "schema": identity.ID})
-        if row["policy"] == "self_sensitive":
+        if row["policy"] in {"self_sensitive", "org_sensitive", "finance_sensitive", "ops_lead", "security"}:
             op["parameters"].append({"name": "X-Step-Up-Grant", "in": "header", "required": True, "schema": identity.text(32, 4096)})
         if row["method"] == "DELETE":
             op["parameters"].append({"name": "If-Match", "in": "header", "required": True,
@@ -68,7 +75,7 @@ def build():
                 web.pop("refresh_token", None)
                 content["examples"]["web"] = {"value": web}
             op["requestBody"] = {"required": True, "content": {"application/json": content}}
-        headers = {"Cache-Control": {"schema": {"type": "string"}, "example": "private, no-store"},
+        headers = {"Cache-Control": {"schema": {"type": "string"}, "example": "no-store" if row["policy"] == "public" else "private, no-store"},
                    "X-Request-Id": {"schema": identity.text(1, 100)}}
         success = {"description": effects, "headers": headers}
         if response:
@@ -94,15 +101,17 @@ def build():
             common += ["NOT_FOUND"]
         if row["profile"] == "list":
             common += ["CURSOR_INVALID", "CURSOR_EXPIRED"]
-        if row["method"] != "GET" and row["profile"] != "auth":
+        if row["method"] != "GET" and row["profile"] not in {"auth", "query"}:
             common += ["VERSION_CONFLICT", "IDEMPOTENCY_KEY_REUSED", "REQUEST_IN_PROGRESS", "EVIDENCE_REQUIRED"]
-        if row["policy"] == "self_sensitive":
+        if row["policy"] in {"self_sensitive", "org_sensitive", "finance_sensitive", "ops_lead", "security"}:
             common += ["STEP_UP_REQUIRED"]
         by_status = {}
         for code in sorted(set(common + domain_errors)):
             by_status.setdefault(code_status[code], []).append(code)
         for error_status, codes in by_status.items():
-            schema_name = f"{op_id}_error_{error_status}"
+            # Share identical typed errors without widening each operation's code enum.
+            signature = hashlib.sha256("|".join(codes).encode()).hexdigest()[:16]
+            schema_name = f"Error{error_status}_{signature}"
             schemas[schema_name] = identity.obj({"error": identity.obj({
                 "code": identity.enum(*codes), "message": identity.text(1, 300), "request_id": identity.text(1, 100),
                 "retryable": identity.BOOL,

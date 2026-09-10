@@ -1,6 +1,6 @@
 # Typed identity contract and validation evidence
 
-**Status:** Partial P0 contract, 2026-09-10. Covers the 25 identity/preference operations in `operations.tsv`; 299 other operations remain untyped. No running backend, mobile/web client or provider integration is claimed.
+**Status:** Partial P0 contract, 2026-09-10. This slice covers the 25 identity/preference operations in `operations.tsv`; [current coverage](openapi-coverage.json) includes subsequent slices. No running backend, mobile/web client or provider integration is claimed.
 
 ## Artifacts and authoring workflow
 
@@ -44,4 +44,4 @@ python -m venv .venv-contracts
 
 To intentionally regenerate, run `tools/build_openapi.py` without `--check`. `requirements-contracts.txt` contains direct tooling pins; the lock records the resolved validation environment. These dependencies are not application runtime selections.
 
-Observed checks: 25 typed operations, 263 attached request/response/error examples accepted, 23 invalid schema cases rejected, coverage partition matches the 324-operation inventory. Strict completeness correctly remains failing. No provider, database, browser, session reuse or runtime authorization tests were executed.
+Initial-slice observed checks: 25 typed operations, 263 attached request/response/error examples accepted, 23 invalid schema cases rejected, coverage partition matched the 324-operation inventory. Later slices add to the same validator. Strict completeness remains failing until all inventory work is covered. No provider, database, browser, session reuse or runtime authorization tests were executed.
