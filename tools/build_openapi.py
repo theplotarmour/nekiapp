@@ -12,6 +12,7 @@ from pathlib import Path
 import contract_identity as identity
 import contract_discovery as discovery
 import contract_organizations as organizations
+import contract_contributions as contributions
 
 ROOT = Path(__file__).resolve().parents[1]
 API = ROOT / "docs" / "api"
@@ -19,21 +20,25 @@ API = ROOT / "docs" / "api"
 
 def build():
     inventory = list(csv.DictReader((API / "operations.tsv").open(encoding="utf-8-sig"), delimiter="\t"))
-    definitions, examples, schemas = {}, {}, {}
-    for module in (identity, discovery, organizations):
+    definitions, examples, schemas, variants = {}, {}, {}, {}
+    for module in (identity, discovery, organizations, contributions):
         for target, values in [(definitions, module.definitions()), (examples, module.examples()), (schemas, module.schemas())]:
             duplicates = target.keys() & values.keys()
             if duplicates:
                 raise ValueError(f"Duplicate contract definitions: {duplicates}")
             target.update(values)
+        for name, values in getattr(module, "example_variants", lambda: {})().items():
+            if name in variants:
+                raise ValueError(f"Duplicate example variants: {name}")
+            variants[name] = values
     errors = {
         "400": ["REQUEST_INVALID", "CURSOR_INVALID"],
         "401": ["AUTH_REQUIRED", "SESSION_EXPIRED", "REFRESH_INVALID", "REFRESH_REUSED"],
         "403": ["ACTION_FORBIDDEN", "STEP_UP_REQUIRED", "OTP_LOCKED", "ASSIGNMENT_ACCESS_EXPIRED", "ORG_NOT_ELIGIBLE"],
         "404": ["NOT_FOUND", "LOCALITY_NOT_FOUND"],
-        "409": ["VERSION_CONFLICT", "IDEMPOTENCY_KEY_REUSED", "REQUEST_IN_PROGRESS", "DELETION_NOT_CANCELLABLE", "CONSENT_VERSION_CHANGED", "ADDRESS_IN_USE"],
-        "410": ["CURSOR_EXPIRED"],
-        "422": ["EVIDENCE_REQUIRED", "OTP_INVALID", "OTP_EXPIRED", "MEDIA_NOT_READY", "MISSION_INCOMPLETE"],
+        "409": ["VERSION_CONFLICT", "IDEMPOTENCY_KEY_REUSED", "REQUEST_IN_PROGRESS", "DELETION_NOT_CANCELLABLE", "CONSENT_VERSION_CHANGED", "ADDRESS_IN_USE", "NEED_CLOSED", "DISCLOSURE_CHANGED", "SLOT_FULL", "CANCELLATION_NOT_ALLOWED", "PAYMENT_OUTCOME_UNKNOWN"],
+        "410": ["CURSOR_EXPIRED", "QUOTE_EXPIRED"],
+        "422": ["EVIDENCE_REQUIRED", "OTP_INVALID", "OTP_EXPIRED", "MEDIA_NOT_READY", "MISSION_INCOMPLETE", "CONTRIBUTION_NOT_ELIGIBLE"],
         "429": ["RATE_LIMITED", "OTP_RATE_LIMITED"],
         "503": ["DEPENDENCY_UNAVAILABLE"],
     }
@@ -126,6 +131,11 @@ def build():
             if error_status in {"429", "503"} or "REQUEST_IN_PROGRESS" in codes:
                 op["responses"][error_status]["headers"] = {"Retry-After": {"schema": identity.integer(1, 86400)}}
         doc["paths"].setdefault(row["path"], {})[row["method"].lower()] = op
+        for body in [op.get("requestBody", {}), success]:
+            for media in body.get("content", {}).values():
+                schema_name = media["schema"]["$ref"].rsplit("/", 1)[-1]
+                for name, value in variants.get(schema_name, {}).items():
+                    media["examples"][name] = {"value": value}
     missing = [row["operation_id"] for row in inventory if row["operation_id"] not in definitions]
     coverage = {"status": "partial-review-draft", "inventory_count": len(inventory), "typed_count": len(definitions),
                 "covered_operations": sorted(definitions), "remaining_operations": missing,
