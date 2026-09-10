@@ -1,0 +1,3 @@
+# P0 schema validation tools, not application runtime dependencies.
+jsonschema[format]==4.23.0
+openapi-spec-validator==0.7.2

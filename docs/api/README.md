@@ -5,6 +5,7 @@
 - [Operations](operations.tsv): machine-readable, tab-separated, one route/method per row. `operation_id` is stable; paths are relative to `/v1` except PUBLIC_WEB/WS rows. All additions are proposed.
 - [Authorization and field matrix](authorization.md): each row's policy resolves server-side scope, capabilities and field projection.
 - [Request/error profiles](request-profiles.md): each row inherits its success, concurrency, idempotency, rate-limit and error rules.
+- [Typed identity contract](identity-contract.md): first 25 operations, generated OpenAPI, exact remaining-coverage manifest and executable schema/example checks. Full API coverage remains incomplete.
 
 Columns: family (plan §18.1); method; path; operation_id; policy; projection; profile; contract. `contract` refers to a transition ID, decision ID or governing PRD requirement; it is traceability, not approval. The next schema pass must give every row typed parameters/request/response/errors/examples and precise event effects, then produce reviewed OpenAPI. No `object` placeholders or blanket success responses can pass that later gate.
 
