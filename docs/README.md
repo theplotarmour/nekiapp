@@ -16,7 +16,7 @@
 
 Source inputs (root of repo): `NEKI_Master_RND_Architecture_Documentation_Prompt.md`, `NEKI_Complete_UI_UX_Design_Specification.md`, UI board `c0f5b185-e8b2-44fa-a0fe-626ee5f561a8.png`.
 
-ADRs 001–018 are present. Planned supporting additions include the inspected R&D report, OpenAPI contract, `state-machines/`, and `api-examples/`; source-file reorganization remains a separate housekeeping task.
+ADRs 001–018 and transition drafts in `state-machines/` are present. Planned supporting additions include the inspected eight-repository R&D report, OpenAPI contract and `api-examples/`; source-file reorganization remains a separate housekeeping task.
 
 For the proposed delivery sequence and revised staffing/timing assumptions, start with document 08. Document 06 retains the original ticket IDs and estimates; document 07 governs locked founder decisions.
 

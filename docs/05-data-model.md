@@ -331,6 +331,8 @@ Indexes: `(status, pickup_window_start)` dispatch board; `(assigned_volunteer_id
 **location_pings** (`id bigserial`, `shipment_id`, `volunteer_id`, `point geography`, `accuracy_m`, `speed_mps`, `is_mock bool`, `recorded_at`, `received_at`). Partitioned by month; retention 30 d. Index `(shipment_id, recorded_at)`.
 
 **assignments**
+
+P0 follow-up: [booking/attendance draft](state-machines/logistics-and-attendance.md) identifies separate waitlist requests/offers before a confirmed contribution exists, reminder metadata, versioned attendance and custody/access history. The required contribution FK below cannot alone represent that proposed waitlist flow.
 | column | type | notes |
 |---|---|---|
 | id, public_id | | `asg_…` |
@@ -416,6 +418,8 @@ Guards: `assignments` and `shipments.assigned_volunteer_id` require `volunteer_a
 
 ### 4.8 Impact Ledger
 
+**P0 blocker G19/G21:** [Proof/impact draft](state-machines/proof-and-impact.md) proposes separate immutable canonical payload and mutable identity projection, one locked append sequence for records/corrections, and external checkpoints. Do not hash the full mutable/anonymized row below; canonical schema, retention approval and concurrency proof remain pending.
+
 **impact_records** — append-only (app role has no UPDATE/DELETE except anonymization columns).
 | column | type | notes |
 |---|---|---|
@@ -458,6 +462,8 @@ Guards: `assignments` and `shipments.assigned_volunteer_id` require `volunteer_a
 **funnel_events** (`user_pseudo_id`, `event`, `props jsonb`, `at`) — server-side mirror of critical funnel events for reconciliation with PostHog; monthly partitions, 13-month retention.
 
 ### 4.10 Platform
+
+P0 follow-up: [event/recovery draft](state-machines/events-and-recovery.md) requires sequence uniqueness, independent dispatch cursors, recorded handler versions/receipts and external delivery intents absent from this abbreviated schema. Notification uniqueness must be per occurrence, not one notification per subject/template for its entire lifetime.
 
 **domain_events** (`id uuid`, `type text`, `aggregate_type`, `aggregate_id uuid`, `payload jsonb`, `occurred_at`, `status event_status`, `attempts int`, `published_at`, `last_error`). Index `(status, occurred_at)`; `(aggregate_id, occurred_at)`.
 **domain_events_dlq** (same + `dead_at`).

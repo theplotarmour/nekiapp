@@ -9,6 +9,8 @@
 Every state transition (mission, contribution, payment, shipment, assignment, proof, verification, impact) must produce an event consumed by notifications, tracking, search, impact, analytics, and admin queues. Requirements from the master prompt: producer, payload, consumers, retry, idempotency, ordering, dead-letter. No Kafka at MVP. Must never lose a `PaymentCaptured`.
 
 ## Decision
+
+**2026-09-10 P0 review finding (G13):** The [event/recovery proposal](../state-machines/events-and-recovery.md) addresses missing aggregate locking/cursors, atomic receipt effects, poison-event ordering, external-effect uncertainty and the incomplete retry schedule in this ADR. This note does not accept that amendment or prove current ordering/exactly-once claims. Resolve the proposal and run database fault cases before implementation readiness is claimed.
 - **Write:** services append typed events to `domain_events` in the same DB transaction as the state change (outbox). No event emitted outside a transaction.
 - **Relay:** `arq` worker polls `PENDING` with `FOR UPDATE SKIP LOCKED` (batch 100, 250 ms), processes events **sequentially per aggregate_id**, invokes registered in-process handlers, publishes to Redis `events.<type>` and `ws.*`, marks `PUBLISHED`.
 - **Idempotent handlers:** `event_handler_receipts(event_id, handler)`; handlers check-and-record.

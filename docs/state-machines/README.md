@@ -11,9 +11,13 @@ These contracts expand [TDD §6](../02-tdd.md), [data model](../05-data-model.md
 - [Checkout, refund and payout commands](payments-and-payouts.md)
 - [Money facts and allocation invariants](money-invariants.md)
 - [Planned money/contribution acceptance cases](money-acceptance.md)
+- [Shipment and attendance](logistics-and-attendance.md)
+- [Proof review and impact corrections](proof-and-impact.md)
+- [Durable events and crash recovery](events-and-recovery.md)
+- [Planned fulfilment/integrity cases](fulfilment-acceptance.md)
 - [Decision register and acceptance cases](review-decisions.md)
 
-NK-DOC-3.02 now has initial contribution/payment/refund/payout drafts with [Razorpay documentation evidence and unexecuted sandbox probes](../rnd/payment-provider-spike.md). Shipment, assignment, proof-review, impact-correction and complete event catalogues remain subsequent tickets. Mission and contribution rows reference those contracts without claiming to define them. Financial FD and contribution CD decisions remain open alongside the PD register.
+NK-DOC-3.02 has initial contribution/payment/refund/payout drafts with [Razorpay documentation evidence and unexecuted sandbox probes](../rnd/payment-provider-spike.md). NK-DOC-3.03 adds shipment, attendance, proof, impact and event-recovery drafts. The aggregate families requested by these three drafting tickets are covered, but approval/source reconciliation, per-event machine-readable schemas and executable database/provider proof remain outstanding. PD/FD/CD/LD/VD decision registers are open; drafting coverage is not P0 gate closure.
 
 ## Reading a transition row
 

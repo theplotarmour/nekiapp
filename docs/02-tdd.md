@@ -238,6 +238,8 @@ Transitions driven **only** by verified provider webhooks or server-side status 
 
 ### 6.4 Shipment (tracking)
 
+**P0 review:** [Shipment/attendance draft](state-machines/logistics-and-attendance.md) proposes orthogonal delay/reschedule/issue/reminder metadata and explicit custody/booking-offer records. The side-state and REMINDED edges below are not safe to implement without LD-01–LD-04 reconciliation.
+
 ```
 CREATED → VOLUNTEER_ASSIGNED → PICKUP_READY → PICKED_UP → IN_TRANSIT → ARRIVED → DELIVERED → VERIFIED
    ↓ UNASSIGNED (reassign)    ↓ DELAYED / RESCHEDULED / ISSUE_REPORTED (side states with return)    ↓ CANCELLED
@@ -254,6 +256,8 @@ REQUESTED → CONFIRMED → REMINDED → CHECKED_IN → CHECKED_OUT → HOURS_VE
 
 ### 6.6 Verification (org, mission, proof)
 
+**P0 review:** [Proof/impact draft](state-machines/proof-and-impact.md) distinguishes media processing, immutable submission reviews, final record issuance and append-only corrections. Organization credential expiry is not automatic expiry of historical proof.
+
 ```
 NOT_REVIEWED → UNDER_REVIEW → VERIFIED | NEEDS_MORE_INFORMATION → UNDER_REVIEW | REJECTED
 VERIFIED → EXPIRED (org docs expiry, annual)
@@ -264,9 +268,13 @@ VERIFIED → EXPIRED (org docs expiry, annual)
 ## 7. Event model
 
 ### 7.1 Mechanism
+
+**P0 blocker G13:** [Event/recovery proposal](state-machines/events-and-recovery.md) adds an aggregate dispatch cursor, transactional handler receipts, poison-event blocking and durable external-effect intents. SKIP LOCKED over event rows alone does not establish the ordering claimed below. The proposal also resolves the incomplete retry schedule; ADR acceptance and database crash/concurrency proof remain pending.
 Transactional outbox: `domain_events(id, type, aggregate_type, aggregate_id, payload jsonb, occurred_at, published_at, attempts)`. Relay worker polls (`FOR UPDATE SKIP LOCKED`, batch 100, 250 ms), dispatches to registered handlers in order per aggregate, publishes to Redis channel `events.<type>`, marks published. Handler failures retry with backoff (1 s, 5 s, 30 s, 5 min, 1 h; max 8) then move to `domain_events_dlq` with error; ops console shows DLQ and allows replay. Handlers are idempotent (keyed on event id in `event_handler_receipts`).
 
 ### 7.2 Catalogue (MVP)
+
+The table below is historical shorthand. In particular, PaymentCaptured must not issue a pending immutable impact record; pending Activity is a projection. The [producer/consumer map](state-machines/events-and-recovery.md) and linked transition names form the expanded review draft. Exact event schemas and name reconciliation are still required before generated contracts.
 
 | Event | Producer | Payload (key fields) | Consumers |
 |---|---|---|---|
