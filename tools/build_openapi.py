@@ -11,6 +11,7 @@ from pathlib import Path
 
 import contract_identity as identity
 import contract_discovery as discovery
+import contract_organizations as organizations
 
 ROOT = Path(__file__).resolve().parents[1]
 API = ROOT / "docs" / "api"
@@ -19,7 +20,7 @@ API = ROOT / "docs" / "api"
 def build():
     inventory = list(csv.DictReader((API / "operations.tsv").open(encoding="utf-8-sig"), delimiter="\t"))
     definitions, examples, schemas = {}, {}, {}
-    for module in (identity, discovery):
+    for module in (identity, discovery, organizations):
         for target, values in [(definitions, module.definitions()), (examples, module.examples()), (schemas, module.schemas())]:
             duplicates = target.keys() & values.keys()
             if duplicates:
@@ -28,11 +29,11 @@ def build():
     errors = {
         "400": ["REQUEST_INVALID", "CURSOR_INVALID"],
         "401": ["AUTH_REQUIRED", "SESSION_EXPIRED", "REFRESH_INVALID", "REFRESH_REUSED"],
-        "403": ["ACTION_FORBIDDEN", "STEP_UP_REQUIRED", "OTP_LOCKED", "ASSIGNMENT_ACCESS_EXPIRED"],
+        "403": ["ACTION_FORBIDDEN", "STEP_UP_REQUIRED", "OTP_LOCKED", "ASSIGNMENT_ACCESS_EXPIRED", "ORG_NOT_ELIGIBLE"],
         "404": ["NOT_FOUND", "LOCALITY_NOT_FOUND"],
         "409": ["VERSION_CONFLICT", "IDEMPOTENCY_KEY_REUSED", "REQUEST_IN_PROGRESS", "DELETION_NOT_CANCELLABLE", "CONSENT_VERSION_CHANGED", "ADDRESS_IN_USE"],
         "410": ["CURSOR_EXPIRED"],
-        "422": ["EVIDENCE_REQUIRED", "OTP_INVALID", "OTP_EXPIRED", "MEDIA_NOT_READY"],
+        "422": ["EVIDENCE_REQUIRED", "OTP_INVALID", "OTP_EXPIRED", "MEDIA_NOT_READY", "MISSION_INCOMPLETE"],
         "429": ["RATE_LIMITED", "OTP_RATE_LIMITED"],
         "503": ["DEPENDENCY_UNAVAILABLE"],
     }

@@ -15,6 +15,7 @@ from referencing.jsonschema import DRAFT202012
 
 import contract_identity as identity
 import contract_discovery as discovery
+import contract_organizations as organizations
 
 ROOT = Path(__file__).resolve().parents[1]
 API = ROOT / "docs" / "api"
@@ -102,6 +103,7 @@ def main():
     duplicated[-1] = deepcopy(duplicated[0])
     reject("NotificationPreferencesUpdate", {"categories": duplicated}, "duplicate category")
     cases += discovery.negative_cases()
+    cases += organizations.negative_cases()
     for schema, value, label in cases:
         assert not validator(identity.ref(schema)).is_valid(value), f"negative case accepted: {label}"
     parameter_cases = [("/search", "q", ""), ("/missions", "radius_km", 51),
