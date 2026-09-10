@@ -27,6 +27,8 @@ Where two sources conflict, record the resolution and update the affected contra
 
 ### 1.2 Verified repository state
 
+**Execution refresh, 2026-09-10:** The current checkout root is `D:/Code/neki-app`, verified with `git rev-parse --show-toplevel`, at starting HEAD `816bc68` (`Add complete phased delivery plan (P0-P12)`). It has documentation and the reference board, no application scaffold, and was clean before execution changes. Use this current root for implementation commands. The macOS path and HEAD below describe the historical audit, not a required directory layout. See the [Phase 0 execution register](execution/phase-0.md) for current evidence.
+
 - The application repository is the **nested** directory `/Users/naksh/Documents/nekiapp/nekiapp`, with its own Git history. The enclosing directory also has a separate, empty Git repository. Run implementation commands against the nested repository until repository ownership is deliberately clarified.
 - Nested repository HEAD at audit: `04ea47b` (`added docs`); its working tree was clean before this plan was added.
 - Current content is documentation, `.gitignore`, and the UI board. There is no current `app/`, `api/`, `web/`, test suite, infrastructure configuration, or runnable product.
@@ -89,7 +91,7 @@ Each item has a deadline relative to dependent work. These are design tasks, not
 | ID | Finding and source | Resolution or required decision | Owner / deadline |
 |---|---|---|---|
 | G01 | Engineering plan and indexes still say ADRs must be written. | Mark existing ADR creation as complete; verify their evidence, decisions, and links. Do not repeat documentation work. | Tech lead / P0 |
-| G02 | Outer and nested Git repositories can lead work into the wrong history. | Document the nested project root and agree repository structure before scaffolding. Do not remove either repository automatically. | Tech lead / P0 |
+| G02 | Outer and nested Git repositories can lead work into the wrong history. | Verify the active checkout root rather than assuming the historical macOS layout; record evidence before scaffolding. Do not remove repositories automatically. | Tech lead / P0 |
 | G03 | Existing numbered estimates total **84.5 person-weeks**, before unestimated design/founder work and newly found gaps. | Re-estimate work by role and use the capacity-based schedule in §4. | Product + tech lead / P0 |
 | G04 | R&D report is absent; ADRs contain comparison claims without checked-in evidence. | Inspect all eight named repositories, record commits/licenses/findings; qualify unsupported comparative claims. | Tech lead / P0 |
 | G05 | TDD endpoint inventory lacks the later volunteer application and payout workflows. Other gaps include issues/support, skills interest, corrections, rescheduling, bank-detail changes, and document rework. | Produce a complete OpenAPI operation matrix before building clients; §18 lists families. | Backend lead / P0 |

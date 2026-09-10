@@ -1,5 +1,7 @@
 # NEKI — Engineering Plan
 
+**Execution note (2026-09-10):** This document retains original tickets and estimates. [Document 08](08-complete-phased-plan.md) supersedes its delivery schedule and Phase 0 gate. Current checkout and evidence are tracked in the [execution register](execution/phase-0.md); the repository audit below is historical.
+
 | Field | Value |
 |---|---|
 | Version | 1.0 |
@@ -16,7 +18,7 @@
 | Working tree | `NEKI_Master_RND_Architecture_Documentation_Prompt.md` (2,337 lines), `NEKI_Complete_UI_UX_Design_Specification.md` (4,509 lines), UI board PNG (2.1 MB), `.gitignore` (Flutter template + `.vercel`, `.env*`), `.DS_Store` (should be untracked). |
 | History | `0e449c7` "init: neki flutter app with web build for vercel" → `748c5d7` removed the Flutter scaffold (android/, assets incl. `badge_blood.png`, `badge_top100.png`, `badge_tree.png`, `SpaceMono-Regular.ttf`, `analysis_options.yaml`, `README.md`) and added the master prompt → `b178a4f` UI spec → `ba237a5` image. |
 | Reusable | Nothing in code. The removed scaffold used Space Mono and gamification badges — both conflict with the design brief; do not restore. `.gitignore` reusable. |
-| Stack decisions | None implemented. All choices in `02-tdd.md §22` are proposals pending ADR sign-off. |
+| Stack decisions | None implemented. ADR-001…018 exist and are marked Accepted; evidence validation/amendments remain, including ADR-018's platform spike. |
 | Debt | None yet. Guard: no code before Phase 0 exit. |
 
 Housekeeping tickets: remove `.DS_Store` from git; move source specs into `docs/source/`; rename PNG to `docs/source/ui-board-v1.png`; add repo `README.md` pointing at `docs/`.
@@ -67,7 +69,7 @@ Ticket ids: `NK-<area>-<n>`. DoD in §7 applies to every ticket.
 
 | Ticket | Scope | Est |
 |---|---|---|
-| NK-DOC-1 | Write ADR-001…018 from `02-tdd.md §22` | 1.0 ew |
+| NK-DOC-1 | ADR creation complete; validate evidence and reconcile ADR-001…018 against document 08 gaps. Original estimate retained, remaining work must be re-estimated. | 1.0 ew |
 | NK-DOC-2 | Open-source R&D review table (inspect licenses/structure of the 8 listed repos; record findings) | 0.5 |
 | NK-DOC-3 | State machine diagrams (mission, contribution, payment, shipment, assignment, verification) as Mermaid in `docs/state-machines/` | 0.3 |
 | NK-DOC-4 | OpenAPI v1 skeleton for all MVP endpoints with schemas and error codes | 1.0 |
@@ -271,7 +273,7 @@ Remaining external blocker: **legal/CA sign-off on money-flow structure (D3\*)**
 
 ## 12. Immediate next actions (this week)
 
-1. Accept or amend ADR list; create `docs/adr/` with ADR-001…018.
+1. Validate/amend existing ADR-001…018; creation is complete. Track remaining evidence in `execution/phase-0.md`.
 2. Move source specs to `docs/source/`; untrack `.DS_Store`; add repo `README.md`.
 3. Start vendor onboarding: Razorpay account + KYC, MSG91 DLT, Apple/Google developer accounts, Google Maps billing, Cloudflare account. Engage CA/CS for money-flow structure review (D3 legal caveat).
 4. Designer starts Figma tokens + component library from `04-design-brief.md §4–5`.

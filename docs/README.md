@@ -19,3 +19,7 @@ Source inputs (root of repo): `NEKI_Master_RND_Architecture_Documentation_Prompt
 ADRs 001–018 are present. Planned supporting additions include the inspected R&D report, OpenAPI contract, `state-machines/`, and `api-examples/`; source-file reorganization remains a separate housekeeping task.
 
 For the proposed delivery sequence and revised staffing/timing assumptions, start with document 08. Document 06 retains the original ticket IDs and estimates; document 07 governs locked founder decisions.
+
+Execution started on 2026-09-10. The [Phase 0 execution register](execution/phase-0.md) tracks the current checkout, gap ownership, requirement acceptance coverage, next tickets, and gate evidence. Phase 0 remains open.
+
+The first [transition contract drafts](state-machines/README.md) cover organization review, volunteer approval and mission lifecycle, with shared command rules, unresolved decisions and planned acceptance cases. They do not amend accepted source contracts until reviewed.

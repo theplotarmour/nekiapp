@@ -186,6 +186,8 @@ Core aggregates (DDL in `05-data-model.md`):
 
 ## 6. State machines
 
+**P0 review note:** [Detailed transition drafts](state-machines/README.md) expand organization review, volunteer approval and mission lifecycle. The [decision register](state-machines/review-decisions.md) records unresolved source conflicts, including mission readiness/pause and proof rejection. Those drafts are not accepted amendments; do not implement an ambiguous edge below without resolving its linked decision.
+
 ### 6.1 Mission
 
 ```

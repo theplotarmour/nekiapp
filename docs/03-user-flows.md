@@ -103,6 +103,10 @@ Timing goal: steps 1→9 median ≤ 90 s.
 
 ## F3 — Volunteer for a mission (Journey C; FR-09)
 
+**D7 approval gate:** Browsing is available before approval. The Volunteer CTA requires OTP and a basic profile, then opens an application (availability, area, skills, SOP consent) if none exists. Submission shows `PENDING_REVIEW`; only an ops approval unlocks booking. Pending applicants see their status; rejected applicants see the decision and support/reapplication guidance once that policy is defined. Rework, reapplication, suspension, and review transitions remain P0 contract work (G14/G29), not invented client states. No government-ID/KYC is collected in MVP.
+
+Before booking or waitlist promotion, the server rechecks current approval, slot eligibility, and required enhanced manual checks. Revoked or suspended approval blocks new bookings; recovery of existing assignments requires the pending ops policy. A cached approval or open sheet never authorizes a booking.
+
 | # | Screen | User | System | Branches |
 |---|---|---|---|---|
 | 1 | **Explore** | Filter Contribution type = Time | `filter_applied` | |
@@ -115,7 +119,7 @@ Timing goal: steps 1→9 median ≤ 90 s.
 | 8 | | Execute; optional proof photos | outbox queue if offline | |
 | 9 | | **Check out** | `POST …/checkout` → hours computed | ⚠ forgot → org can close at slot end |
 | 10 | Org portal | Organizer confirms attendance | HOURS_VERIFIED | |
-| 11 | **Activity → Impact Record / Certificate** | Hours count in stats only after verification | | |
+| 11 | **Activity → Impact Record / Certificate detail** | Hours count in stats only after verification | Certificate metadata only in MVP; no PDF download action | |
 
 ---
 
@@ -123,7 +127,7 @@ Timing goal: steps 1→9 median ≤ 90 s.
 
 ```
 Home → search "books near me" → Suggestions (Education · School Supplies · "books") → Results
-  Missions (School Kits for Rural Students · 42% funded · Pune) / Organizations / Categories
+  Missions (School Kits for Delhi Students · 42% funded · Delhi NCR) / Organizations / Categories
 → Mission Detail → Contribute (Items: Books ×150) or Money
 ```
 Branches: no results → "No missions match" + Reset filters + Explore All; offline → search disabled, cached Explore list shown.
@@ -212,6 +216,8 @@ Guards: cannot edit targets after first contribution without ops approval; canno
 ---
 
 ## F9 — Volunteer field operations for pickups (FR-08, FR-09, offline)
+
+**Assignment precondition (D7):** Ops can assign only a currently approved volunteer with the required enhanced manual checks. Unapproved users follow the application/status flow in F3. The server rechecks approval and assignment scope on field actions; cached assignments do not grant continuing access after revocation. Suspension/reassignment and private-cache expiry are open contracts in G14/G22/G25. Offline actions remain pending until accepted; rejected actions show recovery guidance rather than completed delivery.
 
 | # | Screen | Action | System | Offline behaviour |
 |---|---|---|---|---|

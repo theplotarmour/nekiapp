@@ -291,6 +291,7 @@ Each feature follows the same template. Analytics events are listed by name; pay
 ### FR-11 Activity / Your Impact / Impact Ledger
 
 - **Purpose:** Pride and proof; the contributor's permanent record.
+- **MVP certificate scope:** Verified hours and certificate metadata/detail are included. Certificate PDF generation/download is NEXT; do not show an unavailable download action. Payment acknowledgements and eligible tax documents follow a separate advisor-reviewed receipt policy.
 - **Primary flow:** Activity tab ("Your Impact") → segmented All / Donations / Volunteering / Items → stats (Missions Supported, People Helped, Hours Volunteered, NGOs Supported) → Recent Activity feed → tap → Impact Record (NEKI ID `NK-XXXXXX`, contribution, mission, organization, location, delivered date, proof gallery, impact summary, verification status).
 - **Rules:** Stats count only platform-recorded, verified values. "People Helped" shown only when organization-reported beneficiary count is verified; otherwise the tile shows "—" with explanation. Never fabricate.
 - **Verification states (exact language):** Not Reviewed, Under Review, Verified, Needs More Information, Rejected, Expired.

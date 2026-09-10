@@ -125,6 +125,8 @@ erDiagram
 ### 4.2 Organizations
 
 **organizations**
+
+P0 follow-up: [organization transition draft](state-machines/organization-review.md) identifies missing versions, applicant ownership, submission/decision history and verification projection semantics. These proposed additions are not yet reflected in this schema.
 | column | type | notes |
 |---|---|---|
 | id, public_id | | `org_…` |
@@ -347,6 +349,8 @@ Unique `(user_id, slot_id)`.
 **pickup_slots** (`id`, `mission_id`, `date`, `starts_at`, `ends_at`, `capacity`, `booked`) — seeded per mission service window.
 
 **volunteer_applications** (D7 — phone + manual ops approval)
+
+P0 follow-up: [volunteer transition draft](state-machines/volunteer-approval.md) identifies consent/review cycles, revocation and scoped enhanced-check provenance missing from the current fields. Draft changes remain pending review.
 | column | type | notes |
 |---|---|---|
 | id | uuid | |
