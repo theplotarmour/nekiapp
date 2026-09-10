@@ -9,6 +9,7 @@
 - [Typed discovery contract](discovery-contract.md): another 40 address/geo/catalogue/discovery/bookmark operations with public/private projection checks. Current coverage is recorded in the generated manifest.
 - [Typed organization contract](organization-contract.md): another 54 organization application, mission-management and moderation operations, with separate applicant and reviewer schemas.
 - [Typed contribution and checkout contract](contribution-contract.md): another 14 operations with quote-based confirmation, type-specific contribution records and explicit checkout uncertainty.
+- [Typed case and refund contract](case-refund-contract.md): another 17 operations with owner/reviewer separation, immutable approval references and explicit refund uncertainty.
 
 Columns: family (plan §18.1); method; path; operation_id; policy; projection; profile; contract. `contract` refers to a transition ID, decision ID or governing PRD requirement; it is traceability, not approval. The next schema pass must give every row typed parameters/request/response/errors/examples and precise event effects, then produce reviewed OpenAPI. No `object` placeholders or blanket success responses can pass that later gate.
 
