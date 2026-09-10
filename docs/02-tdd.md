@@ -298,6 +298,8 @@ Ordering: guaranteed per aggregate id (relay processes one aggregate's events se
 ## 8. API design
 
 ### 8.1 Conventions
+
+**P0 contract review:** [API inventory and policy/error profiles](api/README.md) expand all plan §18.1 families. They record proposed corrections to idempotency errors, applicant access, public/private Home composition, explicit domain commands and connection tickets. The conventions and endpoints below remain historical until their reconciliation decisions are accepted; no API is implemented yet.
 - Base `https://api.neki.xyz/v1`; JSON; snake_case; ISO-8601 UTC; money as integer paise with `currency: "INR"`.
 - Auth: `Authorization: Bearer <jwt>`. Public read endpoints (mission detail, org page) allow anonymous.
 - Pagination: `?cursor=&limit=` (default 20, max 50) → `{items, next_cursor, has_more}`. Cursors opaque (base64 of sort key + id).
