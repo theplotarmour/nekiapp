@@ -17,6 +17,7 @@ import contract_cases as cases
 import contract_payouts as payouts
 import contract_provider as provider
 import contract_volunteers as volunteers
+import contract_logistics as logistics
 
 ROOT = Path(__file__).resolve().parents[1]
 API = ROOT / "docs" / "api"
@@ -25,7 +26,7 @@ API = ROOT / "docs" / "api"
 def build():
     inventory = list(csv.DictReader((API / "operations.tsv").open(encoding="utf-8-sig"), delimiter="\t"))
     definitions, examples, schemas, variants, parameters = {}, {}, {}, {}, {}
-    for module in (identity, discovery, organizations, contributions, cases, payouts, provider, volunteers):
+    for module in (identity, discovery, organizations, contributions, cases, payouts, provider, volunteers, logistics):
         for target, values in [(definitions, module.definitions()), (examples, module.examples()), (schemas, module.schemas())]:
             duplicates = target.keys() & values.keys()
             if duplicates:
@@ -61,6 +62,8 @@ def build():
     errors["409"] += ["BOOKING_EXISTS"]
     errors["410"] += ["OFFER_EXPIRED"]
     errors["422"] += ["ATTENDANCE_INTERVAL_INVALID"]
+    errors["409"] += ["RESCHEDULE_NOT_ALLOWED", "CUSTODY_ALREADY_TRANSFERRED", "ASSIGNMENT_NOT_CURRENT", "CUSTODY_NOT_HELD"]
+    errors["403"] += ["DROPOFF_NOT_ALLOWED"]
     code_status = {code: status for status, codes in errors.items() for code in codes}
     doc = {"openapi": "3.1.1", "info": {"title": "NEKI API — partial P0 review contract", "version": "0.0.1-draft",
            "description": "Explicit typed P0 slices only. No server exists; uncovered inventory operations are reported separately."},
