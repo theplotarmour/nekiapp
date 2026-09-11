@@ -34741,6 +34741,299 @@
         }
       }
     },
+    "/payments/webhook": {
+      "post": {
+        "operationId": "ingest_payment_webhook",
+        "summary": "Ingest payment webhook",
+        "tags": [
+          "payments"
+        ],
+        "description": "Authenticate exact raw bytes using configured webhook secret set. Commit inbox/duplicate/quarantine receipt before 200; durable failure returns 503. No capture credit, refund completion or user authentication at intake.",
+        "x-neki-policy": "provider",
+        "x-neki-projection": "operation",
+        "x-neki-source": "P08/P09/R06",
+        "x-neki-effects": "Authenticate exact raw bytes using configured webhook secret set. Commit inbox/duplicate/quarantine receipt before 200; durable failure returns 503. No capture credit, refund completion or user authentication at intake.",
+        "x-neki-rate-class": "provider_inbox",
+        "parameters": [
+          {
+            "name": "x-razorpay-event-id",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 200,
+              "pattern": "^[A-Za-z0-9_-]+$"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Authenticate exact raw bytes using configured webhook secret set. Commit inbox/duplicate/quarantine receipt before 200; durable failure returns 503. No capture credit, refund completion or user authentication at intake.",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "type": "string"
+                },
+                "example": "private, no-store"
+              },
+              "X-Request-Id": {
+                "schema": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 100
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/WebhookReceipt"
+                },
+                "examples": {
+                  "example": {
+                    "value": {
+                      "receipt_id": "11111111-1111-4111-8111-111111111111",
+                      "durable": true,
+                      "disposition": "RECORDED",
+                      "financial_effect_applied": false
+                    }
+                  },
+                  "duplicate": {
+                    "value": {
+                      "receipt_id": "11111111-1111-4111-8111-111111111111",
+                      "durable": true,
+                      "disposition": "DUPLICATE",
+                      "financial_effect_applied": false
+                    }
+                  },
+                  "quarantined": {
+                    "value": {
+                      "receipt_id": "11111111-1111-4111-8111-111111111111",
+                      "durable": true,
+                      "disposition": "QUARANTINED",
+                      "financial_effect_applied": false
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "DEPENDENCY_UNAVAILABLE",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error503_b9df10b9fb706b44"
+                },
+                "examples": {
+                  "dependency_unavailable": {
+                    "value": {
+                      "error": {
+                        "code": "DEPENDENCY_UNAVAILABLE",
+                        "message": "Dependency unavailable",
+                        "request_id": "req_synthetic",
+                        "retryable": true,
+                        "details": {}
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "headers": {
+              "Retry-After": {
+                "schema": {
+                  "type": "integer",
+                  "minimum": 1,
+                  "maximum": 86400
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "RATE_LIMITED",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error429_54449437101d928c"
+                },
+                "examples": {
+                  "rate_limited": {
+                    "value": {
+                      "error": {
+                        "code": "RATE_LIMITED",
+                        "message": "Rate limited",
+                        "request_id": "req_synthetic",
+                        "retryable": true,
+                        "details": {}
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "headers": {
+              "Retry-After": {
+                "schema": {
+                  "type": "integer",
+                  "minimum": 1,
+                  "maximum": 86400
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "REQUEST_INVALID, WEBHOOK_HEADERS_INVALID",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error400_cc151b551bc35f35"
+                },
+                "examples": {
+                  "request_invalid": {
+                    "value": {
+                      "error": {
+                        "code": "REQUEST_INVALID",
+                        "message": "Request invalid",
+                        "request_id": "req_synthetic",
+                        "retryable": false,
+                        "details": {}
+                      }
+                    }
+                  },
+                  "webhook_headers_invalid": {
+                    "value": {
+                      "error": {
+                        "code": "WEBHOOK_HEADERS_INVALID",
+                        "message": "Webhook headers invalid",
+                        "request_id": "req_synthetic",
+                        "retryable": false,
+                        "details": {}
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "413": {
+            "description": "WEBHOOK_BODY_TOO_LARGE",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error413_a4ccc0a64ba74e78"
+                },
+                "examples": {
+                  "webhook_body_too_large": {
+                    "value": {
+                      "error": {
+                        "code": "WEBHOOK_BODY_TOO_LARGE",
+                        "message": "Webhook body too large",
+                        "request_id": "req_synthetic",
+                        "retryable": false,
+                        "details": {}
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "WEBHOOK_SIGNATURE_INVALID",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error401_2693b807a9347e95"
+                },
+                "examples": {
+                  "webhook_signature_invalid": {
+                    "value": {
+                      "error": {
+                        "code": "WEBHOOK_SIGNATURE_INVALID",
+                        "message": "Webhook signature invalid",
+                        "request_id": "req_synthetic",
+                        "retryable": false,
+                        "details": {}
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "RazorpayWebhookSignature": []
+          }
+        ],
+        "x-neki-raw-body-signature": true,
+        "x-neki-body-limit-bytes": 1048576,
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RazorpayEnvelope"
+              },
+              "examples": {
+                "example": {
+                  "value": {
+                    "entity": "event",
+                    "account_id": "acc_synthetic",
+                    "event": "payment.captured",
+                    "contains": [
+                      "payment"
+                    ],
+                    "created_at": 1789084800,
+                    "payload": {
+                      "payment": {
+                        "entity": {
+                          "id": "pay_synthetic",
+                          "entity": "payment",
+                          "amount": 10000,
+                          "currency": "INR",
+                          "status": "captured",
+                          "order_id": "order_synthetic",
+                          "captured": true,
+                          "created_at": 1789084800
+                        }
+                      }
+                    }
+                  }
+                },
+                "unknown_quarantine": {
+                  "value": {
+                    "entity": "event",
+                    "account_id": "acc_synthetic",
+                    "event": "future.vendor_event",
+                    "contains": [
+                      "payment"
+                    ],
+                    "created_at": 1789084800,
+                    "payload": {
+                      "future_entity": {
+                        "entity": {
+                          "new_field": [
+                            true,
+                            null,
+                            1,
+                            "value"
+                          ]
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "description": "Schema describes ordinary parsed vendor envelopes, not bytes to reserialize for verification. Authenticate original bytes first; preserve signed malformed/unknown payloads in restricted durable quarantine without applying financial effects. Body size limit is a proposed ingress configuration."
+        }
+      }
+    },
     "/payments/{id}/receipt": {
       "get": {
         "operationId": "get_payment_receipt",
@@ -54640,6 +54933,12 @@
         "type": "http",
         "scheme": "bearer",
         "bearerFormat": "JWT"
+      },
+      "RazorpayWebhookSignature": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "X-Razorpay-Signature",
+        "description": "Per-request HMAC-SHA256 of original raw bytes with configured webhook secret; NOT a static API key or user bearer token."
       }
     },
     "schemas": {
@@ -67078,6 +67377,119 @@
           "propertyName": "decision"
         }
       },
+      "ProviderJsonValue": {
+        "oneOf": [
+          {
+            "type": "null"
+          },
+          {
+            "type": "boolean"
+          },
+          {
+            "type": "number"
+          },
+          {
+            "type": "string"
+          },
+          {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ProviderJsonValue"
+            }
+          },
+          {
+            "type": "object",
+            "additionalProperties": {
+              "$ref": "#/components/schemas/ProviderJsonValue"
+            }
+          }
+        ]
+      },
+      "RazorpayEnvelope": {
+        "type": "object",
+        "additionalProperties": {
+          "$ref": "#/components/schemas/ProviderJsonValue"
+        },
+        "properties": {
+          "entity": {
+            "type": "string",
+            "enum": [
+              "event"
+            ]
+          },
+          "account_id": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 100
+          },
+          "event": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 150
+          },
+          "contains": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 100
+            },
+            "maxItems": 100
+          },
+          "payload": {
+            "type": "object",
+            "additionalProperties": {
+              "$ref": "#/components/schemas/ProviderJsonValue"
+            }
+          },
+          "created_at": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 9007199254740991
+          }
+        },
+        "required": [
+          "entity",
+          "account_id",
+          "event",
+          "payload"
+        ],
+        "description": "Provider-owned extension-tolerant intake, not a normalized payment schema. Verify original bytes before parsing. Unknown events or invalid entities are durably quarantined, never applied to balances."
+      },
+      "WebhookReceipt": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "receipt_id": {
+            "type": "string",
+            "minLength": 36,
+            "maxLength": 36,
+            "format": "uuid"
+          },
+          "durable": {
+            "type": "boolean",
+            "const": true
+          },
+          "disposition": {
+            "type": "string",
+            "enum": [
+              "RECORDED",
+              "DUPLICATE",
+              "QUARANTINED"
+            ]
+          },
+          "financial_effect_applied": {
+            "type": "boolean",
+            "const": false
+          }
+        },
+        "required": [
+          "receipt_id",
+          "durable",
+          "disposition",
+          "financial_effect_applied"
+        ]
+      },
       "Error503_b9df10b9fb706b44": {
         "type": "object",
         "additionalProperties": false,
@@ -68812,6 +69224,181 @@
                   "PAYMENT_OUTCOME_UNKNOWN",
                   "REQUEST_IN_PROGRESS",
                   "VERSION_CONFLICT"
+                ]
+              },
+              "message": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 300
+              },
+              "request_id": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 100
+              },
+              "retryable": {
+                "type": "boolean"
+              },
+              "details": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "current_version": {
+                    "type": "integer",
+                    "minimum": 0,
+                    "maximum": 2147483647
+                  },
+                  "retry_after_seconds": {
+                    "type": "integer",
+                    "minimum": 1,
+                    "maximum": 86400
+                  }
+                },
+                "required": []
+              }
+            },
+            "required": [
+              "code",
+              "message",
+              "request_id",
+              "retryable",
+              "details"
+            ]
+          }
+        },
+        "required": [
+          "error"
+        ]
+      },
+      "Error400_cc151b551bc35f35": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "error": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "code": {
+                "type": "string",
+                "enum": [
+                  "REQUEST_INVALID",
+                  "WEBHOOK_HEADERS_INVALID"
+                ]
+              },
+              "message": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 300
+              },
+              "request_id": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 100
+              },
+              "retryable": {
+                "type": "boolean"
+              },
+              "details": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "current_version": {
+                    "type": "integer",
+                    "minimum": 0,
+                    "maximum": 2147483647
+                  },
+                  "retry_after_seconds": {
+                    "type": "integer",
+                    "minimum": 1,
+                    "maximum": 86400
+                  }
+                },
+                "required": []
+              }
+            },
+            "required": [
+              "code",
+              "message",
+              "request_id",
+              "retryable",
+              "details"
+            ]
+          }
+        },
+        "required": [
+          "error"
+        ]
+      },
+      "Error413_a4ccc0a64ba74e78": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "error": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "code": {
+                "type": "string",
+                "enum": [
+                  "WEBHOOK_BODY_TOO_LARGE"
+                ]
+              },
+              "message": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 300
+              },
+              "request_id": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 100
+              },
+              "retryable": {
+                "type": "boolean"
+              },
+              "details": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "current_version": {
+                    "type": "integer",
+                    "minimum": 0,
+                    "maximum": 2147483647
+                  },
+                  "retry_after_seconds": {
+                    "type": "integer",
+                    "minimum": 1,
+                    "maximum": 86400
+                  }
+                },
+                "required": []
+              }
+            },
+            "required": [
+              "code",
+              "message",
+              "request_id",
+              "retryable",
+              "details"
+            ]
+          }
+        },
+        "required": [
+          "error"
+        ]
+      },
+      "Error401_2693b807a9347e95": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "error": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "code": {
+                "type": "string",
+                "enum": [
+                  "WEBHOOK_SIGNATURE_INVALID"
                 ]
               },
               "message": {

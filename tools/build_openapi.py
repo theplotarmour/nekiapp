@@ -15,6 +15,7 @@ import contract_organizations as organizations
 import contract_contributions as contributions
 import contract_cases as cases
 import contract_payouts as payouts
+import contract_provider as provider
 
 ROOT = Path(__file__).resolve().parents[1]
 API = ROOT / "docs" / "api"
@@ -23,7 +24,7 @@ API = ROOT / "docs" / "api"
 def build():
     inventory = list(csv.DictReader((API / "operations.tsv").open(encoding="utf-8-sig"), delimiter="\t"))
     definitions, examples, schemas, variants, parameters = {}, {}, {}, {}, {}
-    for module in (identity, discovery, organizations, contributions, cases, payouts):
+    for module in (identity, discovery, organizations, contributions, cases, payouts, provider):
         for target, values in [(definitions, module.definitions()), (examples, module.examples()), (schemas, module.schemas())]:
             duplicates = target.keys() & values.keys()
             if duplicates:
@@ -52,12 +53,18 @@ def build():
     errors["403"] += ["REFUND_POLICY_DENIED"]
     errors["409"] += ["ALLOCATION_CONFLICT", "BANK_NOT_VERIFIED", "SECOND_APPROVER_REQUIRED", "PAYOUT_HOLD", "TRANSFER_ALREADY_STARTED",
                       "BANK_REVISION_CHANGED", "TRANSFER_MISMATCH", "PAYOUT_RECONCILIATION_MISMATCH", "TRANSFER_OUTCOME_UNRESOLVED"]
+    errors["400"] += ["WEBHOOK_HEADERS_INVALID"]
+    errors["401"] += ["WEBHOOK_SIGNATURE_INVALID"]
+    errors["413"] = ["WEBHOOK_BODY_TOO_LARGE"]
     code_status = {code: status for status, codes in errors.items() for code in codes}
     doc = {"openapi": "3.1.1", "info": {"title": "NEKI API — partial P0 review contract", "version": "0.0.1-draft",
            "description": "Explicit typed P0 slices only. No server exists; uncovered inventory operations are reported separately."},
            "servers": [{"url": "/v1"}], "security": [{"BearerAuth": []}], "paths": {},
            "components": {"securitySchemes": {"BearerAuth": {"type": "http", "scheme": "bearer", "bearerFormat": "JWT"}}, "schemas": schemas},
            "x-neki-status": "partial-review-draft"}
+    doc["components"]["securitySchemes"]["RazorpayWebhookSignature"] = {
+        "type": "apiKey", "in": "header", "name": "X-Razorpay-Signature",
+        "description": "Per-request HMAC-SHA256 of original raw bytes with configured webhook secret; NOT a static API key or user bearer token."}
     for row in inventory:
         op_id = row["operation_id"]
         if op_id not in definitions:
@@ -70,13 +77,18 @@ def build():
               "parameters": [], "responses": {}}
         if row["policy"] == "public" or op_id in {"request_otp", "verify_otp", "refresh_session"}:
             op["security"] = []
+        if row["policy"] == "provider":
+            op["security"] = [{"RazorpayWebhookSignature": []}]
+            op["x-neki-rate-class"] = "provider_inbox"
+            op["x-neki-raw-body-signature"] = True
+            op["x-neki-body-limit-bytes"] = 1048576
         for name in re.findall(r"\{([^}]+)\}", row["path"]):
             op["parameters"].append({"name": name, "in": "path", "required": True, "schema": identity.ID})
         if row["profile"] == "list":
             op["parameters"] += [{"name": "cursor", "in": "query", "schema": identity.text(1, 2048)},
                                  {"name": "limit", "in": "query", "schema": {**identity.integer(1, 50), "default": 20}}]
         op["parameters"] += parameters.get(op_id, [])
-        if row["method"] != "GET" and row["profile"] not in {"auth", "query"}:
+        if row["method"] != "GET" and row["profile"] not in {"auth", "query", "provider"}:
             op["parameters"].append({"name": "Idempotency-Key", "in": "header", "required": True, "schema": identity.ID})
         if row["policy"] in {"self_sensitive", "org_sensitive", "finance_sensitive", "ops_lead", "security"}:
             op["parameters"].append({"name": "X-Step-Up-Grant", "in": "header", "required": True, "schema": identity.text(32, 4096)})
@@ -91,6 +103,8 @@ def build():
                 web.pop("refresh_token", None)
                 content["examples"]["web"] = {"value": web}
             op["requestBody"] = {"required": True, "content": {"application/json": content}}
+            if row["profile"] == "provider":
+                op["requestBody"]["description"] = "Schema describes ordinary parsed vendor envelopes, not bytes to reserialize for verification. Authenticate original bytes first; preserve signed malformed/unknown payloads in restricted durable quarantine without applying financial effects. Body size limit is a proposed ingress configuration."
         headers = {"Cache-Control": {"schema": {"type": "string"}, "example": "no-store" if row["policy"] == "public" else "private, no-store"},
                    "X-Request-Id": {"schema": identity.text(1, 100)}}
         success = {"description": effects, "headers": headers}
@@ -111,13 +125,13 @@ def build():
             headers["Set-Cookie"] = {"schema": {"type": "string"}, "description": "Clear web refresh cookie; revocation is still server-side."}
         op["responses"][status] = success
         common = ["REQUEST_INVALID", "RATE_LIMITED", "DEPENDENCY_UNAVAILABLE"]
-        if op.get("security", doc["security"]):
+        if op.get("security", doc["security"]) and row["policy"] != "provider":
             common += ["AUTH_REQUIRED", "SESSION_EXPIRED", "ACTION_FORBIDDEN"]
         if "{id}" in row["path"] or op_id == "get_deletion_status":
             common += ["NOT_FOUND"]
         if row["profile"] == "list":
             common += ["CURSOR_INVALID", "CURSOR_EXPIRED"]
-        if row["method"] != "GET" and row["profile"] not in {"auth", "query"}:
+        if row["method"] != "GET" and row["profile"] not in {"auth", "query", "provider"}:
             common += ["VERSION_CONFLICT", "IDEMPOTENCY_KEY_REUSED", "REQUEST_IN_PROGRESS", "EVIDENCE_REQUIRED"]
         if row["policy"] in {"self_sensitive", "org_sensitive", "finance_sensitive", "ops_lead", "security"}:
             common += ["STEP_UP_REQUIRED"]

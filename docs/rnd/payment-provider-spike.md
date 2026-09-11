@@ -25,3 +25,7 @@ The web reader could not render the site's `text/markdown` responses. Primary co
 | RP-07 Partial refund and settlement | Capture, partially refund, reconcile settlement fee/tax adjustments and manual payout records. | Exact paise facts and separate customer refund, org liability, platform subsidy and bank movement; no balance derived from mutable payment status. |
 
 Owner: payments/backend + Finance for RP-07. Dates and accounts unassigned. Documentation findings do not prove regional account capabilities, merchant legal role, approval to accept funds, refund speed/SLA, or receipt/tax policy. Those remain the plan's explicit gates.
+
+## Local transport experiment, 2026-09-11
+
+[Provider contract and reproduction](../api/provider-contract.md) records the rechecked signature documentation and 20 passing synthetic HMAC/SQLite inbox tests. RP-06 now has local evidence for active/previous keys, mutation rejection and raw-byte handling. Durable duplicate/collision and rollback fixtures also pass. RP-06 remains OPEN pending real provider rotation/retry evidence; RP-03/04 still need domain capture deduplication and real sandbox delivery. SQLite connection reopening is not PostgreSQL crash/concurrency proof. No provider credentials or transactions were used.

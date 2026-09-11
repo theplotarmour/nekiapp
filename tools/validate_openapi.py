@@ -19,6 +19,7 @@ import contract_organizations as organizations
 import contract_contributions as contributions
 import contract_cases as case_contracts
 import contract_payouts as payouts
+import contract_provider as provider
 
 ROOT = Path(__file__).resolve().parents[1]
 API = ROOT / "docs" / "api"
@@ -50,10 +51,16 @@ def main():
             row = inventory[op_id]
             assert (row["path"], row["method"].lower()) == (path, method), op_id
             assert operation["x-neki-policy"] == row["policy"], op_id
-            if row["policy"] not in {"public", "challenge"}:
+            if row["policy"] not in {"public", "challenge", "provider"}:
                 assert operation.get("security", doc["security"]) == [{"BearerAuth": []}], op_id
             if row["policy"] == "public":
                 assert operation.get("security") == [], op_id
+            if row["policy"] == "provider":
+                assert operation.get("security") == [{"RazorpayWebhookSignature": []}], op_id
+                assert operation.get("x-neki-raw-body-signature") is True, op_id
+                assert not any(p["name"] in {"Idempotency-Key", "If-Match", "X-Step-Up-Grant"} for p in operation["parameters"]), op_id
+                assert any(p["name"] == "x-razorpay-event-id" and p["required"] for p in operation["parameters"]), op_id
+                assert "409" not in operation["responses"], op_id
             if row["policy"] in {"self_sensitive", "org_sensitive", "finance_sensitive", "ops_lead", "security"}:
                 assert any(p["name"] == "X-Step-Up-Grant" and p["required"] for p in operation["parameters"]), op_id
             if row["profile"] == "query":
@@ -110,6 +117,7 @@ def main():
     cases += contributions.negative_cases()
     cases += case_contracts.negative_cases()
     cases += payouts.negative_cases()
+    cases += provider.negative_cases()
     for schema, value, label in cases:
         assert not validator(identity.ref(schema)).is_valid(value), f"negative case accepted: {label}"
     parameter_cases = [("/search", "q", ""), ("/missions", "radius_km", 51),

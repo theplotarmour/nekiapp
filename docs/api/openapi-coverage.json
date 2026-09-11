@@ -1,7 +1,7 @@
 {
   "status": "partial-review-draft",
   "inventory_count": 324,
-  "typed_count": 174,
+  "typed_count": 175,
   "covered_operations": [
     "add_case_message",
     "apply_organization",
@@ -86,6 +86,7 @@
     "get_refund",
     "get_refund_recovery",
     "get_tracking_snapshot",
+    "ingest_payment_webhook",
     "list_addresses",
     "list_bank_change_requests",
     "list_bank_verification_queue",
@@ -183,7 +184,6 @@
     "organization_web_fallback",
     "android_app_links",
     "apple_app_links",
-    "ingest_payment_webhook",
     "list_payment_methods",
     "remove_payment_method",
     "create_skill_interest",
