@@ -16,6 +16,7 @@ import contract_contributions as contributions
 import contract_cases as cases
 import contract_payouts as payouts
 import contract_provider as provider
+import contract_volunteers as volunteers
 
 ROOT = Path(__file__).resolve().parents[1]
 API = ROOT / "docs" / "api"
@@ -24,7 +25,7 @@ API = ROOT / "docs" / "api"
 def build():
     inventory = list(csv.DictReader((API / "operations.tsv").open(encoding="utf-8-sig"), delimiter="\t"))
     definitions, examples, schemas, variants, parameters = {}, {}, {}, {}, {}
-    for module in (identity, discovery, organizations, contributions, cases, payouts, provider):
+    for module in (identity, discovery, organizations, contributions, cases, payouts, provider, volunteers):
         for target, values in [(definitions, module.definitions()), (examples, module.examples()), (schemas, module.schemas())]:
             duplicates = target.keys() & values.keys()
             if duplicates:
@@ -56,6 +57,10 @@ def build():
     errors["400"] += ["WEBHOOK_HEADERS_INVALID"]
     errors["401"] += ["WEBHOOK_SIGNATURE_INVALID"]
     errors["413"] = ["WEBHOOK_BODY_TOO_LARGE"]
+    errors["403"] += ["VOLUNTEER_INELIGIBLE", "WAITLIST_NOT_ALLOWED", "CHECKIN_NOT_ELIGIBLE"]
+    errors["409"] += ["BOOKING_EXISTS"]
+    errors["410"] += ["OFFER_EXPIRED"]
+    errors["422"] += ["ATTENDANCE_INTERVAL_INVALID"]
     code_status = {code: status for status, codes in errors.items() for code in codes}
     doc = {"openapi": "3.1.1", "info": {"title": "NEKI API — partial P0 review contract", "version": "0.0.1-draft",
            "description": "Explicit typed P0 slices only. No server exists; uncovered inventory operations are reported separately."},
