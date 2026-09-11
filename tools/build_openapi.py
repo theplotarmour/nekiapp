@@ -14,6 +14,7 @@ import contract_discovery as discovery
 import contract_organizations as organizations
 import contract_contributions as contributions
 import contract_cases as cases
+import contract_payouts as payouts
 
 ROOT = Path(__file__).resolve().parents[1]
 API = ROOT / "docs" / "api"
@@ -21,8 +22,8 @@ API = ROOT / "docs" / "api"
 
 def build():
     inventory = list(csv.DictReader((API / "operations.tsv").open(encoding="utf-8-sig"), delimiter="\t"))
-    definitions, examples, schemas, variants = {}, {}, {}, {}
-    for module in (identity, discovery, organizations, contributions, cases):
+    definitions, examples, schemas, variants, parameters = {}, {}, {}, {}, {}
+    for module in (identity, discovery, organizations, contributions, cases, payouts):
         for target, values in [(definitions, module.definitions()), (examples, module.examples()), (schemas, module.schemas())]:
             duplicates = target.keys() & values.keys()
             if duplicates:
@@ -32,6 +33,10 @@ def build():
             if name in variants:
                 raise ValueError(f"Duplicate example variants: {name}")
             variants[name] = values
+        for name, values in getattr(module, "parameters", lambda: {})().items():
+            if name in parameters:
+                raise ValueError(f"Duplicate operation parameters: {name}")
+            parameters[name] = values
     errors = {
         "400": ["REQUEST_INVALID", "CURSOR_INVALID"],
         "401": ["AUTH_REQUIRED", "SESSION_EXPIRED", "REFRESH_INVALID", "REFRESH_REUSED"],
@@ -45,6 +50,8 @@ def build():
     }
     errors["409"] += ["CASE_CLOSED", "REFUND_AMOUNT_UNAVAILABLE", "RECOVERY_FUNDING_REQUIRED", "REFUND_ALREADY_SUBMITTED"]
     errors["403"] += ["REFUND_POLICY_DENIED"]
+    errors["409"] += ["ALLOCATION_CONFLICT", "BANK_NOT_VERIFIED", "SECOND_APPROVER_REQUIRED", "PAYOUT_HOLD", "TRANSFER_ALREADY_STARTED",
+                      "BANK_REVISION_CHANGED", "TRANSFER_MISMATCH", "PAYOUT_RECONCILIATION_MISMATCH", "TRANSFER_OUTCOME_UNRESOLVED"]
     code_status = {code: status for status, codes in errors.items() for code in codes}
     doc = {"openapi": "3.1.1", "info": {"title": "NEKI API — partial P0 review contract", "version": "0.0.1-draft",
            "description": "Explicit typed P0 slices only. No server exists; uncovered inventory operations are reported separately."},
@@ -68,7 +75,7 @@ def build():
         if row["profile"] == "list":
             op["parameters"] += [{"name": "cursor", "in": "query", "schema": identity.text(1, 2048)},
                                  {"name": "limit", "in": "query", "schema": {**identity.integer(1, 50), "default": 20}}]
-        op["parameters"] += discovery.parameters().get(op_id, [])
+        op["parameters"] += parameters.get(op_id, [])
         if row["method"] != "GET" and row["profile"] not in {"auth", "query"}:
             op["parameters"].append({"name": "Idempotency-Key", "in": "header", "required": True, "schema": identity.ID})
         if row["policy"] in {"self_sensitive", "org_sensitive", "finance_sensitive", "ops_lead", "security"}:
