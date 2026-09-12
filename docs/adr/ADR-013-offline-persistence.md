@@ -28,6 +28,8 @@ Code-gen; schema evolution discipline; SQLite on web adds bundle weight (portals
 Queue growth when offline long → cap pending photos (e.g., 50) and surface "Pending sync" UI; never queue money.
 
 ## Consequences
+
+P0 evidence (2026-09-13): the [isolated Flutter stack probe](../rnd/flutter-stack-spike.md) exercised a file-backed Drift queue on Windows and compiled a Wasm worker plus Flutter web target. It does not yet verify browser persistence, mobile packaging, migrations or server synchronization. The current web path under evaluation is SQLite Wasm; the historical sql.js option in Context is not a chosen deployment implementation.
 Every queued action carries `Idempotency-Key`; server accepts `client_timestamp` ≤ 24 h old and records both timestamps. Tests: airplane-mode E2E for check-in and duplicate prevention.
 
 ## Migration path

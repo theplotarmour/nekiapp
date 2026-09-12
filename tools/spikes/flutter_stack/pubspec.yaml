@@ -1,0 +1,23 @@
+name: neki_stack_spike
+description: Isolated P0 compatibility fixture, not the NEKI application.
+publish_to: none
+version: 0.0.1
+environment:
+  sdk: '>=3.12.1 <3.13.0'
+dependencies:
+  flutter:
+    sdk: flutter
+  flutter_riverpod: 2.6.1
+  riverpod_annotation: 2.6.1
+  freezed_annotation: 3.0.0
+  drift: 2.26.1
+  go_router: 14.8.1
+dev_dependencies:
+  sqlite3: 2.9.4
+  flutter_test:
+    sdk: flutter
+  build_runner: 2.4.15
+  riverpod_generator: 2.6.5
+  freezed: 3.0.6
+  drift_dev: 2.26.1
+  go_router_builder: 2.8.1

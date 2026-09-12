@@ -29,3 +29,5 @@ The [API contract workspace](api/README.md) adds a machine-readable operation in
 [Open-source inspection](rnd/open-source-review.md) records all eight named repositories at pinned revisions, license evidence, source-level findings and rejected patterns. Static provenance is verified; compatibility and runtime behavior remain separate P0 work.
 
 [MVP screen/state inventory](design/screen-state-inventory.md) maps consumer, volunteer, organization, operations/Finance and public-web destinations to requirements, shared states and recovery branches. This is a design draft; prototypes and usability evidence remain open.
+
+[Flutter stack spike](rnd/flutter-stack-spike.md) records exact resolved versions, dependency conflicts, code generation, 14 local tests and web compilation. The analyzer/SDK mismatch and browser/mobile runtime gates remain open.
