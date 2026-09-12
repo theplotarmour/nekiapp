@@ -324,16 +324,20 @@
     "organization_web_fallback",
     "android_app_links",
     "apple_app_links",
-    "connect_realtime",
     "privacy_page",
     "terms_page",
     "help_page",
     "deletion_help_page"
   ],
+  "transport_contracts": {
+    "connect_realtime": "realtime.json"
+  },
+  "transport_typed_count": 1,
+  "total_contract_count": 316,
   "limitations": [
     "Schema validation is not implementation proof",
     "AP and domain policy decisions remain open",
-    "Public web and WS need separate transport schemas",
+    "HTTP and transport schemas require separate validation",
     "FastAPI export becomes canonical only after P0 review and implementation"
   ]
 }

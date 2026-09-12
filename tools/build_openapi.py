@@ -22,6 +22,7 @@ import contract_proof as proof
 import contract_impact as impact
 import contract_admin as admin
 import contract_engagement as engagement
+import contract_realtime as realtime
 
 ROOT = Path(__file__).resolve().parents[1]
 API = ROOT / "docs" / "api"
@@ -183,19 +184,23 @@ def build():
                 schema_name = media["schema"]["$ref"].rsplit("/", 1)[-1]
                 for name, value in variants.get(schema_name, {}).items():
                     media["examples"][name] = {"value": value}
-    missing = [row["operation_id"] for row in inventory if row["operation_id"] not in definitions]
+    transport = realtime.document()
+    transport_contracts = {transport["operation_id"]: "realtime.json"}
+    missing = [row["operation_id"] for row in inventory if row["operation_id"] not in definitions and row["operation_id"] not in transport_contracts]
     coverage = {"status": "partial-review-draft", "inventory_count": len(inventory), "typed_count": len(definitions),
                 "covered_operations": sorted(definitions), "remaining_operations": missing,
+                "transport_contracts": transport_contracts, "transport_typed_count": len(transport_contracts),
+                "total_contract_count": len(definitions) + len(transport_contracts),
                 "limitations": ["Schema validation is not implementation proof", "AP and domain policy decisions remain open",
-                                "Public web and WS need separate transport schemas", "FastAPI export becomes canonical only after P0 review and implementation"]}
-    return doc, coverage
+                                "HTTP and transport schemas require separate validation", "FastAPI export becomes canonical only after P0 review and implementation"]}
+    return doc, coverage, transport
 
 
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--check", action="store_true", help="Fail on generated contract drift without writing")
     args = parser.parse_args()
-    for path, value in zip([API / "openapi.json", API / "openapi-coverage.json"], build()):
+    for path, value in zip([API / "openapi.json", API / "openapi-coverage.json", API / "realtime.json"], build()):
         data = json.dumps(value, indent=2, ensure_ascii=False) + "\n"
         if args.check:
             if not path.exists() or path.read_text(encoding="utf-8") != data:

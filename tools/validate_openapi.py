@@ -86,7 +86,11 @@ def main():
                         check.validate(example["value"])
                         example_count += 1
     assert actual == set(coverage["covered_operations"])
-    assert set(inventory) - actual == set(coverage["remaining_operations"])
+    transport = set(coverage["transport_contracts"])
+    assert not actual & transport
+    assert set(inventory) - actual - transport == set(coverage["remaining_operations"])
+    assert len(transport) == coverage["transport_typed_count"]
+    assert len(actual) + len(transport) == coverage["total_contract_count"]
     assert not actual & set(coverage["remaining_operations"])
     assert len(actual) == coverage["typed_count"]
     assert len(inventory) == coverage["inventory_count"]
@@ -146,6 +150,8 @@ def main():
         assert not Draft202012Validator(parameter["schema"]).is_valid(value), (path, name, value)
     print(f"PASS: OpenAPI 3.1 validation; {len(actual)} operations; {example_count} request/response/error examples")
     print(f"PASS: {len(cases)} negative schema cases, {len(parameter_cases)} negative query cases; coverage and policy parameters")
+    import validate_realtime
+    validate_realtime.main()
     print(f"NOT COMPLETE: {len(coverage['remaining_operations'])} inventory operations still need typed contracts")
     print("LIMIT: no runtime security, SMS, session reuse, browser CSRF or database behavior tested")
     if args.require_complete and coverage["remaining_operations"]:

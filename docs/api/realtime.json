@@ -1,0 +1,639 @@
+{
+  "format": "neki-transport-contract.v1",
+  "status": "review-draft",
+  "operation_id": "connect_realtime",
+  "inventory_method": "WS",
+  "path": "/ws",
+  "policy": "socket",
+  "projection": "tracking",
+  "source": "FR-10",
+  "subprotocol": "neki.realtime.v1",
+  "handshake": {
+    "method": "GET",
+    "success_status": 101,
+    "schema": {
+      "$ref": "#/schemas/Handshake"
+    },
+    "authentication": "single-use session/device-bound query ticket; no bearer/refresh token fallback",
+    "failure_statuses": {
+      "400": "Malformed handshake",
+      "401": "Ticket invalid, expired or consumed",
+      "403": "Origin/session/device/access denied",
+      "429": "Connection limit",
+      "503": "Ticket store or service unavailable"
+    }
+  },
+  "wire": {
+    "encoding": "UTF-8 JSON text",
+    "max_frame_bytes": 16384,
+    "max_subscriptions": 20,
+    "binary_frames": "reject",
+    "limits_status": "proposed pending load and mobile testing"
+  },
+  "close_codes": {
+    "1000": "Normal closure",
+    "1008": "Authentication expiry, revocation, protocol or access violation",
+    "1009": "Frame too large",
+    "1011": "Server failure; obtain new ticket and restore snapshots"
+  },
+  "schemas": {
+    "Channel": {
+      "oneOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "kind": {
+              "type": "string",
+              "enum": [
+                "shipment"
+              ]
+            },
+            "subject_id": {
+              "type": "string",
+              "minLength": 36,
+              "maxLength": 36,
+              "format": "uuid"
+            }
+          },
+          "required": [
+            "kind",
+            "subject_id"
+          ]
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "kind": {
+              "type": "string",
+              "enum": [
+                "contribution"
+              ]
+            },
+            "subject_id": {
+              "type": "string",
+              "minLength": 36,
+              "maxLength": 36,
+              "format": "uuid"
+            }
+          },
+          "required": [
+            "kind",
+            "subject_id"
+          ]
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "kind": {
+              "type": "string",
+              "enum": [
+                "assignment"
+              ]
+            },
+            "subject_id": {
+              "type": "string",
+              "minLength": 36,
+              "maxLength": 36,
+              "format": "uuid"
+            }
+          },
+          "required": [
+            "kind",
+            "subject_id"
+          ]
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "kind": {
+              "type": "string",
+              "enum": [
+                "own_notifications"
+              ]
+            }
+          },
+          "required": [
+            "kind"
+          ]
+        }
+      ],
+      "discriminator": {
+        "propertyName": "kind"
+      }
+    },
+    "Handshake": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "query": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "ticket": {
+              "type": "string",
+              "minLength": 43,
+              "maxLength": 128,
+              "pattern": "^[A-Za-z0-9_-]+$"
+            }
+          },
+          "required": [
+            "ticket"
+          ]
+        },
+        "headers": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "Sec-WebSocket-Protocol": {
+              "type": "string",
+              "enum": [
+                "neki.realtime.v1"
+              ]
+            },
+            "Origin": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 2048,
+              "format": "uri"
+            }
+          },
+          "required": [
+            "Sec-WebSocket-Protocol"
+          ]
+        }
+      },
+      "required": [
+        "query",
+        "headers"
+      ]
+    },
+    "ClientFrame": {
+      "oneOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "request_id": {
+              "type": "string",
+              "minLength": 36,
+              "maxLength": 36,
+              "format": "uuid"
+            },
+            "type": {
+              "type": "string",
+              "enum": [
+                "subscribe"
+              ]
+            },
+            "channel": {
+              "$ref": "#/schemas/Channel"
+            }
+          },
+          "required": [
+            "request_id",
+            "type",
+            "channel"
+          ]
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "request_id": {
+              "type": "string",
+              "minLength": 36,
+              "maxLength": 36,
+              "format": "uuid"
+            },
+            "type": {
+              "type": "string",
+              "enum": [
+                "unsubscribe"
+              ]
+            },
+            "channel": {
+              "$ref": "#/schemas/Channel"
+            }
+          },
+          "required": [
+            "request_id",
+            "type",
+            "channel"
+          ]
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "request_id": {
+              "type": "string",
+              "minLength": 36,
+              "maxLength": 36,
+              "format": "uuid"
+            },
+            "type": {
+              "type": "string",
+              "enum": [
+                "ping"
+              ]
+            }
+          },
+          "required": [
+            "request_id",
+            "type"
+          ]
+        }
+      ],
+      "discriminator": {
+        "propertyName": "type"
+      }
+    },
+    "ServerFrame": {
+      "oneOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "connection_id": {
+              "type": "string",
+              "minLength": 36,
+              "maxLength": 36,
+              "format": "uuid"
+            },
+            "sequence": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 9007199254740991
+            },
+            "type": {
+              "type": "string",
+              "enum": [
+                "ready"
+              ]
+            },
+            "expires_at": {
+              "type": "string",
+              "minLength": 20,
+              "maxLength": 32,
+              "format": "date-time",
+              "pattern": "Z$"
+            },
+            "authorized_channels": {
+              "type": "array",
+              "items": {
+                "$ref": "#/schemas/Channel"
+              },
+              "maxItems": 20,
+              "minItems": 1,
+              "uniqueItems": true
+            }
+          },
+          "required": [
+            "connection_id",
+            "sequence",
+            "type",
+            "expires_at",
+            "authorized_channels"
+          ]
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "connection_id": {
+              "type": "string",
+              "minLength": 36,
+              "maxLength": 36,
+              "format": "uuid"
+            },
+            "sequence": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 9007199254740991
+            },
+            "request_id": {
+              "type": "string",
+              "minLength": 36,
+              "maxLength": 36,
+              "format": "uuid"
+            },
+            "type": {
+              "type": "string",
+              "enum": [
+                "subscribed",
+                "unsubscribed"
+              ]
+            },
+            "channel": {
+              "$ref": "#/schemas/Channel"
+            }
+          },
+          "required": [
+            "connection_id",
+            "sequence",
+            "request_id",
+            "type",
+            "channel"
+          ]
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "connection_id": {
+              "type": "string",
+              "minLength": 36,
+              "maxLength": 36,
+              "format": "uuid"
+            },
+            "sequence": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 9007199254740991
+            },
+            "type": {
+              "type": "string",
+              "enum": [
+                "changed"
+              ]
+            },
+            "channel": {
+              "$ref": "#/schemas/Channel"
+            },
+            "aggregate_version": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 2147483647
+            },
+            "occurred_at": {
+              "type": "string",
+              "minLength": 20,
+              "maxLength": 32,
+              "format": "date-time",
+              "pattern": "Z$"
+            }
+          },
+          "required": [
+            "connection_id",
+            "sequence",
+            "type",
+            "channel",
+            "aggregate_version",
+            "occurred_at"
+          ]
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "connection_id": {
+              "type": "string",
+              "minLength": 36,
+              "maxLength": 36,
+              "format": "uuid"
+            },
+            "sequence": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 9007199254740991
+            },
+            "type": {
+              "type": "string",
+              "enum": [
+                "resync_required"
+              ]
+            },
+            "channel": {
+              "$ref": "#/schemas/Channel"
+            },
+            "reason": {
+              "type": "string",
+              "enum": [
+                "GAP",
+                "BACKPRESSURE",
+                "SOURCE_RESTART"
+              ]
+            }
+          },
+          "required": [
+            "connection_id",
+            "sequence",
+            "type",
+            "channel",
+            "reason"
+          ]
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "connection_id": {
+              "type": "string",
+              "minLength": 36,
+              "maxLength": 36,
+              "format": "uuid"
+            },
+            "sequence": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 9007199254740991
+            },
+            "request_id": {
+              "type": "string",
+              "minLength": 36,
+              "maxLength": 36,
+              "format": "uuid"
+            },
+            "type": {
+              "type": "string",
+              "enum": [
+                "pong"
+              ]
+            }
+          },
+          "required": [
+            "connection_id",
+            "sequence",
+            "request_id",
+            "type"
+          ]
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "connection_id": {
+              "type": "string",
+              "minLength": 36,
+              "maxLength": 36,
+              "format": "uuid"
+            },
+            "sequence": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 9007199254740991
+            },
+            "request_id": {
+              "type": "string",
+              "minLength": 36,
+              "maxLength": 36,
+              "format": "uuid"
+            },
+            "type": {
+              "type": "string",
+              "enum": [
+                "error"
+              ]
+            },
+            "code": {
+              "type": "string",
+              "enum": [
+                "INVALID_FRAME",
+                "CHANNEL_DENIED",
+                "LIMIT_EXCEEDED"
+              ]
+            },
+            "safe_message": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 300
+            }
+          },
+          "required": [
+            "connection_id",
+            "sequence",
+            "request_id",
+            "type",
+            "code",
+            "safe_message"
+          ]
+        }
+      ],
+      "discriminator": {
+        "propertyName": "type"
+      }
+    }
+  },
+  "examples": {
+    "Handshake": [
+      {
+        "query": {
+          "ticket": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+        },
+        "headers": {
+          "Sec-WebSocket-Protocol": "neki.realtime.v1",
+          "Origin": "https://app.example.invalid"
+        }
+      }
+    ],
+    "ClientFrame": [
+      {
+        "request_id": "11111111-1111-4111-8111-111111111111",
+        "type": "subscribe",
+        "channel": {
+          "kind": "shipment",
+          "subject_id": "11111111-1111-4111-8111-111111111111"
+        }
+      },
+      {
+        "request_id": "11111111-1111-4111-8111-111111111111",
+        "type": "unsubscribe",
+        "channel": {
+          "kind": "shipment",
+          "subject_id": "11111111-1111-4111-8111-111111111111"
+        }
+      },
+      {
+        "request_id": "11111111-1111-4111-8111-111111111111",
+        "type": "ping"
+      }
+    ],
+    "ServerFrame": [
+      {
+        "connection_id": "11111111-1111-4111-8111-111111111111",
+        "sequence": 1,
+        "type": "ready",
+        "expires_at": "2026-09-10T12:00:00Z",
+        "authorized_channels": [
+          {
+            "kind": "shipment",
+            "subject_id": "11111111-1111-4111-8111-111111111111"
+          }
+        ]
+      },
+      {
+        "connection_id": "11111111-1111-4111-8111-111111111111",
+        "sequence": 1,
+        "request_id": "11111111-1111-4111-8111-111111111111",
+        "type": "subscribed",
+        "channel": {
+          "kind": "shipment",
+          "subject_id": "11111111-1111-4111-8111-111111111111"
+        }
+      },
+      {
+        "connection_id": "11111111-1111-4111-8111-111111111111",
+        "sequence": 1,
+        "request_id": "11111111-1111-4111-8111-111111111111",
+        "type": "unsubscribed",
+        "channel": {
+          "kind": "shipment",
+          "subject_id": "11111111-1111-4111-8111-111111111111"
+        }
+      },
+      {
+        "connection_id": "11111111-1111-4111-8111-111111111111",
+        "sequence": 1,
+        "type": "changed",
+        "channel": {
+          "kind": "shipment",
+          "subject_id": "11111111-1111-4111-8111-111111111111"
+        },
+        "aggregate_version": 2,
+        "occurred_at": "2026-09-10T12:00:00Z"
+      },
+      {
+        "connection_id": "11111111-1111-4111-8111-111111111111",
+        "sequence": 1,
+        "type": "resync_required",
+        "channel": {
+          "kind": "shipment",
+          "subject_id": "11111111-1111-4111-8111-111111111111"
+        },
+        "reason": "GAP"
+      },
+      {
+        "connection_id": "11111111-1111-4111-8111-111111111111",
+        "sequence": 1,
+        "request_id": "11111111-1111-4111-8111-111111111111",
+        "type": "pong"
+      },
+      {
+        "connection_id": "11111111-1111-4111-8111-111111111111",
+        "sequence": 1,
+        "request_id": "11111111-1111-4111-8111-111111111111",
+        "type": "error",
+        "code": "CHANNEL_DENIED",
+        "safe_message": "Channel unavailable"
+      }
+    ]
+  },
+  "invariants": [
+    "Atomically consume ticket against current session/device/origin and expiry before upgrade; a failed upgrade after consumption requires a new ticket.",
+    "Browser Origin must match an exact configured allowlist; a missing Origin is allowed only for the bound native-client session, never by absence alone.",
+    "Subscribe only to a subset of ticket-authorized channels after current per-subject authorization; own_notifications derives owner from session.",
+    "Recheck authorization before emission; terminate/revoke when session, consent, assignment or capability changes. No grace read of private state.",
+    "Every new connection restores authenticated HTTP snapshots. Subscribe first and buffer hints while fetching, then reconcile aggregate versions to avoid a subscribe/snapshot race.",
+    "Sequence is connection-local, monotonic across all server frames, and resets per connection; it is not a durable database cursor or global ordering key.",
+    "Discard older aggregate versions; gap/resync/backpressure triggers authorized snapshot refresh. Hints cannot certify payment, custody or impact.",
+    "On buffer overflow, stop applying partial hints and reconnect/resync; absence of an invalidation is never proof that a cached record remains authorized.",
+    "Do not log tickets/full URLs or emit raw GPS, phone, addresses, bank data or private proof. Fields are invalidation hints only."
+  ],
+  "limitations": [
+    "Schema checks do not exercise network handshake, origin policy, atomic ticket consumption, concurrent revocation or durable recovery."
+  ]
+}
