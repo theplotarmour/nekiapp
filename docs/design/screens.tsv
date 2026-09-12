@@ -1,0 +1,166 @@
+screen_id	surface	proposed_route	title	access	requirements	flows	state_profile	api_family	critical_recovery
+C01	consumer	/splash	Session restoration	public	FR-01	F0	BOOT	identity	Clear previous-account private content before routing
+C02	consumer	/welcome	Welcome	public	FR-01	F0	READ	none	Allow discovery without implying private-action permission
+C03	consumer	/auth/phone	Phone entry	public	FR-01	F0	AUTH	identity	Rate-limit response supplies retry time
+C04	consumer	/auth/otp	OTP verification	challenge	FR-01	F0	AUTH	identity	Wrong expired and locked challenges have distinct recovery
+C05	consumer	/onboarding/profile	Basic profile	self	FR-01	F0	FORM	preferences	Preserve valid name input on transient failure
+C06	consumer	/location	Location rationale and selection	public	FR-02	F0,F4	FORM	geo	Permission denial offers manual locality; serviceability is separate
+C07	consumer	/permissions/notifications	Notification rationale	self	FR-14	F0	COMMAND	preferences	Not-now and OS denial preserve access to the app
+C08	consumer	/home	Home	public+scoped-self	FR-03	F4,F6	LIST	discovery	Individual module failure preserves permitted modules; clear private modules on logout
+C09	consumer	/explore	Explore	public	FR-04	F4	LIST	discovery	Cached list is labeled stale and new offline search is unavailable
+C10	consumer	/search	Search suggestions and results	public	FR-04	F4	LIST	discovery	Ignore old-query results and preserve filter context after detail return
+C11	consumer	/categories/{id}	Category and subcategories	public	FR-05	F4	LIST	catalogue	Retired category has safe fallback; no hard-coded cause layouts
+C12	consumer	/missions/{id}	Mission detail	public	FR-06	F1,F2,F3,F4	READ	discovery	Closed money need does not disable eligible items or time needs
+C13	consumer	/organizations/{id}	Organization detail	public	FR-06,FR-13	F4	READ	discovery	Suspension removes unsupported trust claims and contribution actions
+C14	consumer	/explore/filters	Discovery filters sheet	public	FR-04	F4	FORM	discovery	Reset and no-match recovery preserve accessible focus
+C15	consumer	/missions/{id}/story	Mission story	public	FR-06	F4	READ	discovery	Long text reflows; unavailable story does not expose private drafts
+C16	consumer	/missions/{id}/updates	Mission updates	public	FR-06	F5	LIST	discovery	Only published updates appear; failed pagination keeps visible permitted rows
+C17	consumer	/missions/{id}/proof	Public proof gallery	public	FR-17	F5	MEDIA	discovery	Show only approved public derivatives; withdrawal removes cached display
+C18	consumer	/bookmarks	My bookmarks	self	FR-13	F4	LIST	bookmarks	Unavailable missions keep safe context; optimistic toggle can revert
+C19	consumer	/share/public	Public share sheet	public	FR-13	F4	READ	bookmarks	Share public mission or org metadata without private contribution data
+C20	consumer	/missions/{id}/contribute/money	Money amount and disclosure	self	FR-07	F1	FORM	contributions	Server quote determines eligible amount and fee split; no wallet
+C21	consumer	/missions/{id}/contribute/money/review	Money review	self	FR-07	F1	CHECKOUT	contributions	Expired quote requires refreshed disclosure and renewed confirmation
+C22	consumer	/contributions/{id}/checkout	Provider checkout handoff	self	FR-07	F1	CHECKOUT	payments	Show only enabled methods; resume existing attempt before retry
+C23	consumer	/contributions/{id}/confirming	Payment confirmation recovery	self	FR-07	F1,F10	CHECKOUT	payments	Cancel timeout and callback never alone prove failed payment
+C24	consumer	/contributions/{id}/thank-you	Contribution acknowledgement	self	FR-07,FR-08	F1,F2	READ	contributions	Describe accepted contribution; do not imply verified impact
+C25	consumer	/contributions/{id}/tracking	Contribution tracking	self	FR-10	F5,F6,F10	TRACKING	contributions	Money has no live map; delivery and verification remain separate
+C26	consumer	/contributions/{id}/history	Contribution timeline history	self	FR-10	F5	LIST	contributions	Preserve refund payout and execution as independent facts
+C27	consumer	/missions/{id}/contribute/items	Item details and condition	self	FR-08	F2	FORM	contributions	Recheck remaining quantity and current accepted item conditions
+C28	consumer	/missions/{id}/contribute/items/photos	Item attachment capture	self	FR-08,FR-17	F2	MEDIA	media	Each attachment has retry and processing state; no success before acceptance
+C29	consumer	/missions/{id}/contribute/items/address	Pickup address and serviceability	self	FR-02,FR-08	F2	FORM	geo	Out-of-area address offers only server-supported alternatives
+C30	consumer	/missions/{id}/contribute/items/review	Pickup review	self	FR-08	F2	COMMAND	contributions	Lost slot or changed need returns to relevant field without duplicate contribution
+C31	consumer	/profile/addresses	Saved addresses	self	FR-02,FR-12	F2	LIST	geo	Do not expose saved addresses in public locality search
+C32	consumer	/profile/addresses/edit	Address editor	self	FR-02,FR-12	F2	FORM	geo	Deleting or editing an address must explain effect on existing pickup snapshots
+C33	consumer	/missions/{id}/contribute/items/slot	Pickup slot selection	self	FR-08	F2	LIST	logistics	No slots and expired selection require a new server-approved window
+C34	consumer	/contribute	Contribution entry and mission selection	public	FR-06	F1,F2,F3	LIST	discovery	No mission context opens selection; no generic money collection
+C35	consumer	/skills/new	Skills interest form	self	FR-09	F3	FORM	skills	Consent and optional mission context; no promise of matched placement
+C36	consumer	/skills	My skills interests	self	FR-09	F3	LIST	skills	Interest capture never increments completed contribution statistics
+C37	consumer	/skills/{id}	Skills interest detail and edit	self	FR-09	F3	FORM	skills	Update or withdraw within policy without deleting unrelated history
+C38	consumer	/activity	Your Impact activity feed	self	FR-11	F3,F6	LIST	impact	Pending activity opens contribution or assignment; only issued record opens record detail
+C39	consumer	/contributions/{id}	Contribution detail	self	FR-07,FR-08,FR-10	F1,F2,F6	READ	contributions	Show current cancellation eligibility and unresolved payment state independently
+C40	consumer	/contributions/{id}/receipt	Payment receipt	self	FR-07,FR-12	F1	READ	payments	Unavailable receipt stays unavailable; do not substitute certificate or tax claim
+C41	consumer	/refunds/{id}	Refund status	self	FR-07	F10	TRACKING	cases	Requested approved provider-pending and completed are distinct
+C42	consumer	/impact/records/{id}	Impact record	self	FR-11	F1,F3	READ	impact	Show original and effective claims; verification status is server-grounded
+C43	consumer	/impact/records/{id}/history	Impact correction history	self	FR-11	F10	LIST	impact	Corrections retain prior record history and explain effective claim
+C44	consumer	/certificates/{id}	Certificate metadata detail	self	FR-11	F3	READ	impact	No PDF download in MVP; verified hours remain explicit
+C45	consumer	/certificates	My certificates	self	FR-11	F3	LIST	impact	Empty list distinguishes no eligible verified hours from loading failure
+C46	consumer	/notifications	Notification center	self	FR-14	F5,F6	LIST	notifications	Mark-read and destination access are separate; revoked links recover safely
+C47	consumer	/profile	Profile	self	FR-12	F6	READ	preferences	Unverified statistics remain labeled; no stored-balance row
+C48	consumer	/profile/edit	Profile and avatar editor	self	FR-12	F6	FORM	preferences	Avatar upload processing can fail independently of text update
+C49	consumer	/settings	Settings	self	FR-12	F6	READ	preferences	Privacy support sessions and deletion stay reachable at large text
+C50	consumer	/settings/privacy	Privacy preferences and consent	self	FR-12	F10	FORM	preferences	Show current policy revision; do not infer consent from navigation
+C51	consumer	/settings/notifications	Notification preferences	self	FR-12,FR-14	F10	FORM	preferences	Explain required operational categories without inventing opt-out behavior
+C52	consumer	/settings/payment-methods	Provider saved payment methods	self	FR-12	F1	LIST	payments	Unsupported provider capability shows unavailable state; no card-data entry storage
+C53	consumer	/support	My support cases	self	FR-12	F10	LIST	cases	Empty state permits scoped case creation and attachment recovery
+C54	consumer	/support/{id}	Support or dispute case	self	FR-12	F10	FORM	cases	Internal reviewer notes stay private; message retry avoids duplication
+C55	consumer	/settings/deletion	Account deletion request and status	self-sensitive	FR-12	F10	COMMAND	identity	Explain holds retained records cancellation cutoff and actual completion
+C56	consumer	/settings/sessions	Sessions and devices	self-sensitive	FR-01,FR-12	F10	LIST	identity	Revoke current session clears private caches; other-session action needs scoped step-up
+C57	consumer	/auth/step-up	Sensitive action verification	self	FR-01	F10	AUTH	identity	Grant bound to intended action and expires; no biometric-only bypass
+C58	consumer	/media/{id}	Authorized private media viewer	subject-scoped	FR-17	F10	MEDIA	media	Expired URL renews authorization; revocation clears image and viewer context
+C59	consumer	/contributions/{id}/issue	Contribution issue or refund request	self	FR-07,FR-12	F10	FORM	cases	Submission creates request; no promise of instant approved refund
+C60	consumer	/contributions/{id}/display	Contribution display preferences	self	FR-07,FR-13	F1	FORM	contributions	Anonymous display does not hide facts from authorized finance records
+C61	consumer	/contributions/{id}/pickup/reschedule	Pickup rescheduling	self	FR-08	F2,F10	COMMAND	logistics	Current eligibility and available windows govern changes; assigned custody cannot be edited away
+C62	consumer	/contributions/{id}/cancel	Contribution cancellation	self	FR-07,FR-08	F1,F2,F10	COMMAND	contributions	Cancellation eligibility and any refund outcome remain separate server decisions
+C63	consumer	/impact/records/{id}/correction	Impact correction request	self	FR-11	F10	FORM	impact	Request proposes evidence-backed correction; original record stays immutable
+C64	consumer	/content/report	Report public content	self	FR-12	F10	FORM	admin	Scope report to displayed content and do not expose internal moderation results
+C65	consumer	/support/new	New support or dispute case	self	FR-12	F10	FORM	cases	Preserve safe draft and attachment retries; uncertain submission recovers existing case
+O01	organization	/org/apply	Organization application	applicant	FR-15	F7	FORM	org_application	Autosaved draft differs from submitted application
+O02	organization	/org/application	Application review status	applicant	FR-15	F7	READ	org_application	Needs-info rejection expiry and renewal use current reviewed policy
+O03	organization	/org/application/documents	Application documents	applicant	FR-15,FR-17	F7	MEDIA	org_application	Document purpose owner and processing are visible; no public document URL
+O04	organization	/org	Organization dashboard	org-member	FR-15	F7	LIST	org_missions	Organization suspension removes restricted commands and explains recovery
+O05	organization	/org/profile	Organization profile	org-member	FR-15	F7	FORM	org_application	Public preview excludes bank and private application data
+O06	organization	/org/settings	Organization settings	org-member	FR-15	F7	FORM	org_application	Permission changes during editing invalidate protected submissions
+O07	organization	/org/missions	Mission list	org-member	FR-15	F7	LIST	org_missions	Separate drafts published and review-needed states
+O08	organization	/org/missions/{id}/edit	Mission editor	org-member	FR-15	F7	FORM	org_missions	Post-contribution restricted changes use change request not direct target overwrite
+O09	organization	/org/missions/{id}/needs	Needs and volunteer slot builder	org-member	FR-15	F7	FORM	org_missions	Validate quantified mixed needs units and slot capacity per contract
+O10	organization	/org/missions/{id}/preview	Mission preview and submit	org-member	FR-15	F7	COMMAND	org_missions	Preview labeled draft; submit does not imply published
+O11	organization	/org/missions/{id}/feedback	Moderation feedback and revision	org-member	FR-15	F7	FORM	org_missions	Tie feedback to revision; changed revision cannot reuse prior approval
+O12	organization	/org/missions/{id}/changes	Mission change requests	org-member	FR-15	F7	LIST	org_missions	Show pending decision and effective current values separately
+O13	organization	/org/missions/{id}/contributions	Mission contributions	org-member	FR-15	F7	LIST	org_missions	Anonymous donor preference respected within scoped operational projection
+O14	organization	/org/missions/{id}/roster	Volunteer roster	org-member	FR-15	F7	LIST	org_missions	Only current roster scope; no unrelated applicant data
+O15	organization	/org/missions/{id}/shipments	Incoming shipments	org-member	FR-15	F7	LIST	logistics	Delivery status is distinct from organization acknowledgement
+O16	organization	/org/shipments/{id}/receive	Delivery or drop-off acknowledgement	org-member	FR-15,FR-17	F7	COMMAND	logistics	Quantity discrepancy requires evidence and permitted exception path
+O17	organization	/org/proofs	Proof drafts and submissions	org-member	FR-15,FR-17	F7	LIST	proof	Draft submitted rework and verified are distinct filters
+O18	organization	/org/proofs/{id}/edit	Proof package editor	org-member	FR-17	F7	MEDIA	proof	Capture requirements consent attribution and processing before submit
+O19	organization	/org/proofs/{id}	Proof review status and appeal	org-member	FR-17	F7	READ	proof	Rework edits a new revision; verified evidence cannot silently change
+O20	organization	/org/missions/{id}/updates	Mission update editor	org-member	FR-15	F7	FORM	org_missions	Public update publication is explicit and excludes private attachments
+O21	organization	/org/impact	Organization impact	org-member	FR-15	F7	LIST	org_missions	Show verified and reported measures with their provenance
+O22	organization	/org/bank-changes	Bank change request and status	org-sensitive	FR-15	F7	FORM	org_application	Masked current bank details; request does not activate new destination
+O23	organization	/org/payouts	Organization payouts	org-member	FR-15	F7	LIST	payouts	Pending manual payouts are not displayed as received money
+O24	organization	/org/statements	Organization statement	org-member	FR-15	F7	READ	payouts	Opening closing adjustments and payout facts reconcile to selected period
+O25	organization	/org/assignments/{id}/attendance	Attendance review	org-member	FR-09,FR-15	F3,F7	REVIEW	assignments	No automatic verified hours from elapsed client time; correction requires evidence
+O26	organization	/org/missions/{id}/execution	Mission execution and allowed commands	org-member	FR-15	F7	COMMAND	org_missions	Ready start delivered pause resume and cancel are explicit permitted actions with evidence
+V01	volunteer	/volunteer/apply	Volunteer application	self	FR-09	F3	FORM	volunteers	D7 basic application and SOP consent; no government-ID collection
+V02	volunteer	/volunteer/status	Application status and rework	self	FR-09	F3,F10	READ	volunteers	Pending rejected rework suspended and eligible states have permitted next steps
+V03	volunteer	/missions/{id}/volunteer/slots	Volunteer roles and slots	public+scoped-self	FR-09	F3	LIST	assignments	Browsing roles does not grant booking; current approval rechecked
+V04	volunteer	/missions/{id}/volunteer/review	Booking review	approved-volunteer	FR-09	F3	COMMAND	assignments	Lost capacity presents waitlist only when supported; no optimistic confirmed assignment
+V05	volunteer	/volunteer/waitlist	Waitlist and booking requests	self	FR-09	F3	LIST	assignments	Waitlisted is not booked; expired offers do not reserve capacity
+V06	volunteer	/assignments/{id}	Assignment detail	assigned-volunteer	FR-09	F3	READ	assignments	Cancellation eligibility and private location use current scope
+V07	volunteer	/assignments/{id}/attendance	Check-in and check-out	assigned-volunteer	FR-09	F3,F9	COMMAND	assignments	Queued check-in is not accepted; missed check-out requires evidenced recovery
+V08	volunteer	/assignments/{id}/hours	Hours status and dispute	self	FR-09,FR-11	F3	FORM	assignments	Claimed recorded and verified hours remain separate
+V09	volunteer	/volunteer/pickups	Assigned pickups	approved-volunteer	FR-08,FR-09	F9	LIST	logistics	Removed assignments clear private cached addresses
+V10	volunteer	/shipments/{id}/field	Pickup field details	assigned-volunteer	FR-08	F9	READ	logistics	Reveal private address only inside server-authorized window
+V11	volunteer	/shipments/{id}/pickup	Pickup evidence and confirmation	assigned-volunteer	FR-08,FR-17	F9	COMMAND	logistics	Evidence upload and custody acceptance have independent pending states
+V12	volunteer	/shipments/{id}/route	Foreground delivery route	assigned-volunteer	FR-10	F9	TRACKING	geo	Permission or tiles failure preserves permitted text route; no background-live claim
+V13	volunteer	/shipments/{id}/arrival	Arrival confirmation	assigned-volunteer	FR-08	F9	COMMAND	logistics	Out-of-order arrival reconciles server state instead of force-completing
+V14	volunteer	/shipments/{id}/delivery	Delivery receipt submission	assigned-volunteer	FR-08,FR-17	F9	COMMAND	logistics	Await required organization acknowledgement; delivery is not verification
+V15	volunteer	/sync	Pending field actions	self	FR-08,FR-09,FR-10	F9,F10	LIST	logistics	Pending uploading accepted rejected and expired actions have item-specific recovery
+V16	volunteer	/volunteer/checks	Enhanced manual check status	self	FR-09	F3	READ	volunteers	Show required check status without exposing internal evidence or adding KYC
+V17	volunteer	/volunteer/offers/{id}	Slot offer	self	FR-09	F3	COMMAND	assignments	Accept rechecks approval and expiry; countdown is server-grounded
+V18	volunteer	/shipments/{id}/issue	Field issue or failed pickup	assigned-volunteer	FR-08,FR-09	F9,F10	FORM	logistics	Safety or custody issue routes to ops recovery; no fabricated delivery completion
+V19	volunteer	/assignments/{id}/proof	Assignment proof capture and status	assigned-volunteer	FR-09,FR-17	F3,F9	MEDIA	proof	Purpose-scoped proof revision and consent; upload does not verify attendance
+W01	public-web	/m/{public_id}	Mission fallback page	public	FR-13	F4	WEB	bookmarks	Unavailable content uses safe common response; no private proof
+W02	public-web	/o/{public_id}	Organization fallback page	public	FR-13	F4	WEB	bookmarks	Published public-safe profile only; no application documents
+W03	public-web	/privacy	Privacy information	public	FR-12	F10	WEB	admin	Versioned approved copy required before publication
+W04	public-web	/terms	Terms	public	FR-12	F10	WEB	admin	Draft text must never appear as approved terms
+W05	public-web	/help	Help information	public	FR-12	F10	WEB	admin	Provide actual supported contact and recovery routes
+W06	public-web	/account-deletion	Account deletion help	public	FR-12	F10	WEB	admin	Explain actual request and retention flow without claiming immediate erasure
+W07	public-web	/.well-known/assetlinks.json	Android app association transport	public	FR-13	F4	WEB	bookmarks	Transport only; actual package signing and domain verification required
+W08	public-web	/.well-known/apple-app-site-association	Apple app association transport	public	FR-13	F4	WEB	bookmarks	Transport only; configured app identity and public path scope required
+X01	operations	/ops	Operations dashboard	ops-scoped	FR-16	F8	LIST	admin	Missing health data is unknown rather than green
+X02	operations	/ops/organizations	Organization review queue	reviewer	FR-16	F8	LIST	admin	Show assigned and available review work without leaking unrelated documents
+X03	operations	/ops/organizations/{id}	Organization evidence review	reviewer	FR-16	F8	REVIEW	admin	Document access is purpose-scoped and expires
+X04	operations	/ops/organizations/{id}/decision	Organization decision	reviewer	FR-16	F8	REVIEW	admin	Reason and current revision required for approve rework reject or suspend
+X05	operations	/ops/missions	Mission moderation queue	reviewer	FR-16	F8	LIST	admin	Separate new submission change request and disputed mission
+X06	operations	/ops/missions/{id}	Mission moderation review	reviewer	FR-16	F8	REVIEW	admin	Public preview and private moderation evidence are visibly separated
+X07	operations	/ops/missions/{id}/decision	Mission moderation or recovery decision	ops-scoped	FR-16	F8	REVIEW	admin	Only allowed commands appear; no arbitrary status dropdown
+X08	operations	/ops/volunteers	Volunteer review queue	reviewer	FR-09,FR-16	F8	LIST	volunteers	Pending rework enhanced-check and suspended queues remain distinct
+X09	operations	/ops/volunteers/{id}	Volunteer review and decision	reviewer	FR-09,FR-16	F8	REVIEW	volunteers	D7 manual checks only; suspension exposes assignment recovery work
+X10	operations	/ops/proofs	Proof review queue	reviewer	FR-16,FR-17	F8	LIST	proof	Unprocessed attachments cannot be treated as ready evidence
+X11	operations	/ops/proofs/{id}	Proof evidence review	reviewer	FR-16,FR-17	F8	REVIEW	proof	Side-by-side requirements and revision; automated signals are not verification
+X12	operations	/ops/proofs/{id}/decision	Proof decision and appeal review	reviewer	FR-16,FR-17	F8	REVIEW	proof	Needs-info rejection challenge and final verification have explicit reasons
+X13	operations	/ops/dispatch	Dispatch board	dispatch	FR-16	F8,F9	LIST	logistics	No-show and unassigned pickups remain visible; eligible volunteers only
+X14	operations	/ops/shipments/{id}	Shipment recovery detail	dispatch	FR-16	F8,F9	COMMAND	logistics	Delay reassignment rescheduling and cancellation retain history and current custody
+X15	operations	/ops/shipments/{id}/handoff	Custody handoff or receipt exception	dispatch	FR-16,FR-17	F9,F10	COMMAND	logistics	Old and new custodian plus evidence required; no unilateral delete of custody history
+X16	operations	/finance/liabilities	Payable allocations and liabilities	finance	FR-16	F8	LIST	payouts	Reserved refunded paid and available amounts remain separate
+X17	operations	/finance/payouts	Payout list	finance	FR-16	F8	LIST	payouts	Filter draft approved uncertain returned and reconciled without hiding unresolved work
+X18	operations	/finance/payouts/{id}/edit	Payout draft and allocations	finance	FR-16	F8	FORM	payouts	Allocation conflict refetches available amounts; no automatic over-allocation
+X19	operations	/finance/payouts/{id}/approve	Payout approval	finance-approver	FR-16	F8	REVIEW	payouts	Self-approval and bank revision changes block stale approval
+X20	operations	/finance/payouts/{id}/transfer	Manual transfer record	finance-sensitive	FR-16	F8,F10	COMMAND	payouts	Bank transfer occurs outside app; record uncertainty and evidence without duplicate payment
+X21	operations	/finance/reconciliation	Finance reconciliation	finance	FR-16	F8,F10	LIST	payouts	Return mismatch and uncertain transfer retain explicit resolution trail
+X22	operations	/finance/bank-changes	Bank verification queue	finance	FR-16	F8	LIST	payouts	Only scoped masked bank request summaries
+X23	operations	/finance/bank-changes/{id}	Bank change review	finance-sensitive	FR-16	F8	REVIEW	payouts	Verify exact proposed destination revision before activation
+X24	operations	/finance/refunds	Refund requests and recovery	finance	FR-16	F8,F10	LIST	cases	Pending provider outcomes remain actionable without blind retry
+X25	operations	/finance/refunds/{id}	Refund detail	finance	FR-16	F8	READ	cases	Compare refundable amount reservations and provider evidence
+X26	operations	/finance/refunds/{id}/decision	Refund approval or unsent cancellation	finance-approver	FR-16	F8	REVIEW	cases	Approved amount and revision bind command; sent refunds cannot be unsent
+X27	operations	/finance/disputes	Provider and contributor disputes	finance	FR-16	F8	LIST	cases	Evidence deadlines are source-backed; no invented urgency
+X28	operations	/finance/disputes/{id}	Dispute evidence and decision	finance-sensitive	FR-16	F8	REVIEW	cases	Provider evidence attachment is distinct from internal case notes
+X29	operations	/ops/support	Support queue	support	FR-16	F8	LIST	admin	Assignment and current scope govern case visibility
+X30	operations	/ops/support/{id}	Support conversation and resolution	support	FR-16	F8	FORM	admin	Public reply and internal review data remain distinct
+X31	operations	/ops/users	Scoped user lookup	ops-scoped	FR-16	F8	LIST	admin	No unrestricted export or broad personal-data search
+X32	operations	/ops/users/{id}	User status and scoped grants	security	FR-16	F8	COMMAND	admin	Grant revoke suspend and reinstate require current capability reason and step-up
+X33	operations	/ops/fraud	Fraud review	ops-scoped	FR-16	F8	REVIEW	admin	Signals are allegations; disposition needs evidence and audit
+X34	operations	/ops/audit	Scoped audit history	ops-scoped	FR-16	F8	LIST	admin	Immutable history is filtered by authorized scope and redacted where required
+X35	operations	/ops/catalogue	Categories item types and synonyms	catalogue-admin	FR-05,FR-16	F8	FORM	catalogue	Retirement and edits preserve referenced mission meaning
+X36	operations	/ops/reports	Scoped report jobs	ops-scoped	FR-16	F8	REPORT	admin	Export scope enforced on creation and download; expiry has fresh-request recovery
+X37	operations	/ops/health	Operational health	ops-scoped	FR-16	F8	READ	admin	Do not expose credentials or raw provider payloads
+X38	operations	/ops/events	Blocked event queue	ops-lead	FR-16	F8,F10	LIST	admin	Retryable dependency failure differs from poisoned or policy-rejected event
+X39	operations	/ops/events/{id}	Event recovery decision	ops-lead	FR-16	F8,F10	COMMAND	admin	Replay needs reason expected state and authorized operation; no arbitrary payload editing
+X40	operations	/finance/payment-recovery	Payment recovery queue	finance	FR-16	F8,F10	LIST	admin	Uncertain order and late-capture cases retain linkage to existing attempt
+X41	operations	/finance/payment-recovery/{id}	Payment reconciliation case	finance-sensitive	FR-16	F8,F10	COMMAND	admin	Reconcile provider facts without manually marking a payment captured
+X42	operations	/ops/content-reports	Content reports	reviewer	FR-16	F8	LIST	admin	Report submission does not itself establish wrongdoing
+X43	operations	/ops/content-reports/{id}	Content report review	reviewer	FR-16	F8	REVIEW	admin	Show scoped evidence and reversible decision where policy allows
+X44	operations	/ops/impact-corrections	Impact correction review	reviewer	FR-11,FR-16	F8	REVIEW	impact	Correction appends history and updates effective claim without rewriting original
+X45	operations	/ops/attendance-disputes	Attendance dispute and correction	reviewer	FR-09,FR-16	F3,F8	REVIEW	assignments	Independent reviewer sees evidence and original hours; no silent overwrite
+X46	operations	/ops/jobs/{id}	Operation job status	ops-scoped	FR-16	F8	REPORT	admin	Queued job is not a completed command; status access rechecks current grants
+X47	operations	/finance/exports	Finance export jobs	finance	FR-16	F8	REPORT	payouts	Preserve financial scope period and independent expiring download authorization

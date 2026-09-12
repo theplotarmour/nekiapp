@@ -27,3 +27,5 @@ The [transition contract drafts](state-machines/README.md) cover organization re
 The [API contract workspace](api/README.md) adds a machine-readable operation inventory, route/field authorization and request/error profiles. Typed OpenAPI schemas, examples and executable API verification remain pending.
 
 [Open-source inspection](rnd/open-source-review.md) records all eight named repositories at pinned revisions, license evidence, source-level findings and rejected patterns. Static provenance is verified; compatibility and runtime behavior remain separate P0 work.
+
+[MVP screen/state inventory](design/screen-state-inventory.md) maps consumer, volunteer, organization, operations/Finance and public-web destinations to requirements, shared states and recovery branches. This is a design draft; prototypes and usability evidence remain open.

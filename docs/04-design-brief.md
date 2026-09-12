@@ -210,6 +210,8 @@ Golden tests light + dark for every component at 1.0× and 1.6× text scale.
 
 ## 7. Screen briefs (P0)
 
+The [MVP screen/state inventory](design/screen-state-inventory.md) expands these visual briefs into consumer, volunteer, organization, operations/Finance and public-web destinations, including recovery and access states. Its routes and layouts remain design drafts pending prototypes and validation.
+
 Each brief: purpose · hierarchy · components · notes from board · states.
 
 ### 7.1 Splash
