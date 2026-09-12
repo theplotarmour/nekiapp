@@ -2,10 +2,11 @@
 
 **Status:** P0 operation inventory draft, NK-DOC-4.01. No endpoints are implemented. Authority: [plan §18](../08-complete-phased-plan.md), [TDD §8](../02-tdd.md), [transition catalogue](../state-machines/README.md), D1–D7. The inventory supplies route/operation/policy coverage for review; it is not a validated OpenAPI contract or generated client.
 
+- [Public-web contracts](web-contract.md): eight transport drafts complete schema coverage of all 324 inventory operations; production and P0 review gates remain open.
 - [Operations](operations.tsv): machine-readable, tab-separated, one route/method per row. `operation_id` is stable; paths are relative to `/v1` except PUBLIC_WEB/WS rows. All additions are proposed.
 - [Authorization and field matrix](authorization.md): each row's policy resolves server-side scope, capabilities and field projection.
 - [Request/error profiles](request-profiles.md): each row inherits its success, concurrency, idempotency, rate-limit and error rules.
-- [Typed identity contract](identity-contract.md): first 25 operations, generated OpenAPI, exact remaining-coverage manifest and executable schema/example checks. Full API coverage remains incomplete.
+- [Typed identity contract](identity-contract.md): first 25 operations, generated OpenAPI, exact remaining-coverage manifest and executable schema/example checks. Current draft inventory coverage is complete; review and runtime validation remain open.
 - [Typed discovery contract](discovery-contract.md): another 40 address/geo/catalogue/discovery/bookmark operations with public/private projection checks. Current coverage is recorded in the generated manifest.
 - [Typed organization contract](organization-contract.md): another 54 organization application, mission-management and moderation operations, with separate applicant and reviewer schemas.
 - [Typed contribution and checkout contract](contribution-contract.md): another 14 operations with quote-based confirmation, type-specific contribution records and explicit checkout uncertainty.
@@ -17,7 +18,7 @@
 - [Media and proof contracts](media-proof-contract.md): another 26 operations for upload/read authorization, processed evidence revisions and human review.
 - [Impact and correction contracts](impact-contract.md): another 12 operations separating original records, effective claims, certificate metadata and conditional sharing.
 - [Administration contracts](administration-contract.md): another 30 operations for scoped access, support, reports, event recovery and payment reconciliation.
-- [Notifications, tickets and saved methods](engagement-contract.md): the final six JSON HTTP operations; public-web and WebSocket transports remain separate work.
+- [Notifications, tickets and saved methods](engagement-contract.md): the final six JSON HTTP operations; public-web and WebSocket transports use separate contract documents.
 - [WebSocket transport](realtime-contract.md): standalone handshake/frame schemas and validation, counted separately from OpenAPI HTTP operations.
 
 Columns: family (plan §18.1); method; path; operation_id; policy; projection; profile; contract. `contract` refers to a transition ID, decision ID or governing PRD requirement; it is traceability, not approval. The next schema pass must give every row typed parameters/request/response/errors/examples and precise event effects, then produce reviewed OpenAPI. No `object` placeholders or blanket success responses can pass that later gate.

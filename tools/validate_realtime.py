@@ -29,7 +29,7 @@ def main():
     for name, example in negative:
         assert not check(name).is_valid(example), (name, example)
     coverage = json.loads((ROOT / "docs/api/openapi-coverage.json").read_text(encoding="utf-8"))
-    assert coverage["transport_contracts"] == {doc["operation_id"]: "realtime.json"}
+    assert coverage["transport_contracts"][doc["operation_id"]] == "realtime.json"
     print(f"PASS: realtime inventory mapping; {count} handshake/frame examples; {len(negative)} rejected cases")
     print("LIMIT: no network, ticket-store, browser-origin, revocation or reconnect behavior executed")
 

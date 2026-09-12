@@ -1,0 +1,708 @@
+{
+  "format": "neki-web-transport-contract.v1",
+  "status": "review-draft",
+  "operations": {
+    "mission_web_fallback": {
+      "method": "GET",
+      "inventory_method": "PUBLIC_WEB",
+      "path": "/m/{public_id}",
+      "policy": "public",
+      "projection": "public",
+      "source": "FR-13",
+      "path_schema": {
+        "$ref": "#/schemas/MissionPath"
+      },
+      "response_schema": {
+        "$ref": "#/schemas/HtmlResponse"
+      },
+      "view_model_schema": {
+        "$ref": "#/schemas/PageModel"
+      },
+      "success_status": 200,
+      "failure_statuses": [
+        404,
+        503
+      ],
+      "example_response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "text/html; charset=utf-8",
+          "Cache-Control": "no-store",
+          "Referrer-Policy": "no-referrer",
+          "X-Content-Type-Options": "nosniff",
+          "Content-Security-Policy": "default-src 'none'; base-uri 'none'; frame-ancestors 'none'; form-action 'none'"
+        },
+        "body": "<!doctype html><html lang=\"en\"><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width, initial-scale=1\"><title>Mission</title><meta name=\"robots\" content=\"noindex\"><link rel=\"canonical\" href=\"https://example.invalid/m/msn_synthetic\"></head><body><main><h1>Mission</h1><p>Synthetic contract fixture; not approved product or legal copy.</p><a href=\"/help\">Help</a></main></body></html>"
+      }
+    },
+    "organization_web_fallback": {
+      "method": "GET",
+      "inventory_method": "PUBLIC_WEB",
+      "path": "/o/{public_id}",
+      "policy": "public",
+      "projection": "public",
+      "source": "FR-13",
+      "path_schema": {
+        "$ref": "#/schemas/OrganizationPath"
+      },
+      "response_schema": {
+        "$ref": "#/schemas/HtmlResponse"
+      },
+      "view_model_schema": {
+        "$ref": "#/schemas/PageModel"
+      },
+      "success_status": 200,
+      "failure_statuses": [
+        404,
+        503
+      ],
+      "example_response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "text/html; charset=utf-8",
+          "Cache-Control": "no-store",
+          "Referrer-Policy": "no-referrer",
+          "X-Content-Type-Options": "nosniff",
+          "Content-Security-Policy": "default-src 'none'; base-uri 'none'; frame-ancestors 'none'; form-action 'none'"
+        },
+        "body": "<!doctype html><html lang=\"en\"><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width, initial-scale=1\"><title>Organization</title><meta name=\"robots\" content=\"noindex\"><link rel=\"canonical\" href=\"https://example.invalid/o/org_synthetic\"></head><body><main><h1>Organization</h1><p>Synthetic contract fixture; not approved product or legal copy.</p><a href=\"/help\">Help</a></main></body></html>"
+      }
+    },
+    "privacy_page": {
+      "method": "GET",
+      "inventory_method": "PUBLIC_WEB",
+      "path": "/privacy",
+      "policy": "public",
+      "projection": "public",
+      "source": "FR-12",
+      "path_schema": null,
+      "response_schema": {
+        "$ref": "#/schemas/HtmlResponse"
+      },
+      "view_model_schema": {
+        "$ref": "#/schemas/PageModel"
+      },
+      "success_status": 200,
+      "failure_statuses": [
+        503
+      ],
+      "example_response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "text/html; charset=utf-8",
+          "Cache-Control": "no-store",
+          "Referrer-Policy": "no-referrer",
+          "X-Content-Type-Options": "nosniff",
+          "Content-Security-Policy": "default-src 'none'; base-uri 'none'; frame-ancestors 'none'; form-action 'none'"
+        },
+        "body": "<!doctype html><html lang=\"en\"><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width, initial-scale=1\"><title>Privacy</title><meta name=\"robots\" content=\"noindex\"><link rel=\"canonical\" href=\"https://example.invalid/privacy\"></head><body><main><h1>Privacy</h1><p>Synthetic contract fixture; not approved product or legal copy.</p><a href=\"/help\">Help</a></main></body></html>"
+      }
+    },
+    "terms_page": {
+      "method": "GET",
+      "inventory_method": "PUBLIC_WEB",
+      "path": "/terms",
+      "policy": "public",
+      "projection": "public",
+      "source": "FR-12",
+      "path_schema": null,
+      "response_schema": {
+        "$ref": "#/schemas/HtmlResponse"
+      },
+      "view_model_schema": {
+        "$ref": "#/schemas/PageModel"
+      },
+      "success_status": 200,
+      "failure_statuses": [
+        503
+      ],
+      "example_response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "text/html; charset=utf-8",
+          "Cache-Control": "no-store",
+          "Referrer-Policy": "no-referrer",
+          "X-Content-Type-Options": "nosniff",
+          "Content-Security-Policy": "default-src 'none'; base-uri 'none'; frame-ancestors 'none'; form-action 'none'"
+        },
+        "body": "<!doctype html><html lang=\"en\"><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width, initial-scale=1\"><title>Terms</title><meta name=\"robots\" content=\"noindex\"><link rel=\"canonical\" href=\"https://example.invalid/terms\"></head><body><main><h1>Terms</h1><p>Synthetic contract fixture; not approved product or legal copy.</p><a href=\"/help\">Help</a></main></body></html>"
+      }
+    },
+    "help_page": {
+      "method": "GET",
+      "inventory_method": "PUBLIC_WEB",
+      "path": "/help",
+      "policy": "public",
+      "projection": "public",
+      "source": "FR-12",
+      "path_schema": null,
+      "response_schema": {
+        "$ref": "#/schemas/HtmlResponse"
+      },
+      "view_model_schema": {
+        "$ref": "#/schemas/PageModel"
+      },
+      "success_status": 200,
+      "failure_statuses": [
+        503
+      ],
+      "example_response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "text/html; charset=utf-8",
+          "Cache-Control": "no-store",
+          "Referrer-Policy": "no-referrer",
+          "X-Content-Type-Options": "nosniff",
+          "Content-Security-Policy": "default-src 'none'; base-uri 'none'; frame-ancestors 'none'; form-action 'none'"
+        },
+        "body": "<!doctype html><html lang=\"en\"><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width, initial-scale=1\"><title>Help</title><meta name=\"robots\" content=\"noindex\"><link rel=\"canonical\" href=\"https://example.invalid/help\"></head><body><main><h1>Help</h1><p>Synthetic contract fixture; not approved product or legal copy.</p><a href=\"/help\">Help</a></main></body></html>"
+      }
+    },
+    "deletion_help_page": {
+      "method": "GET",
+      "inventory_method": "PUBLIC_WEB",
+      "path": "/account-deletion",
+      "policy": "public",
+      "projection": "public",
+      "source": "FR-12",
+      "path_schema": null,
+      "response_schema": {
+        "$ref": "#/schemas/HtmlResponse"
+      },
+      "view_model_schema": {
+        "$ref": "#/schemas/PageModel"
+      },
+      "success_status": 200,
+      "failure_statuses": [
+        503
+      ],
+      "example_response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "text/html; charset=utf-8",
+          "Cache-Control": "no-store",
+          "Referrer-Policy": "no-referrer",
+          "X-Content-Type-Options": "nosniff",
+          "Content-Security-Policy": "default-src 'none'; base-uri 'none'; frame-ancestors 'none'; form-action 'none'"
+        },
+        "body": "<!doctype html><html lang=\"en\"><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width, initial-scale=1\"><title>Account deletion</title><meta name=\"robots\" content=\"noindex\"><link rel=\"canonical\" href=\"https://example.invalid/account-deletion\"></head><body><main><h1>Account deletion</h1><p>Synthetic contract fixture; not approved product or legal copy.</p><a href=\"/help\">Help</a></main></body></html>"
+      }
+    },
+    "android_app_links": {
+      "method": "GET",
+      "inventory_method": "PUBLIC_WEB",
+      "path": "/.well-known/assetlinks.json",
+      "policy": "public",
+      "projection": "public",
+      "source": "FR-13",
+      "body_schema": {
+        "$ref": "#/schemas/AndroidAssociation"
+      },
+      "success_status": 200,
+      "content_type": "application/json",
+      "redirects": "forbidden",
+      "failure_statuses": [
+        503
+      ],
+      "configuration_gate": "Verified domain/app identifiers and release signing identity required; do not deploy synthetic fixtures"
+    },
+    "apple_app_links": {
+      "method": "GET",
+      "inventory_method": "PUBLIC_WEB",
+      "path": "/.well-known/apple-app-site-association",
+      "policy": "public",
+      "projection": "public",
+      "source": "FR-13",
+      "body_schema": {
+        "$ref": "#/schemas/AppleAssociation"
+      },
+      "success_status": 200,
+      "content_type": "application/json",
+      "redirects": "forbidden",
+      "failure_statuses": [
+        503
+      ],
+      "configuration_gate": "Verified domain/app identifiers and release signing identity required; do not deploy synthetic fixtures"
+    }
+  },
+  "schemas": {
+    "MissionPath": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "public_id": {
+          "type": "string",
+          "minLength": 5,
+          "maxLength": 100,
+          "pattern": "^msn_[A-Za-z0-9_-]+$"
+        }
+      },
+      "required": [
+        "public_id"
+      ]
+    },
+    "OrganizationPath": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "public_id": {
+          "type": "string",
+          "minLength": 5,
+          "maxLength": 100,
+          "pattern": "^org_[A-Za-z0-9_-]+$"
+        }
+      },
+      "required": [
+        "public_id"
+      ]
+    },
+    "PageModel": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "title": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 160
+        },
+        "paragraphs": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 4000
+          },
+          "maxItems": 50,
+          "minItems": 1
+        },
+        "canonical_url": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 2048,
+          "format": "uri",
+          "pattern": "^https://"
+        },
+        "content_revision_id": {
+          "type": "string",
+          "minLength": 36,
+          "maxLength": 36,
+          "format": "uuid"
+        },
+        "state": {
+          "type": "string",
+          "enum": [
+            "AVAILABLE",
+            "UNAVAILABLE",
+            "APPROVED_INFORMATION"
+          ]
+        }
+      },
+      "required": [
+        "title",
+        "paragraphs",
+        "canonical_url",
+        "content_revision_id",
+        "state"
+      ]
+    },
+    "AndroidAssociation": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 10,
+      "uniqueItems": true,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "relation": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "delegate_permission/common.handle_all_urls"
+              ]
+            },
+            "minItems": 1,
+            "maxItems": 1
+          },
+          "target": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "namespace": {
+                "type": "string",
+                "enum": [
+                  "android_app"
+                ]
+              },
+              "package_name": {
+                "type": "string",
+                "minLength": 3,
+                "maxLength": 200,
+                "pattern": "^[A-Za-z][A-Za-z0-9_]*(?:\\.[A-Za-z][A-Za-z0-9_]*)+$"
+              },
+              "sha256_cert_fingerprints": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "minLength": 95,
+                  "maxLength": 95,
+                  "pattern": "^(?:[A-F0-9]{2}:){31}[A-F0-9]{2}$"
+                },
+                "maxItems": 10,
+                "minItems": 1,
+                "uniqueItems": true
+              }
+            },
+            "required": [
+              "namespace",
+              "package_name",
+              "sha256_cert_fingerprints"
+            ]
+          }
+        },
+        "required": [
+          "relation",
+          "target"
+        ]
+      }
+    },
+    "AppleAssociation": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "applinks": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "details": {
+              "type": "array",
+              "minItems": 1,
+              "maxItems": 10,
+              "items": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "appIDs": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "minLength": 12,
+                      "maxLength": 250,
+                      "pattern": "^[A-Z0-9]{10}\\.[A-Za-z0-9.-]+$"
+                    },
+                    "maxItems": 10,
+                    "minItems": 1,
+                    "uniqueItems": true
+                  },
+                  "components": {
+                    "type": "array",
+                    "minItems": 2,
+                    "maxItems": 2,
+                    "uniqueItems": true,
+                    "items": {
+                      "type": "object",
+                      "additionalProperties": false,
+                      "properties": {
+                        "/": {
+                          "type": "string",
+                          "enum": [
+                            "/m/*",
+                            "/o/*"
+                          ]
+                        }
+                      },
+                      "required": [
+                        "/"
+                      ]
+                    }
+                  }
+                },
+                "required": [
+                  "appIDs",
+                  "components"
+                ]
+              }
+            }
+          },
+          "required": [
+            "details"
+          ]
+        }
+      },
+      "required": [
+        "applinks"
+      ]
+    },
+    "HtmlResponse": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "status": {
+          "type": "integer",
+          "enum": [
+            200,
+            404,
+            503
+          ]
+        },
+        "headers": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "Content-Type": {
+              "type": "string",
+              "enum": [
+                "text/html; charset=utf-8"
+              ]
+            },
+            "Cache-Control": {
+              "type": "string",
+              "enum": [
+                "no-store"
+              ]
+            },
+            "Referrer-Policy": {
+              "type": "string",
+              "enum": [
+                "no-referrer"
+              ]
+            },
+            "X-Content-Type-Options": {
+              "type": "string",
+              "enum": [
+                "nosniff"
+              ]
+            },
+            "Content-Security-Policy": {
+              "type": "string",
+              "enum": [
+                "default-src 'none'; base-uri 'none'; frame-ancestors 'none'; form-action 'none'"
+              ]
+            }
+          },
+          "required": [
+            "Content-Type",
+            "Cache-Control",
+            "Referrer-Policy",
+            "X-Content-Type-Options",
+            "Content-Security-Policy"
+          ]
+        },
+        "body": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 250000
+        }
+      },
+      "required": [
+        "status",
+        "headers",
+        "body"
+      ]
+    }
+  },
+  "examples": {
+    "MissionPath": [
+      {
+        "public_id": "msn_synthetic"
+      }
+    ],
+    "OrganizationPath": [
+      {
+        "public_id": "org_synthetic"
+      }
+    ],
+    "PageModel": [
+      {
+        "title": "Mission",
+        "paragraphs": [
+          "Synthetic contract fixture; not approved product or legal copy."
+        ],
+        "canonical_url": "https://example.invalid/m/msn_synthetic",
+        "content_revision_id": "11111111-1111-4111-8111-111111111111",
+        "state": "AVAILABLE"
+      },
+      {
+        "title": "Organization",
+        "paragraphs": [
+          "Synthetic contract fixture; not approved product or legal copy."
+        ],
+        "canonical_url": "https://example.invalid/o/org_synthetic",
+        "content_revision_id": "11111111-1111-4111-8111-111111111111",
+        "state": "AVAILABLE"
+      },
+      {
+        "title": "Privacy",
+        "paragraphs": [
+          "Synthetic contract fixture; not approved product or legal copy."
+        ],
+        "canonical_url": "https://example.invalid/privacy",
+        "content_revision_id": "11111111-1111-4111-8111-111111111111",
+        "state": "APPROVED_INFORMATION"
+      },
+      {
+        "title": "Terms",
+        "paragraphs": [
+          "Synthetic contract fixture; not approved product or legal copy."
+        ],
+        "canonical_url": "https://example.invalid/terms",
+        "content_revision_id": "11111111-1111-4111-8111-111111111111",
+        "state": "APPROVED_INFORMATION"
+      },
+      {
+        "title": "Help",
+        "paragraphs": [
+          "Synthetic contract fixture; not approved product or legal copy."
+        ],
+        "canonical_url": "https://example.invalid/help",
+        "content_revision_id": "11111111-1111-4111-8111-111111111111",
+        "state": "APPROVED_INFORMATION"
+      },
+      {
+        "title": "Account deletion",
+        "paragraphs": [
+          "Synthetic contract fixture; not approved product or legal copy."
+        ],
+        "canonical_url": "https://example.invalid/account-deletion",
+        "content_revision_id": "11111111-1111-4111-8111-111111111111",
+        "state": "APPROVED_INFORMATION"
+      },
+      {
+        "title": "Content unavailable",
+        "paragraphs": [
+          "This content is unavailable."
+        ],
+        "canonical_url": "https://example.invalid/m/msn_synthetic",
+        "content_revision_id": "11111111-1111-4111-8111-111111111111",
+        "state": "UNAVAILABLE"
+      }
+    ],
+    "HtmlResponse": [
+      {
+        "status": 200,
+        "headers": {
+          "Content-Type": "text/html; charset=utf-8",
+          "Cache-Control": "no-store",
+          "Referrer-Policy": "no-referrer",
+          "X-Content-Type-Options": "nosniff",
+          "Content-Security-Policy": "default-src 'none'; base-uri 'none'; frame-ancestors 'none'; form-action 'none'"
+        },
+        "body": "<!doctype html><html lang=\"en\"><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width, initial-scale=1\"><title>Mission</title><meta name=\"robots\" content=\"noindex\"><link rel=\"canonical\" href=\"https://example.invalid/m/msn_synthetic\"></head><body><main><h1>Mission</h1><p>Synthetic contract fixture; not approved product or legal copy.</p><a href=\"/help\">Help</a></main></body></html>"
+      },
+      {
+        "status": 200,
+        "headers": {
+          "Content-Type": "text/html; charset=utf-8",
+          "Cache-Control": "no-store",
+          "Referrer-Policy": "no-referrer",
+          "X-Content-Type-Options": "nosniff",
+          "Content-Security-Policy": "default-src 'none'; base-uri 'none'; frame-ancestors 'none'; form-action 'none'"
+        },
+        "body": "<!doctype html><html lang=\"en\"><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width, initial-scale=1\"><title>Organization</title><meta name=\"robots\" content=\"noindex\"><link rel=\"canonical\" href=\"https://example.invalid/o/org_synthetic\"></head><body><main><h1>Organization</h1><p>Synthetic contract fixture; not approved product or legal copy.</p><a href=\"/help\">Help</a></main></body></html>"
+      },
+      {
+        "status": 200,
+        "headers": {
+          "Content-Type": "text/html; charset=utf-8",
+          "Cache-Control": "no-store",
+          "Referrer-Policy": "no-referrer",
+          "X-Content-Type-Options": "nosniff",
+          "Content-Security-Policy": "default-src 'none'; base-uri 'none'; frame-ancestors 'none'; form-action 'none'"
+        },
+        "body": "<!doctype html><html lang=\"en\"><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width, initial-scale=1\"><title>Privacy</title><meta name=\"robots\" content=\"noindex\"><link rel=\"canonical\" href=\"https://example.invalid/privacy\"></head><body><main><h1>Privacy</h1><p>Synthetic contract fixture; not approved product or legal copy.</p><a href=\"/help\">Help</a></main></body></html>"
+      },
+      {
+        "status": 200,
+        "headers": {
+          "Content-Type": "text/html; charset=utf-8",
+          "Cache-Control": "no-store",
+          "Referrer-Policy": "no-referrer",
+          "X-Content-Type-Options": "nosniff",
+          "Content-Security-Policy": "default-src 'none'; base-uri 'none'; frame-ancestors 'none'; form-action 'none'"
+        },
+        "body": "<!doctype html><html lang=\"en\"><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width, initial-scale=1\"><title>Terms</title><meta name=\"robots\" content=\"noindex\"><link rel=\"canonical\" href=\"https://example.invalid/terms\"></head><body><main><h1>Terms</h1><p>Synthetic contract fixture; not approved product or legal copy.</p><a href=\"/help\">Help</a></main></body></html>"
+      },
+      {
+        "status": 200,
+        "headers": {
+          "Content-Type": "text/html; charset=utf-8",
+          "Cache-Control": "no-store",
+          "Referrer-Policy": "no-referrer",
+          "X-Content-Type-Options": "nosniff",
+          "Content-Security-Policy": "default-src 'none'; base-uri 'none'; frame-ancestors 'none'; form-action 'none'"
+        },
+        "body": "<!doctype html><html lang=\"en\"><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width, initial-scale=1\"><title>Help</title><meta name=\"robots\" content=\"noindex\"><link rel=\"canonical\" href=\"https://example.invalid/help\"></head><body><main><h1>Help</h1><p>Synthetic contract fixture; not approved product or legal copy.</p><a href=\"/help\">Help</a></main></body></html>"
+      },
+      {
+        "status": 200,
+        "headers": {
+          "Content-Type": "text/html; charset=utf-8",
+          "Cache-Control": "no-store",
+          "Referrer-Policy": "no-referrer",
+          "X-Content-Type-Options": "nosniff",
+          "Content-Security-Policy": "default-src 'none'; base-uri 'none'; frame-ancestors 'none'; form-action 'none'"
+        },
+        "body": "<!doctype html><html lang=\"en\"><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width, initial-scale=1\"><title>Account deletion</title><meta name=\"robots\" content=\"noindex\"><link rel=\"canonical\" href=\"https://example.invalid/account-deletion\"></head><body><main><h1>Account deletion</h1><p>Synthetic contract fixture; not approved product or legal copy.</p><a href=\"/help\">Help</a></main></body></html>"
+      },
+      {
+        "status": 404,
+        "headers": {
+          "Content-Type": "text/html; charset=utf-8",
+          "Cache-Control": "no-store",
+          "Referrer-Policy": "no-referrer",
+          "X-Content-Type-Options": "nosniff",
+          "Content-Security-Policy": "default-src 'none'; base-uri 'none'; frame-ancestors 'none'; form-action 'none'"
+        },
+        "body": "<!doctype html><html lang=\"en\"><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width, initial-scale=1\"><title>Content unavailable</title><meta name=\"robots\" content=\"noindex\"><link rel=\"canonical\" href=\"https://example.invalid/m/msn_synthetic\"></head><body><main><h1>Content unavailable</h1><p>This content is unavailable.</p><a href=\"/help\">Help</a></main></body></html>"
+      }
+    ],
+    "AndroidAssociation": [
+      [
+        {
+          "relation": [
+            "delegate_permission/common.handle_all_urls"
+          ],
+          "target": {
+            "namespace": "android_app",
+            "package_name": "invalid.example.neki",
+            "sha256_cert_fingerprints": [
+              "00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00"
+            ]
+          }
+        }
+      ]
+    ],
+    "AppleAssociation": [
+      {
+        "applinks": {
+          "details": [
+            {
+              "appIDs": [
+                "ABCDEFGHIJ.invalid.example.neki"
+              ],
+              "components": [
+                {
+                  "/": "/m/*"
+                },
+                {
+                  "/": "/o/*"
+                }
+              ]
+            }
+          ]
+        }
+      }
+    ]
+  },
+  "invariants": [
+    "Paths are origin-root routes, not /v1 JSON endpoints. Public IDs are opaque names, not authorization or enumeration protection.",
+    "Render only published public-safe records; hidden/missing/suspended content uses indistinguishable unavailable response without private metadata.",
+    "Escape all content; construct canonical links from configured origin and validated route, never arbitrary Host/query redirects or raw user HTML.",
+    "Fallback pages work without app installation or JavaScript; reviewed store links are optional configured destinations, never user return URLs.",
+    "Privacy/terms require approved versioned legal copy; help/deletion must expose the real supported workflow and truthful retention/hold limitations. Fixtures are not policy approval.",
+    "Association files require correct production app identifiers, signing keys, entitlements/manifest and domain ownership. Serve JSON over HTTPS without redirect or authentication.",
+    "Apple paths restrict this draft to public mission/org routes; Android manifest must bound paths equivalently. Do not claim private contribution or share links are associated without separate review.",
+    "No synthetic association IDs/fingerprints or draft policy fixtures may pass deployment gates. Header/CSP/cache defaults require final assets and renderer review."
+  ]
+}

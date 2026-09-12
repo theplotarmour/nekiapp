@@ -1,5 +1,5 @@
 {
-  "status": "partial-review-draft",
+  "status": "review-draft",
   "inventory_count": 324,
   "typed_count": 315,
   "covered_operations": [
@@ -319,21 +319,20 @@
     "verify_otp",
     "verify_step_up"
   ],
-  "remaining_operations": [
-    "mission_web_fallback",
-    "organization_web_fallback",
-    "android_app_links",
-    "apple_app_links",
-    "privacy_page",
-    "terms_page",
-    "help_page",
-    "deletion_help_page"
-  ],
+  "remaining_operations": [],
   "transport_contracts": {
-    "connect_realtime": "realtime.json"
+    "connect_realtime": "realtime.json",
+    "mission_web_fallback": "web-transports.json",
+    "organization_web_fallback": "web-transports.json",
+    "privacy_page": "web-transports.json",
+    "terms_page": "web-transports.json",
+    "help_page": "web-transports.json",
+    "deletion_help_page": "web-transports.json",
+    "android_app_links": "web-transports.json",
+    "apple_app_links": "web-transports.json"
   },
-  "transport_typed_count": 1,
-  "total_contract_count": 316,
+  "transport_typed_count": 9,
+  "total_contract_count": 324,
   "limitations": [
     "Schema validation is not implementation proof",
     "AP and domain policy decisions remain open",

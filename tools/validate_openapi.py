@@ -152,7 +152,12 @@ def main():
     print(f"PASS: {len(cases)} negative schema cases, {len(parameter_cases)} negative query cases; coverage and policy parameters")
     import validate_realtime
     validate_realtime.main()
-    print(f"NOT COMPLETE: {len(coverage['remaining_operations'])} inventory operations still need typed contracts")
+    import validate_web
+    validate_web.main()
+    if coverage['remaining_operations']:
+        print(f"NOT COMPLETE: {len(coverage['remaining_operations'])} inventory operations still need typed contracts")
+    else:
+        print("PASS: inventory contract coverage complete; review and runtime gates remain open")
     print("LIMIT: no runtime security, SMS, session reuse, browser CSRF or database behavior tested")
     if args.require_complete and coverage["remaining_operations"]:
         raise SystemExit(1)
