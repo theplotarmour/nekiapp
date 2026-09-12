@@ -12,7 +12,7 @@ Requirements: predictable state, minimal rebuilds, unit-testable without widgets
 Use **Riverpod 2.x with `riverpod_generator`** (`@riverpod` notifiers, `AsyncNotifier` for async screens), `Freezed` for immutable state/unions. One controller per screen/feature; repositories injected via providers; `ProviderScope` overrides for tests.
 
 ## Alternatives
-- **BLoC/Cubit** — explicit event/state; excellent tooling; more boilerplate per feature (events, states, mappers); DI requires separate solution (get_it); stream-heavy API adds ceremony for simple screens. Evaluated on reference repos D/E/F: robust but ~1.6× code volume for equivalent screens.
+- **BLoC/Cubit** — explicit event/state and separate dependency-injection choices. References D/E/F demonstrate Cubit/BLoC patterns, but no equivalent-screen benchmark establishes a numerical code-volume penalty. The previous 1.6× claim was unsupported and is withdrawn. The [pinned source review](../rnd/open-source-review.md) also identifies B as a same-domain comparison across state libraries. This evidence correction preserves the accepted Riverpod direction; NEKI-specific compatibility and lifecycle tests remain required.
 - **Provider** — predecessor; no compile-time safety, ProviderNotFound at runtime.
 - **GetX** — global mutable state, poor testability; violates anti-patterns list.
 - **MobX / signals** — smaller community in Flutter; less lifecycle support.

@@ -1,0 +1,547 @@
+{
+  "status": "static-source-inspection",
+  "repositories": [
+    {
+      "id": "A",
+      "repository": "parrottkim/flutter_riverpod_clean_architecture",
+      "url": "https://github.com/parrottkim/flutter_riverpod_clean_architecture",
+      "commit": "c729fddfff6fe3c34b70c6b31a3b76e30efd105f",
+      "commit_date": "2024-01-03T09:19:32+09:00",
+      "inspected_on": "2026-09-12",
+      "license_files": [],
+      "test_files": [
+        "test/widget_test.dart"
+      ],
+      "tests_executed": false,
+      "evidence_files": [
+        {
+          "path": "README.md",
+          "sha256_git_blob": "d1100f04cc1a88131334bb37475d44d79e6eb05c3c10be14bc4d574484f16dbc",
+          "url": "https://github.com/parrottkim/flutter_riverpod_clean_architecture/blob/c729fddfff6fe3c34b70c6b31a3b76e30efd105f/README.md"
+        },
+        {
+          "path": "lib/src/data/repository/post/post_repository_impl.dart",
+          "sha256_git_blob": "19ac1d04307c3b763cbfff21c09a5b7fb9b27c110d442b14c7faab89cc3f0452",
+          "url": "https://github.com/parrottkim/flutter_riverpod_clean_architecture/blob/c729fddfff6fe3c34b70c6b31a3b76e30efd105f/lib/src/data/repository/post/post_repository_impl.dart"
+        },
+        {
+          "path": "lib/src/domain/usecase/post/post_usecase.dart",
+          "sha256_git_blob": "95d6a0968e68e5be95ec88822b54737fe55bc3a33306aa356b314795cca797e2",
+          "url": "https://github.com/parrottkim/flutter_riverpod_clean_architecture/blob/c729fddfff6fe3c34b70c6b31a3b76e30efd105f/lib/src/domain/usecase/post/post_usecase.dart"
+        },
+        {
+          "path": "lib/src/presentation/controller/post/post_controller.dart",
+          "sha256_git_blob": "f44d82d3884627d8ebe69911e5e41973964d10972af48c27bf1da9c0c78aca00",
+          "url": "https://github.com/parrottkim/flutter_riverpod_clean_architecture/blob/c729fddfff6fe3c34b70c6b31a3b76e30efd105f/lib/src/presentation/controller/post/post_controller.dart"
+        },
+        {
+          "path": "lib/src/presentation/page/home/home_page.dart",
+          "sha256_git_blob": "65cb6a55e8e09ca143a6cb46178de4c76e3718106593880028fd92f3ef630d37",
+          "url": "https://github.com/parrottkim/flutter_riverpod_clean_architecture/blob/c729fddfff6fe3c34b70c6b31a3b76e30efd105f/lib/src/presentation/page/home/home_page.dart"
+        },
+        {
+          "path": "pubspec.lock",
+          "sha256_git_blob": "2e11f64cb3f5e7e0728247a038923127ddec5f1b8887c3f434b4d5fbdce8cfd3",
+          "url": "https://github.com/parrottkim/flutter_riverpod_clean_architecture/blob/c729fddfff6fe3c34b70c6b31a3b76e30efd105f/pubspec.lock"
+        },
+        {
+          "path": "pubspec.yaml",
+          "sha256_git_blob": "caf439ad656f2b494cb69c1dc0da9b2ca7ab965e96b318e8308ac5f954ea4680",
+          "url": "https://github.com/parrottkim/flutter_riverpod_clean_architecture/blob/c729fddfff6fe3c34b70c6b31a3b76e30efd105f/pubspec.yaml"
+        },
+        {
+          "path": "test/widget_test.dart",
+          "sha256_git_blob": "f291ac7b686aaa1dded198d964c3e90de3bbfc5776d6c8f3d16da7d850f854bc",
+          "url": "https://github.com/parrottkim/flutter_riverpod_clean_architecture/blob/c729fddfff6fe3c34b70c6b31a3b76e30efd105f/test/widget_test.dart"
+        }
+      ]
+    },
+    {
+      "id": "B",
+      "repository": "guilherme-v/flutter-clean-architecture-example",
+      "url": "https://github.com/guilherme-v/flutter-clean-architecture-example",
+      "commit": "9d506dcf58c74868bd04eb894efff0ee976b6227",
+      "commit_date": "2024-11-12T11:56:13-03:00",
+      "inspected_on": "2026-09-12",
+      "license_files": [],
+      "test_files": [
+        "test/lib/layers/data/character_repository_impl_test.dart",
+        "test/lib/layers/data/dto/character_dto_test.dart",
+        "test/lib/layers/data/dto/location_dto_test.dart",
+        "test/lib/layers/data/source/local/local_storage_test.dart",
+        "test/lib/layers/domain/entity/character_test.dart",
+        "test/lib/layers/domain/entity/location_test.dart",
+        "test/lib/layers/domain/usecase/get_all_characters_test.dart",
+        "test/lib/layers/presentation/using_bloc/details_page/bloc/character_details_bloc_test.dart",
+        "test/lib/layers/presentation/using_bloc/details_page/bloc/character_details_state_test.dart",
+        "test/lib/layers/presentation/using_bloc/details_page/view/character_details_page_test.dart",
+        "test/lib/layers/presentation/using_bloc/list_page/bloc/character_page_bloc_test.dart",
+        "test/lib/layers/presentation/using_bloc/list_page/bloc/character_page_state_test.dart",
+        "test/lib/layers/presentation/using_bloc/list_page/view/character_page_test.dart",
+        "test/lib/layers/presentation/using_cubit/details_page/cubit/character_details_cubit_test.dart",
+        "test/lib/layers/presentation/using_cubit/details_page/cubit/character_details_state_test.dart",
+        "test/lib/layers/presentation/using_cubit/details_page/view/character_details_page_test.dart",
+        "test/lib/layers/presentation/using_cubit/list_page/cubit/character_page_cubit_test.dart",
+        "test/lib/layers/presentation/using_cubit/list_page/cubit/character_page_state_test.dart",
+        "test/lib/layers/presentation/using_cubit/list_page/view/character_page_test.dart",
+        "test/lib/layers/presentation/using_get_it/details_page/controller/character_details_controller_test.dart",
+        "test/lib/layers/presentation/using_get_it/details_page/view/character_details_page_test.dart",
+        "test/lib/layers/presentation/using_get_it/list_page/view/character_page_test.dart",
+        "test/lib/layers/presentation/using_mobx/list_page/controller/character_page_controller_test.dart",
+        "test/lib/layers/presentation/using_mobx/list_page/view/character_page_test.dart",
+        "test/lib/layers/presentation/using_provider/details_page/change_notifier/character_details_change_notifier_test.dart",
+        "test/lib/layers/presentation/using_provider/details_page/view/character_details_page_test.dart",
+        "test/lib/layers/presentation/using_provider/list_page/change_notifier/character_page_change_notifier_test.dart",
+        "test/lib/layers/presentation/using_provider/list_page/view/character_page_test.dart",
+        "test/lib/layers/presentation/using_riverpod/list_page/view/character_page_test.dart"
+      ],
+      "tests_executed": false,
+      "evidence_files": [
+        {
+          "path": "README.md",
+          "sha256_git_blob": "cb6b6100a746ccb4c7de06306ef568c46e9c1d0cdc8c36fdf18fa5c11102bb39",
+          "url": "https://github.com/guilherme-v/flutter-clean-architecture-example/blob/9d506dcf58c74868bd04eb894efff0ee976b6227/README.md"
+        },
+        {
+          "path": "lib/layers/data/character_repository_impl.dart",
+          "sha256_git_blob": "3f541de8d6ece74da795c62deb1d03dd3b6c1b9c85cd130ff20e86a73a7b608f",
+          "url": "https://github.com/guilherme-v/flutter-clean-architecture-example/blob/9d506dcf58c74868bd04eb894efff0ee976b6227/lib/layers/data/character_repository_impl.dart"
+        },
+        {
+          "path": "lib/layers/data/source/local/local_storage.dart",
+          "sha256_git_blob": "6d10548afe3a5b17059758cc1206f41b18c2afc4c09a8f85225734f926c47b6c",
+          "url": "https://github.com/guilherme-v/flutter-clean-architecture-example/blob/9d506dcf58c74868bd04eb894efff0ee976b6227/lib/layers/data/source/local/local_storage.dart"
+        },
+        {
+          "path": "lib/layers/presentation/using_riverpod/list_page/notifier/character_state_notifier.dart",
+          "sha256_git_blob": "42fdaafb1252ed828c1331e1c90e338e06f623b28235dfcd9964b487244d77b7",
+          "url": "https://github.com/guilherme-v/flutter-clean-architecture-example/blob/9d506dcf58c74868bd04eb894efff0ee976b6227/lib/layers/presentation/using_riverpod/list_page/notifier/character_state_notifier.dart"
+        },
+        {
+          "path": "pubspec.lock",
+          "sha256_git_blob": "b90be566a11c9b52325c62574e4762362727e1bc71aeb8679eb6a7c3657d219e",
+          "url": "https://github.com/guilherme-v/flutter-clean-architecture-example/blob/9d506dcf58c74868bd04eb894efff0ee976b6227/pubspec.lock"
+        },
+        {
+          "path": "pubspec.yaml",
+          "sha256_git_blob": "fb9077516ed5dd99dbe2ecfa092d2cde60dccfe1fa6cfc5a86258f0634791bd2",
+          "url": "https://github.com/guilherme-v/flutter-clean-architecture-example/blob/9d506dcf58c74868bd04eb894efff0ee976b6227/pubspec.yaml"
+        },
+        {
+          "path": "test/lib/layers/data/character_repository_impl_test.dart",
+          "sha256_git_blob": "8ac3bcea27c4bab75ef83af90615e97c0c87e36accc3f746891d17f6dc804ca8",
+          "url": "https://github.com/guilherme-v/flutter-clean-architecture-example/blob/9d506dcf58c74868bd04eb894efff0ee976b6227/test/lib/layers/data/character_repository_impl_test.dart"
+        }
+      ]
+    },
+    {
+      "id": "C",
+      "repository": "Uuttssaavv/flutter-clean-architecture-riverpod",
+      "url": "https://github.com/Uuttssaavv/flutter-clean-architecture-riverpod",
+      "commit": "045b52ce6859e4ce8585eb2baf5d794c78fb320a",
+      "commit_date": "2024-12-24T11:40:22+05:45",
+      "inspected_on": "2026-09-12",
+      "license_files": [],
+      "test_files": [
+        "test/features/authentication/data/datasource/auth_local_data_source_test.dart",
+        "test/features/authentication/data/datasource/auth_remote_data_source_test.dart",
+        "test/features/authentication/data/repositories/atuhentication_repository_impl_test.dart",
+        "test/features/authentication/domain/providers/providers_test.dart",
+        "test/features/authentication/presentation/providers/auth_providers_test.dart",
+        "test/features/dashboard/data/datasource/dashboard_local_datasource_test.dart",
+        "test/features/dashboard/data/datasource/dashboard_remote_datasource_test.dart",
+        "test/features/dashboard/data/repositories/dashboard_repository_test.dart",
+        "test/features/dashboard/domain/providers/dashboard_provider_test.dart",
+        "test/features/dashboard/presentation/providers/dashboard_provider_test.dart",
+        "test/features/dashboard/presentation/providers/state/dashboard_state_test.dart",
+        "test/services/user_cache_service/data/datasource/user_local_datasource_test.dart",
+        "test/services/user_cache_service/data/repositories/user_cache_repository_test.dart",
+        "test/services/user_cache_service/domain/providers/user_cache_provider_test.dart",
+        "test/services/user_cache_service/domain/repositories/user_cache_repository_test.dart",
+        "test/shared/data/local/sharedpreferences_storage_service_test.dart",
+        "test/shared/data/remote/dio_network_service_test.dart",
+        "test/shared/domain/models/paginated_response_test.dart",
+        "test/shared/domain/models/parse_response_test.dart",
+        "test/shared/domain/models/product/product_model_test.dart",
+        "test/shared/domain/models/response_test.dart",
+        "test/shared/domain/models/user/user_model_test.dart",
+        "test/shared/domain/providers/providers_test.dart",
+        "test/shared/exceptions/http_exception_test.dart",
+        "test/shared/mixins/exception_handler_mixin_test.dart"
+      ],
+      "tests_executed": false,
+      "evidence_files": [
+        {
+          "path": "README.md",
+          "sha256_git_blob": "db9cd07cdc490853118c4fd57aeb1edcc46297f881cdc04a68926d748f0a5fe9",
+          "url": "https://github.com/Uuttssaavv/flutter-clean-architecture-riverpod/blob/045b52ce6859e4ce8585eb2baf5d794c78fb320a/README.md"
+        },
+        {
+          "path": "lib/features/authentication/presentation/providers/state/auth_notifier.dart",
+          "sha256_git_blob": "4c4943b7d1fc1b522e1cfd8626cae600a5c82fb1d2b2e6ecea6d17963a530e82",
+          "url": "https://github.com/Uuttssaavv/flutter-clean-architecture-riverpod/blob/045b52ce6859e4ce8585eb2baf5d794c78fb320a/lib/features/authentication/presentation/providers/state/auth_notifier.dart"
+        },
+        {
+          "path": "lib/features/dashboard/presentation/providers/state/dashboard_notifier.dart",
+          "sha256_git_blob": "377f98013da4518fd913138507e2f7a581ac2ea19d431a4214c6d2994351b892",
+          "url": "https://github.com/Uuttssaavv/flutter-clean-architecture-riverpod/blob/045b52ce6859e4ce8585eb2baf5d794c78fb320a/lib/features/dashboard/presentation/providers/state/dashboard_notifier.dart"
+        },
+        {
+          "path": "lib/routes/app_route.dart",
+          "sha256_git_blob": "73c50d3f300fbb1cc8c5e612e01396818f13ae91d1d2699b9bdeb724f94bded7",
+          "url": "https://github.com/Uuttssaavv/flutter-clean-architecture-riverpod/blob/045b52ce6859e4ce8585eb2baf5d794c78fb320a/lib/routes/app_route.dart"
+        },
+        {
+          "path": "lib/services/user_cache_service/data/datasource/user_local_datasource.dart",
+          "sha256_git_blob": "978b4826f3873e1ed03a95ba614b98c295fcda2fa4dc63b6b8feba44b70a3b63",
+          "url": "https://github.com/Uuttssaavv/flutter-clean-architecture-riverpod/blob/045b52ce6859e4ce8585eb2baf5d794c78fb320a/lib/services/user_cache_service/data/datasource/user_local_datasource.dart"
+        },
+        {
+          "path": "pubspec.lock",
+          "sha256_git_blob": "2e47aadd7c3b500121014b2b7062a2eeff797a1cdf0fe0181ee0ce79a04bf108",
+          "url": "https://github.com/Uuttssaavv/flutter-clean-architecture-riverpod/blob/045b52ce6859e4ce8585eb2baf5d794c78fb320a/pubspec.lock"
+        },
+        {
+          "path": "pubspec.yaml",
+          "sha256_git_blob": "fa09f65563f72588e3d135d34d34a1b0b415516e7c49f6269265268e5b23a4f9",
+          "url": "https://github.com/Uuttssaavv/flutter-clean-architecture-riverpod/blob/045b52ce6859e4ce8585eb2baf5d794c78fb320a/pubspec.yaml"
+        },
+        {
+          "path": "test/features/authentication/presentation/providers/auth_providers_test.dart",
+          "sha256_git_blob": "eb57515c43a8dd95a23c6ad10317e66a26d94ede2233160fdaaa41c969c4383c",
+          "url": "https://github.com/Uuttssaavv/flutter-clean-architecture-riverpod/blob/045b52ce6859e4ce8585eb2baf5d794c78fb320a/test/features/authentication/presentation/providers/auth_providers_test.dart"
+        }
+      ]
+    },
+    {
+      "id": "D",
+      "repository": "MohammadFayyad/flutter-ecommerce-app",
+      "url": "https://github.com/MohammadFayyad/flutter-ecommerce-app",
+      "commit": "b12769af973f3a44cf7a2ab3fa9c7073c2c0fcd2",
+      "commit_date": "2026-01-30T04:39:18+02:00",
+      "inspected_on": "2026-09-12",
+      "license_files": [
+        "LICENSE"
+      ],
+      "test_files": [],
+      "tests_executed": false,
+      "evidence_files": [
+        {
+          "path": "LICENSE",
+          "sha256_git_blob": "dc24267fcd85060bf552a80d3270bf87d1ef742ef1b30500bfa5a874d1a83972",
+          "url": "https://github.com/MohammadFayyad/flutter-ecommerce-app/blob/b12769af973f3a44cf7a2ab3fa9c7073c2c0fcd2/LICENSE"
+        },
+        {
+          "path": "README.md",
+          "sha256_git_blob": "5dde8e9a280c5aaec1a62d6236522c5f9f9cfb1dd2cc7151a9c16139161ee589",
+          "url": "https://github.com/MohammadFayyad/flutter-ecommerce-app/blob/b12769af973f3a44cf7a2ab3fa9c7073c2c0fcd2/README.md"
+        },
+        {
+          "path": "lib/core/networking/dio_helper.dart",
+          "sha256_git_blob": "374990b7868a0f6d7d7e9eb83ff9aa43982b2b48abe51b08d6441861f0d44de5",
+          "url": "https://github.com/MohammadFayyad/flutter-ecommerce-app/blob/b12769af973f3a44cf7a2ab3fa9c7073c2c0fcd2/lib/core/networking/dio_helper.dart"
+        },
+        {
+          "path": "lib/core/routing/app_router.dart",
+          "sha256_git_blob": "0273d0f8ebe90566aea331e8de445db0db240917281c46bd08c45f4ac8c096e1",
+          "url": "https://github.com/MohammadFayyad/flutter-ecommerce-app/blob/b12769af973f3a44cf7a2ab3fa9c7073c2c0fcd2/lib/core/routing/app_router.dart"
+        },
+        {
+          "path": "lib/features/my_cart/cubit/cart_cubit.dart",
+          "sha256_git_blob": "ca659bdc837cb24438825d1f76253cedfe85884c53c1f0062331243929b1067d",
+          "url": "https://github.com/MohammadFayyad/flutter-ecommerce-app/blob/b12769af973f3a44cf7a2ab3fa9c7073c2c0fcd2/lib/features/my_cart/cubit/cart_cubit.dart"
+        },
+        {
+          "path": "pubspec.lock",
+          "sha256_git_blob": "588ccc925fc3ba60c98b33e1039d37572e9c98e8e59219c12ab1160eb89dfd85",
+          "url": "https://github.com/MohammadFayyad/flutter-ecommerce-app/blob/b12769af973f3a44cf7a2ab3fa9c7073c2c0fcd2/pubspec.lock"
+        },
+        {
+          "path": "pubspec.yaml",
+          "sha256_git_blob": "accb64188d6ba5f8ac7d9b9540794dea9de9f29ba00131a7fc7e131cd0c5c375",
+          "url": "https://github.com/MohammadFayyad/flutter-ecommerce-app/blob/b12769af973f3a44cf7a2ab3fa9c7073c2c0fcd2/pubspec.yaml"
+        }
+      ]
+    },
+    {
+      "id": "E",
+      "repository": "Sameera-Perera/Flutter-TDD-Clean-Architecture-E-Commerce-App",
+      "url": "https://github.com/Sameera-Perera/Flutter-TDD-Clean-Architecture-E-Commerce-App",
+      "commit": "0c7169af7a907a1c771b4ac8e45b41695976f4af",
+      "commit_date": "2026-02-12T02:18:16+05:30",
+      "inspected_on": "2026-09-12",
+      "license_files": [],
+      "test_files": [
+        "test/core/network/network_info_test.dart",
+        "test/features/auth/data/datasources/local/user_local_data_source_test.dart",
+        "test/features/auth/data/datasources/remote/user_remote_data_source_test.dart",
+        "test/features/auth/data/models/user/user_model_test.dart",
+        "test/features/auth/data/repositories/user_repository_impl_test.dart",
+        "test/features/auth/domain/usecases/get_cached_user_usecase_test.dart",
+        "test/features/auth/domain/usecases/sign_in_usecase_test.dart",
+        "test/features/auth/domain/usecases/sign_out_usecase_test.dart",
+        "test/features/auth/domain/usecases/sign_up_usecase_test.dart",
+        "test/features/auth/presentation/bloc/user/user_bloc_test.dart",
+        "test/features/cart/data/datasources/local/cart_local_data_source_test.dart",
+        "test/features/cart/data/datasources/remote/cart_remote_data_source_test.dart",
+        "test/features/cart/data/models/cart/cart_item_model_test.dart",
+        "test/features/cart/data/repositories/cart_repository_impl_test.dart",
+        "test/features/cart/domain/usecases/add_cart_item_usecase_test.dart",
+        "test/features/cart/domain/usecases/delete_cart_usecase_test.dart",
+        "test/features/cart/domain/usecases/get_cached_cart_usecase_test.dart",
+        "test/features/cart/domain/usecases/sync_cart_usecase_test.dart",
+        "test/features/cart/presentation/bloc/cart/cart_bloc_test.dart",
+        "test/features/categories/data/datasources/local/category_local_data_source_test.dart",
+        "test/features/categories/data/datasources/remote/category_remote_data_source_test.dart",
+        "test/features/categories/data/models/category/category_model_test.dart",
+        "test/features/categories/data/repositories/category_repository_impl_test.dart",
+        "test/features/categories/domain/usecases/filter_category_usecase_test.dart",
+        "test/features/categories/domain/usecases/get_cached_category_usecase_test.dart",
+        "test/features/categories/domain/usecases/get_remote_category_usecase_test.dart",
+        "test/features/categories/presentation/bloc/category/category_bloc_test.dart",
+        "test/features/delivery_info/data/datasources/local/delivery_info_local_data_source_test.dart",
+        "test/features/delivery_info/data/datasources/remote/delivery_info_remote_data_source_test.dart",
+        "test/features/delivery_info/data/models/delivery_info_model_test.dart",
+        "test/features/delivery_info/data/repositories/delivery_info_impl_test.dart",
+        "test/features/delivery_info/domain/usecases/add_dilivey_info_usecase_test.dart",
+        "test/features/delivery_info/domain/usecases/clear_local_delivery_info_test.dart",
+        "test/features/delivery_info/domain/usecases/edit_delivery_info_usecase_test.dart",
+        "test/features/delivery_info/domain/usecases/get_cached_delivery_info_usecase_test.dart",
+        "test/features/delivery_info/domain/usecases/get_remote_delivery_info_usecase_test.dart",
+        "test/features/delivery_info/domain/usecases/get_selected_delivery_info_usecase_test.dart",
+        "test/features/delivery_info/domain/usecases/select_delivery_info_usecase_test.dart",
+        "test/features/home/presentation/bloc/navbar_cubit_test.dart",
+        "test/features/orders/data/datasources/local/order_local_data_source_test.dart",
+        "test/features/orders/data/datasources/remote/order_remote_data_source_test.dart",
+        "test/features/orders/data/models/order/order_details_model_test.dart",
+        "test/features/orders/data/repositories/order_repository_impl_test.dart",
+        "test/features/orders/domain/usecases/add_order_usecase_test.dart",
+        "test/features/orders/domain/usecases/clear_local_orders_usecase_test.dart",
+        "test/features/orders/domain/usecases/get_cached_orders_usecase_test.dart",
+        "test/features/orders/domain/usecases/get_remote_orders_usecase_test.dart",
+        "test/features/products/data/datasources/remote/product_remote_data_source_test.dart",
+        "test/features/products/data/models/product/product_model_test.dart",
+        "test/features/products/data/repositories/product_repository_impl_test.dart",
+        "test/features/products/domain/usecases/get_product_usecase_test.dart",
+        "test/features/products/presentation/bloc/product/product_bloc_test.dart"
+      ],
+      "tests_executed": false,
+      "evidence_files": [
+        {
+          "path": "README.md",
+          "sha256_git_blob": "b6d324d53b5e8456e57c95f1141a9b527d8edaee083ba5ef8fe87aa6bdfde212",
+          "url": "https://github.com/Sameera-Perera/Flutter-TDD-Clean-Architecture-E-Commerce-App/blob/0c7169af7a907a1c771b4ac8e45b41695976f4af/README.md"
+        },
+        {
+          "path": "lib/features/orders/data/repositories/order_repository_impl.dart",
+          "sha256_git_blob": "eeea73036d9998246719b89ef280c4204f312af114cd68aed3937018af637f1a",
+          "url": "https://github.com/Sameera-Perera/Flutter-TDD-Clean-Architecture-E-Commerce-App/blob/0c7169af7a907a1c771b4ac8e45b41695976f4af/lib/features/orders/data/repositories/order_repository_impl.dart"
+        },
+        {
+          "path": "lib/main.dart",
+          "sha256_git_blob": "189de293f38b96b443495ea3a3675d2f91102184302a53ebef5bb604dda956c5",
+          "url": "https://github.com/Sameera-Perera/Flutter-TDD-Clean-Architecture-E-Commerce-App/blob/0c7169af7a907a1c771b4ac8e45b41695976f4af/lib/main.dart"
+        },
+        {
+          "path": "pubspec.lock",
+          "sha256_git_blob": "8c44c88f53fb20ecc494b0b5fdc47897bcd28de885d83a2dc46f6e1f638d941a",
+          "url": "https://github.com/Sameera-Perera/Flutter-TDD-Clean-Architecture-E-Commerce-App/blob/0c7169af7a907a1c771b4ac8e45b41695976f4af/pubspec.lock"
+        },
+        {
+          "path": "pubspec.yaml",
+          "sha256_git_blob": "462608d68e48541130502b0ba97dcab25887e290ba70c4cc889d214f073c7ea1",
+          "url": "https://github.com/Sameera-Perera/Flutter-TDD-Clean-Architecture-E-Commerce-App/blob/0c7169af7a907a1c771b4ac8e45b41695976f4af/pubspec.yaml"
+        },
+        {
+          "path": "test/features/orders/data/repositories/order_repository_impl_test.dart",
+          "sha256_git_blob": "a9945c695139508bff2ef9c7712f5be2514cffb41da177ba31bbad776cb759e0",
+          "url": "https://github.com/Sameera-Perera/Flutter-TDD-Clean-Architecture-E-Commerce-App/blob/0c7169af7a907a1c771b4ac8e45b41695976f4af/test/features/orders/data/repositories/order_repository_impl_test.dart"
+        }
+      ]
+    },
+    {
+      "id": "F",
+      "repository": "mahmoodhamdi/TStore",
+      "url": "https://github.com/mahmoodhamdi/TStore",
+      "commit": "129431026dfb564fd8cd9186aed5b3109533937b",
+      "commit_date": "2025-12-13T04:43:21+02:00",
+      "inspected_on": "2026-09-12",
+      "license_files": [],
+      "test_files": [
+        "test/integration/auth_flow_test.dart",
+        "test/unit/auth/auth_cubit_test.dart",
+        "test/unit/auth/auth_repository_test.dart",
+        "test/unit/auth/auth_usecases_test.dart",
+        "test/unit/cart/cart_cubit_test.dart",
+        "test/unit/chat/chat_cubit_test.dart",
+        "test/unit/notifications/notifications_cubit_test.dart",
+        "test/unit/orders/orders_cubit_test.dart",
+        "test/unit/personalization/personalization_cubit_test.dart",
+        "test/unit/reviews/reviews_cubit_test.dart",
+        "test/unit/shop/products_cubit_test.dart",
+        "test/unit/shop/shop_usecases_test.dart",
+        "test/unit/wishlist/wishlist_cubit_test.dart",
+        "test/widget_test.dart"
+      ],
+      "tests_executed": false,
+      "evidence_files": [
+        {
+          "path": "README.md",
+          "sha256_git_blob": "2ce5a24db1ef196b8f4ba989f2a23a7bef18ed1b5cff32589fab22f0a40f39fb",
+          "url": "https://github.com/mahmoodhamdi/TStore/blob/129431026dfb564fd8cd9186aed5b3109533937b/README.md"
+        },
+        {
+          "path": "lib/features/chat/data/repositories/chat_repository_impl.dart",
+          "sha256_git_blob": "b20d51222febc8cba99044bc0672f7ddbdd9e14321ad8caa999fc56f3812777c",
+          "url": "https://github.com/mahmoodhamdi/TStore/blob/129431026dfb564fd8cd9186aed5b3109533937b/lib/features/chat/data/repositories/chat_repository_impl.dart"
+        },
+        {
+          "path": "lib/features/orders/data/repositories/order_repository_impl.dart",
+          "sha256_git_blob": "29efb51de82cf0a82c1f3c2f46c18b3cfdcdac90e4e7a2bf5bf34b40e8c5307e",
+          "url": "https://github.com/mahmoodhamdi/TStore/blob/129431026dfb564fd8cd9186aed5b3109533937b/lib/features/orders/data/repositories/order_repository_impl.dart"
+        },
+        {
+          "path": "lib/features/shop/data/repositories/product_repository_impl.dart",
+          "sha256_git_blob": "0b4361aed8cc3797c4a88609e74a1109d0ce193a81f9d41660b0606721bcdeb7",
+          "url": "https://github.com/mahmoodhamdi/TStore/blob/129431026dfb564fd8cd9186aed5b3109533937b/lib/features/shop/data/repositories/product_repository_impl.dart"
+        },
+        {
+          "path": "pubspec.lock",
+          "sha256_git_blob": "530b6236819cd2eeb4761d72d7001611de028271c96c2947a4e17f1430d22e8b",
+          "url": "https://github.com/mahmoodhamdi/TStore/blob/129431026dfb564fd8cd9186aed5b3109533937b/pubspec.lock"
+        },
+        {
+          "path": "pubspec.yaml",
+          "sha256_git_blob": "a04334354dfe6ad9f8503169d6430b9f0383830fffaa034249c96225a7ecf536",
+          "url": "https://github.com/mahmoodhamdi/TStore/blob/129431026dfb564fd8cd9186aed5b3109533937b/pubspec.yaml"
+        },
+        {
+          "path": "test/unit/orders/orders_cubit_test.dart",
+          "sha256_git_blob": "7122e408ae063dad0c7ff495683ae6f786f0be9a54c106738613dbdd02b5d4bc",
+          "url": "https://github.com/mahmoodhamdi/TStore/blob/129431026dfb564fd8cd9186aed5b3109533937b/test/unit/orders/orders_cubit_test.dart"
+        }
+      ]
+    },
+    {
+      "id": "G",
+      "repository": "kforjan/delivery-app",
+      "url": "https://github.com/kforjan/delivery-app",
+      "commit": "8f3a59454204f9b3d65a041ab9ba7605ae4f26cd",
+      "commit_date": "2021-05-27T14:06:51+02:00",
+      "inspected_on": "2026-09-12",
+      "license_files": [],
+      "test_files": [],
+      "tests_executed": false,
+      "evidence_files": [
+        {
+          "path": "README.md",
+          "sha256_git_blob": "8a077963fd8f5591ca2a25d3dbfc4ed9a6aae2fe2e9d9a56aa4c0c14fdd14687",
+          "url": "https://github.com/kforjan/delivery-app/blob/8f3a59454204f9b3d65a041ab9ba7605ae4f26cd/README.md"
+        },
+        {
+          "path": "lib/app/home/deliver/deliver_model.dart",
+          "sha256_git_blob": "08c6f05f8f7b930996d2910986498a324d7fd1b7f5a2e8fde00261ed7263b07f",
+          "url": "https://github.com/kforjan/delivery-app/blob/8f3a59454204f9b3d65a041ab9ba7605ae4f26cd/lib/app/home/deliver/deliver_model.dart"
+        },
+        {
+          "path": "lib/app/home/order/tracking_page.dart",
+          "sha256_git_blob": "8c3b0046f922e0ced47b3b7dee8a41563df38eaf522cf5cc3d6d01f28b113b6f",
+          "url": "https://github.com/kforjan/delivery-app/blob/8f3a59454204f9b3d65a041ab9ba7605ae4f26cd/lib/app/home/order/tracking_page.dart"
+        },
+        {
+          "path": "lib/services/database.dart",
+          "sha256_git_blob": "7ea05b0ea973c84a171bd7c0dc31277a03d2c02d5f5e83eb1ae025af1db9aaf6",
+          "url": "https://github.com/kforjan/delivery-app/blob/8f3a59454204f9b3d65a041ab9ba7605ae4f26cd/lib/services/database.dart"
+        },
+        {
+          "path": "pubspec.lock",
+          "sha256_git_blob": "7b6b2c8d8a9130046b70dba6c93b77482477c2edc60ab78f0b62e4cdeed08a31",
+          "url": "https://github.com/kforjan/delivery-app/blob/8f3a59454204f9b3d65a041ab9ba7605ae4f26cd/pubspec.lock"
+        },
+        {
+          "path": "pubspec.yaml",
+          "sha256_git_blob": "13f37eb2817d94a9fe243303152c6055dbb86439d20267d697914838ce38ab26",
+          "url": "https://github.com/kforjan/delivery-app/blob/8f3a59454204f9b3d65a041ab9ba7605ae4f26cd/pubspec.yaml"
+        }
+      ]
+    },
+    {
+      "id": "H",
+      "repository": "patriciaperez90/flutter-food-delivery-app-clone",
+      "url": "https://github.com/patriciaperez90/flutter-food-delivery-app-clone",
+      "commit": "e7bb99302b6fc52a263de74a770fff47141a766f",
+      "commit_date": "2026-04-29T15:39:55+05:00",
+      "inspected_on": "2026-09-12",
+      "license_files": [
+        "LICENSE",
+        "enatega-multivendor-admin/LICENSE"
+      ],
+      "test_files": [
+        "enatega-multivendor-web/src/App.test.js"
+      ],
+      "tests_executed": false,
+      "evidence_files": [
+        {
+          "path": "LICENSE",
+          "sha256_git_blob": "ca42c4a4fcbbd163e58b3c8bab27988968aa5d2a1a63b22fafd6a2abbff61fcf",
+          "url": "https://github.com/patriciaperez90/flutter-food-delivery-app-clone/blob/e7bb99302b6fc52a263de74a770fff47141a766f/LICENSE"
+        },
+        {
+          "path": "README.md",
+          "sha256_git_blob": "e59155b7db5852a89519ee178ebf8bb5ea3e47ab8d33c3fbc6ae69e88a014414",
+          "url": "https://github.com/patriciaperez90/flutter-food-delivery-app-clone/blob/e7bb99302b6fc52a263de74a770fff47141a766f/README.md"
+        },
+        {
+          "path": "enatega-multivendor-admin/LICENSE",
+          "sha256_git_blob": "16ddeaf376d9939497146cb40ca52d8a2bfdfdea78466af677f5a3f80cc9e75d",
+          "url": "https://github.com/patriciaperez90/flutter-food-delivery-app-clone/blob/e7bb99302b6fc52a263de74a770fff47141a766f/enatega-multivendor-admin/LICENSE"
+        },
+        {
+          "path": "enatega-multivendor-admin/package.json",
+          "sha256_git_blob": "d9539b4e42f59e8d4e0265c7e8a8cec455f19b58adea427a040c9b3fccfb8132",
+          "url": "https://github.com/patriciaperez90/flutter-food-delivery-app-clone/blob/e7bb99302b6fc52a263de74a770fff47141a766f/enatega-multivendor-admin/package.json"
+        },
+        {
+          "path": "enatega-multivendor-app/package.json",
+          "sha256_git_blob": "bd9ad9ebe270abd7879910af6e54222121b0a1571a4cbd87eb5853a488ce6568",
+          "url": "https://github.com/patriciaperez90/flutter-food-delivery-app-clone/blob/e7bb99302b6fc52a263de74a770fff47141a766f/enatega-multivendor-app/package.json"
+        },
+        {
+          "path": "enatega-multivendor-app/src/apollo/index.js",
+          "sha256_git_blob": "f8d7d65b1c8ba850b29ce23ce57e1b747c8dad2a3fbdfa0f9a87654f3af30b33",
+          "url": "https://github.com/patriciaperez90/flutter-food-delivery-app-clone/blob/e7bb99302b6fc52a263de74a770fff47141a766f/enatega-multivendor-app/src/apollo/index.js"
+        },
+        {
+          "path": "enatega-multivendor-app/src/components/OrderDetail/TrackingRider/TrackingRider.js",
+          "sha256_git_blob": "14f9206c55ce8323a35664fcf74427a31d6df5c5cf1aaf0233758ed61a290219",
+          "url": "https://github.com/patriciaperez90/flutter-food-delivery-app-clone/blob/e7bb99302b6fc52a263de74a770fff47141a766f/enatega-multivendor-app/src/components/OrderDetail/TrackingRider/TrackingRider.js"
+        },
+        {
+          "path": "enatega-multivendor-restaurant/package.json",
+          "sha256_git_blob": "112881e726b9c578dd683652f589176fa0e6589d54d1f16bb396e34fb48140f3",
+          "url": "https://github.com/patriciaperez90/flutter-food-delivery-app-clone/blob/e7bb99302b6fc52a263de74a770fff47141a766f/enatega-multivendor-restaurant/package.json"
+        },
+        {
+          "path": "enatega-multivendor-rider/package.json",
+          "sha256_git_blob": "035bf65827b7af126bf0eb19372a0c250c9354e48f558e54f604309a1e89bcbe",
+          "url": "https://github.com/patriciaperez90/flutter-food-delivery-app-clone/blob/e7bb99302b6fc52a263de74a770fff47141a766f/enatega-multivendor-rider/package.json"
+        },
+        {
+          "path": "enatega-multivendor-rider/src/utilities/location.js",
+          "sha256_git_blob": "147982e24bc4789c01f7dda4819871b9061ab80e06eeb965ed3ba06498967499",
+          "url": "https://github.com/patriciaperez90/flutter-food-delivery-app-clone/blob/e7bb99302b6fc52a263de74a770fff47141a766f/enatega-multivendor-rider/src/utilities/location.js"
+        },
+        {
+          "path": "enatega-multivendor-web/package.json",
+          "sha256_git_blob": "c32a0d43508a0c23cb8f4b050a58906da8df7db9d03713b68909eec5cf56b2ed",
+          "url": "https://github.com/patriciaperez90/flutter-food-delivery-app-clone/blob/e7bb99302b6fc52a263de74a770fff47141a766f/enatega-multivendor-web/package.json"
+        },
+        {
+          "path": "enatega-multivendor-web/src/App.test.js",
+          "sha256_git_blob": "f7784693194b8657d1bf70c37ea70f4a2d694c4566ec41550a8e650eb600aaa4",
+          "url": "https://github.com/patriciaperez90/flutter-food-delivery-app-clone/blob/e7bb99302b6fc52a263de74a770fff47141a766f/enatega-multivendor-web/src/App.test.js"
+        }
+      ]
+    }
+  ]
+}
