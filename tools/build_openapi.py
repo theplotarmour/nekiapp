@@ -20,6 +20,7 @@ import contract_volunteers as volunteers
 import contract_logistics as logistics
 import contract_proof as proof
 import contract_impact as impact
+import contract_admin as admin
 
 ROOT = Path(__file__).resolve().parents[1]
 API = ROOT / "docs" / "api"
@@ -28,7 +29,7 @@ API = ROOT / "docs" / "api"
 def build():
     inventory = list(csv.DictReader((API / "operations.tsv").open(encoding="utf-8-sig"), delimiter="\t"))
     definitions, examples, schemas, variants, parameters = {}, {}, {}, {}, {}
-    for module in (identity, discovery, organizations, contributions, cases, payouts, provider, volunteers, logistics, proof, impact):
+    for module in (identity, discovery, organizations, contributions, cases, payouts, provider, volunteers, logistics, proof, impact, admin):
         for target, values in [(definitions, module.definitions()), (examples, module.examples()), (schemas, module.schemas())]:
             duplicates = target.keys() & values.keys()
             if duplicates:
