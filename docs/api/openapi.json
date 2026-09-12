@@ -35278,6 +35278,631 @@
         }
       }
     },
+    "/me/payment-methods": {
+      "get": {
+        "operationId": "list_payment_methods",
+        "summary": "List payment methods",
+        "tags": [
+          "payments"
+        ],
+        "description": "Owner provider-supported masked card metadata only. Unavailable is explicit; no fabricated saved methods or NEKI wallet. Actual token/card vault stays provider-side.",
+        "x-neki-policy": "self",
+        "x-neki-projection": "self",
+        "x-neki-source": "D5",
+        "x-neki-effects": "Owner provider-supported masked card metadata only. Unavailable is explicit; no fabricated saved methods or NEKI wallet. Actual token/card vault stays provider-side.",
+        "x-neki-rate-class": "private_read",
+        "parameters": [
+          {
+            "name": "cursor",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 2048
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 50,
+              "default": 20
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Owner provider-supported masked card metadata only. Unavailable is explicit; no fabricated saved methods or NEKI wallet. Actual token/card vault stays provider-side.",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "type": "string"
+                },
+                "example": "private, no-store"
+              },
+              "X-Request-Id": {
+                "schema": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 100
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SavedPaymentMethods"
+                },
+                "examples": {
+                  "example": {
+                    "value": {
+                      "availability": "UNAVAILABLE",
+                      "safe_reason": "Saved methods are not enabled",
+                      "items": [],
+                      "next_cursor": null,
+                      "has_more": false
+                    }
+                  },
+                  "available": {
+                    "value": {
+                      "availability": "AVAILABLE",
+                      "safe_reason": null,
+                      "items": [
+                        {
+                          "id": "11111111-1111-4111-8111-111111111111",
+                          "kind": "card",
+                          "network": "Synthetic network",
+                          "last4": "0000",
+                          "expiry_month": 12,
+                          "expiry_year": 2030,
+                          "status": "AVAILABLE",
+                          "version": 1
+                        }
+                      ],
+                      "next_cursor": null,
+                      "has_more": false
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "ACTION_FORBIDDEN",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error403_18368efccc407b86"
+                },
+                "examples": {
+                  "action_forbidden": {
+                    "value": {
+                      "error": {
+                        "code": "ACTION_FORBIDDEN",
+                        "message": "Action forbidden",
+                        "request_id": "req_synthetic",
+                        "retryable": false,
+                        "details": {}
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "AUTH_REQUIRED, SESSION_EXPIRED",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error401_cae79a16b27d5425"
+                },
+                "examples": {
+                  "auth_required": {
+                    "value": {
+                      "error": {
+                        "code": "AUTH_REQUIRED",
+                        "message": "Auth required",
+                        "request_id": "req_synthetic",
+                        "retryable": false,
+                        "details": {}
+                      }
+                    }
+                  },
+                  "session_expired": {
+                    "value": {
+                      "error": {
+                        "code": "SESSION_EXPIRED",
+                        "message": "Session expired",
+                        "request_id": "req_synthetic",
+                        "retryable": false,
+                        "details": {}
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "410": {
+            "description": "CURSOR_EXPIRED",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error410_96a3e3626ef478f5"
+                },
+                "examples": {
+                  "cursor_expired": {
+                    "value": {
+                      "error": {
+                        "code": "CURSOR_EXPIRED",
+                        "message": "Cursor expired",
+                        "request_id": "req_synthetic",
+                        "retryable": false,
+                        "details": {}
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "CURSOR_INVALID, REQUEST_INVALID",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error400_7e060e86daabac3f"
+                },
+                "examples": {
+                  "cursor_invalid": {
+                    "value": {
+                      "error": {
+                        "code": "CURSOR_INVALID",
+                        "message": "Cursor invalid",
+                        "request_id": "req_synthetic",
+                        "retryable": false,
+                        "details": {}
+                      }
+                    }
+                  },
+                  "request_invalid": {
+                    "value": {
+                      "error": {
+                        "code": "REQUEST_INVALID",
+                        "message": "Request invalid",
+                        "request_id": "req_synthetic",
+                        "retryable": false,
+                        "details": {}
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "DEPENDENCY_UNAVAILABLE",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error503_b9df10b9fb706b44"
+                },
+                "examples": {
+                  "dependency_unavailable": {
+                    "value": {
+                      "error": {
+                        "code": "DEPENDENCY_UNAVAILABLE",
+                        "message": "Dependency unavailable",
+                        "request_id": "req_synthetic",
+                        "retryable": true,
+                        "details": {}
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "headers": {
+              "Retry-After": {
+                "schema": {
+                  "type": "integer",
+                  "minimum": 1,
+                  "maximum": 86400
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "RATE_LIMITED",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error429_54449437101d928c"
+                },
+                "examples": {
+                  "rate_limited": {
+                    "value": {
+                      "error": {
+                        "code": "RATE_LIMITED",
+                        "message": "Rate limited",
+                        "request_id": "req_synthetic",
+                        "retryable": true,
+                        "details": {}
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "headers": {
+              "Retry-After": {
+                "schema": {
+                  "type": "integer",
+                  "minimum": 1,
+                  "maximum": 86400
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/me/payment-methods/{id}": {
+      "delete": {
+        "operationId": "remove_payment_method",
+        "summary": "Remove payment method",
+        "tags": [
+          "payments"
+        ],
+        "description": "Step-up and ownership required; disable local reuse immediately, enqueue provider removal and retain uncertainty until confirmed. Never delete payment history.",
+        "x-neki-policy": "self_sensitive",
+        "x-neki-projection": "operation",
+        "x-neki-source": "D5",
+        "x-neki-effects": "Step-up and ownership required; disable local reuse immediately, enqueue provider removal and retain uncertainty until confirmed. Never delete payment history.",
+        "x-neki-rate-class": "write",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 36,
+              "maxLength": 36,
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 36,
+              "maxLength": 36,
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "X-Step-Up-Grant",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 32,
+              "maxLength": 4096
+            }
+          },
+          {
+            "name": "If-Match",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 3,
+              "maxLength": 24,
+              "pattern": "^\"[0-9]+\"$"
+            },
+            "description": "Quoted current aggregate version, e.g. \"1\"."
+          }
+        ],
+        "responses": {
+          "202": {
+            "description": "Step-up and ownership required; disable local reuse immediately, enqueue provider removal and retain uncertainty until confirmed. Never delete payment history.",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "type": "string"
+                },
+                "example": "private, no-store"
+              },
+              "X-Request-Id": {
+                "schema": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 100
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PaymentMethodRemoval"
+                },
+                "examples": {
+                  "example": {
+                    "value": {
+                      "operation_id": "11111111-1111-4111-8111-111111111111",
+                      "payment_method_id": "11111111-1111-4111-8111-111111111111",
+                      "status": "PENDING",
+                      "provider_removal_confirmed": false
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "ACTION_FORBIDDEN, STEP_UP_REQUIRED",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error403_f7eb6b64a78f440b"
+                },
+                "examples": {
+                  "action_forbidden": {
+                    "value": {
+                      "error": {
+                        "code": "ACTION_FORBIDDEN",
+                        "message": "Action forbidden",
+                        "request_id": "req_synthetic",
+                        "retryable": false,
+                        "details": {}
+                      }
+                    }
+                  },
+                  "step_up_required": {
+                    "value": {
+                      "error": {
+                        "code": "STEP_UP_REQUIRED",
+                        "message": "Step up required",
+                        "request_id": "req_synthetic",
+                        "retryable": false,
+                        "details": {}
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "AUTH_REQUIRED, SESSION_EXPIRED",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error401_cae79a16b27d5425"
+                },
+                "examples": {
+                  "auth_required": {
+                    "value": {
+                      "error": {
+                        "code": "AUTH_REQUIRED",
+                        "message": "Auth required",
+                        "request_id": "req_synthetic",
+                        "retryable": false,
+                        "details": {}
+                      }
+                    }
+                  },
+                  "session_expired": {
+                    "value": {
+                      "error": {
+                        "code": "SESSION_EXPIRED",
+                        "message": "Session expired",
+                        "request_id": "req_synthetic",
+                        "retryable": false,
+                        "details": {}
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "DEPENDENCY_UNAVAILABLE",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error503_b9df10b9fb706b44"
+                },
+                "examples": {
+                  "dependency_unavailable": {
+                    "value": {
+                      "error": {
+                        "code": "DEPENDENCY_UNAVAILABLE",
+                        "message": "Dependency unavailable",
+                        "request_id": "req_synthetic",
+                        "retryable": true,
+                        "details": {}
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "headers": {
+              "Retry-After": {
+                "schema": {
+                  "type": "integer",
+                  "minimum": 1,
+                  "maximum": 86400
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "EVIDENCE_REQUIRED",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error422_b8274eed78d72a76"
+                },
+                "examples": {
+                  "evidence_required": {
+                    "value": {
+                      "error": {
+                        "code": "EVIDENCE_REQUIRED",
+                        "message": "Evidence required",
+                        "request_id": "req_synthetic",
+                        "retryable": false,
+                        "details": {}
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "IDEMPOTENCY_KEY_REUSED, REQUEST_IN_PROGRESS, VERSION_CONFLICT",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error409_720b8c15d661ad1a"
+                },
+                "examples": {
+                  "idempotency_key_reused": {
+                    "value": {
+                      "error": {
+                        "code": "IDEMPOTENCY_KEY_REUSED",
+                        "message": "Idempotency key reused",
+                        "request_id": "req_synthetic",
+                        "retryable": false,
+                        "details": {}
+                      }
+                    }
+                  },
+                  "request_in_progress": {
+                    "value": {
+                      "error": {
+                        "code": "REQUEST_IN_PROGRESS",
+                        "message": "Request in progress",
+                        "request_id": "req_synthetic",
+                        "retryable": true,
+                        "details": {}
+                      }
+                    }
+                  },
+                  "version_conflict": {
+                    "value": {
+                      "error": {
+                        "code": "VERSION_CONFLICT",
+                        "message": "Version conflict",
+                        "request_id": "req_synthetic",
+                        "retryable": false,
+                        "details": {}
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "headers": {
+              "Retry-After": {
+                "schema": {
+                  "type": "integer",
+                  "minimum": 1,
+                  "maximum": 86400
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "NOT_FOUND",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error404_920b8d07262e4e92"
+                },
+                "examples": {
+                  "not_found": {
+                    "value": {
+                      "error": {
+                        "code": "NOT_FOUND",
+                        "message": "Not found",
+                        "request_id": "req_synthetic",
+                        "retryable": false,
+                        "details": {}
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "RATE_LIMITED",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error429_54449437101d928c"
+                },
+                "examples": {
+                  "rate_limited": {
+                    "value": {
+                      "error": {
+                        "code": "RATE_LIMITED",
+                        "message": "Rate limited",
+                        "request_id": "req_synthetic",
+                        "retryable": true,
+                        "details": {}
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "headers": {
+              "Retry-After": {
+                "schema": {
+                  "type": "integer",
+                  "minimum": 1,
+                  "maximum": 86400
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "REQUEST_INVALID",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error400_7ecf44e0a0518585"
+                },
+                "examples": {
+                  "request_invalid": {
+                    "value": {
+                      "error": {
+                        "code": "REQUEST_INVALID",
+                        "message": "Request invalid",
+                        "request_id": "req_synthetic",
+                        "retryable": false,
+                        "details": {}
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/cases": {
       "post": {
         "operationId": "create_support_or_dispute_case",
@@ -84357,6 +84982,1096 @@
         }
       }
     },
+    "/notifications": {
+      "get": {
+        "operationId": "list_notifications",
+        "summary": "List notifications",
+        "tags": [
+          "notifications"
+        ],
+        "description": "Owner inbox; recheck source authorization before composing private content or target. No arbitrary URL or private media payload.",
+        "x-neki-policy": "self",
+        "x-neki-projection": "notification",
+        "x-neki-source": "FR-14",
+        "x-neki-effects": "Owner inbox; recheck source authorization before composing private content or target. No arbitrary URL or private media payload.",
+        "x-neki-rate-class": "private_read",
+        "parameters": [
+          {
+            "name": "cursor",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 2048
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 50,
+              "default": 20
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Owner inbox; recheck source authorization before composing private content or target. No arbitrary URL or private media payload.",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "type": "string"
+                },
+                "example": "private, no-store"
+              },
+              "X-Request-Id": {
+                "schema": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 100
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NotificationPage"
+                },
+                "examples": {
+                  "example": {
+                    "value": {
+                      "items": [
+                        {
+                          "id": "11111111-1111-4111-8111-111111111111",
+                          "category": "tracking",
+                          "title": "Pickup update",
+                          "body": "Your pickup schedule was updated",
+                          "target": {
+                            "kind": "shipment",
+                            "id": "11111111-1111-4111-8111-111111111111"
+                          },
+                          "occurred_at": "2026-09-10T12:00:00Z",
+                          "read_at": null,
+                          "occurrence_id": "11111111-1111-4111-8111-111111111111",
+                          "version": 1
+                        }
+                      ],
+                      "next_cursor": null,
+                      "has_more": false,
+                      "snapshot_id": "11111111-1111-4111-8111-111111111111",
+                      "inbox_version": 1
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "ACTION_FORBIDDEN",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error403_18368efccc407b86"
+                },
+                "examples": {
+                  "action_forbidden": {
+                    "value": {
+                      "error": {
+                        "code": "ACTION_FORBIDDEN",
+                        "message": "Action forbidden",
+                        "request_id": "req_synthetic",
+                        "retryable": false,
+                        "details": {}
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "AUTH_REQUIRED, SESSION_EXPIRED",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error401_cae79a16b27d5425"
+                },
+                "examples": {
+                  "auth_required": {
+                    "value": {
+                      "error": {
+                        "code": "AUTH_REQUIRED",
+                        "message": "Auth required",
+                        "request_id": "req_synthetic",
+                        "retryable": false,
+                        "details": {}
+                      }
+                    }
+                  },
+                  "session_expired": {
+                    "value": {
+                      "error": {
+                        "code": "SESSION_EXPIRED",
+                        "message": "Session expired",
+                        "request_id": "req_synthetic",
+                        "retryable": false,
+                        "details": {}
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "410": {
+            "description": "CURSOR_EXPIRED",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error410_96a3e3626ef478f5"
+                },
+                "examples": {
+                  "cursor_expired": {
+                    "value": {
+                      "error": {
+                        "code": "CURSOR_EXPIRED",
+                        "message": "Cursor expired",
+                        "request_id": "req_synthetic",
+                        "retryable": false,
+                        "details": {}
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "CURSOR_INVALID, REQUEST_INVALID",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error400_7e060e86daabac3f"
+                },
+                "examples": {
+                  "cursor_invalid": {
+                    "value": {
+                      "error": {
+                        "code": "CURSOR_INVALID",
+                        "message": "Cursor invalid",
+                        "request_id": "req_synthetic",
+                        "retryable": false,
+                        "details": {}
+                      }
+                    }
+                  },
+                  "request_invalid": {
+                    "value": {
+                      "error": {
+                        "code": "REQUEST_INVALID",
+                        "message": "Request invalid",
+                        "request_id": "req_synthetic",
+                        "retryable": false,
+                        "details": {}
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "DEPENDENCY_UNAVAILABLE",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error503_b9df10b9fb706b44"
+                },
+                "examples": {
+                  "dependency_unavailable": {
+                    "value": {
+                      "error": {
+                        "code": "DEPENDENCY_UNAVAILABLE",
+                        "message": "Dependency unavailable",
+                        "request_id": "req_synthetic",
+                        "retryable": true,
+                        "details": {}
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "headers": {
+              "Retry-After": {
+                "schema": {
+                  "type": "integer",
+                  "minimum": 1,
+                  "maximum": 86400
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "RATE_LIMITED",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error429_54449437101d928c"
+                },
+                "examples": {
+                  "rate_limited": {
+                    "value": {
+                      "error": {
+                        "code": "RATE_LIMITED",
+                        "message": "Rate limited",
+                        "request_id": "req_synthetic",
+                        "retryable": true,
+                        "details": {}
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "headers": {
+              "Retry-After": {
+                "schema": {
+                  "type": "integer",
+                  "minimum": 1,
+                  "maximum": 86400
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/notifications/unread-count": {
+      "get": {
+        "operationId": "get_unread_count",
+        "summary": "Get unread count",
+        "tags": [
+          "notifications"
+        ],
+        "description": "Current owner count and inbox revision; suppression/delivery is separate from read status.",
+        "x-neki-policy": "self",
+        "x-neki-projection": "notification",
+        "x-neki-source": "FR-14",
+        "x-neki-effects": "Current owner count and inbox revision; suppression/delivery is separate from read status.",
+        "x-neki-rate-class": "private_read",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Current owner count and inbox revision; suppression/delivery is separate from read status.",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "type": "string"
+                },
+                "example": "private, no-store"
+              },
+              "X-Request-Id": {
+                "schema": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 100
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NotificationUnread"
+                },
+                "examples": {
+                  "example": {
+                    "value": {
+                      "count": 1,
+                      "as_of": "2026-09-10T12:00:00Z",
+                      "inbox_version": 1
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "ACTION_FORBIDDEN",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error403_18368efccc407b86"
+                },
+                "examples": {
+                  "action_forbidden": {
+                    "value": {
+                      "error": {
+                        "code": "ACTION_FORBIDDEN",
+                        "message": "Action forbidden",
+                        "request_id": "req_synthetic",
+                        "retryable": false,
+                        "details": {}
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "AUTH_REQUIRED, SESSION_EXPIRED",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error401_cae79a16b27d5425"
+                },
+                "examples": {
+                  "auth_required": {
+                    "value": {
+                      "error": {
+                        "code": "AUTH_REQUIRED",
+                        "message": "Auth required",
+                        "request_id": "req_synthetic",
+                        "retryable": false,
+                        "details": {}
+                      }
+                    }
+                  },
+                  "session_expired": {
+                    "value": {
+                      "error": {
+                        "code": "SESSION_EXPIRED",
+                        "message": "Session expired",
+                        "request_id": "req_synthetic",
+                        "retryable": false,
+                        "details": {}
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "DEPENDENCY_UNAVAILABLE",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error503_b9df10b9fb706b44"
+                },
+                "examples": {
+                  "dependency_unavailable": {
+                    "value": {
+                      "error": {
+                        "code": "DEPENDENCY_UNAVAILABLE",
+                        "message": "Dependency unavailable",
+                        "request_id": "req_synthetic",
+                        "retryable": true,
+                        "details": {}
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "headers": {
+              "Retry-After": {
+                "schema": {
+                  "type": "integer",
+                  "minimum": 1,
+                  "maximum": 86400
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "RATE_LIMITED",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error429_54449437101d928c"
+                },
+                "examples": {
+                  "rate_limited": {
+                    "value": {
+                      "error": {
+                        "code": "RATE_LIMITED",
+                        "message": "Rate limited",
+                        "request_id": "req_synthetic",
+                        "retryable": true,
+                        "details": {}
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "headers": {
+              "Retry-After": {
+                "schema": {
+                  "type": "integer",
+                  "minimum": 1,
+                  "maximum": 86400
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "REQUEST_INVALID",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error400_7ecf44e0a0518585"
+                },
+                "examples": {
+                  "request_invalid": {
+                    "value": {
+                      "error": {
+                        "code": "REQUEST_INVALID",
+                        "message": "Request invalid",
+                        "request_id": "req_synthetic",
+                        "retryable": false,
+                        "details": {}
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/notifications/read": {
+      "post": {
+        "operationId": "mark_notifications_read",
+        "summary": "Mark notifications read",
+        "tags": [
+          "notifications"
+        ],
+        "description": "Mark only owned selected IDs or exact prior snapshot; concurrent new arrivals remain unread. No push delivery claims.",
+        "x-neki-policy": "self",
+        "x-neki-projection": "notification",
+        "x-neki-source": "FR-14",
+        "x-neki-effects": "Mark only owned selected IDs or exact prior snapshot; concurrent new arrivals remain unread. No push delivery claims.",
+        "x-neki-rate-class": "write",
+        "parameters": [
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 36,
+              "maxLength": 36,
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Mark only owned selected IDs or exact prior snapshot; concurrent new arrivals remain unread. No push delivery claims.",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "type": "string"
+                },
+                "example": "private, no-store"
+              },
+              "X-Request-Id": {
+                "schema": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 100
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NotificationReadResult"
+                },
+                "examples": {
+                  "example": {
+                    "value": {
+                      "marked_count": 1,
+                      "unread_count": 0,
+                      "inbox_version": 2
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "ACTION_FORBIDDEN",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error403_18368efccc407b86"
+                },
+                "examples": {
+                  "action_forbidden": {
+                    "value": {
+                      "error": {
+                        "code": "ACTION_FORBIDDEN",
+                        "message": "Action forbidden",
+                        "request_id": "req_synthetic",
+                        "retryable": false,
+                        "details": {}
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "AUTH_REQUIRED, SESSION_EXPIRED",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error401_cae79a16b27d5425"
+                },
+                "examples": {
+                  "auth_required": {
+                    "value": {
+                      "error": {
+                        "code": "AUTH_REQUIRED",
+                        "message": "Auth required",
+                        "request_id": "req_synthetic",
+                        "retryable": false,
+                        "details": {}
+                      }
+                    }
+                  },
+                  "session_expired": {
+                    "value": {
+                      "error": {
+                        "code": "SESSION_EXPIRED",
+                        "message": "Session expired",
+                        "request_id": "req_synthetic",
+                        "retryable": false,
+                        "details": {}
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "DEPENDENCY_UNAVAILABLE",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error503_b9df10b9fb706b44"
+                },
+                "examples": {
+                  "dependency_unavailable": {
+                    "value": {
+                      "error": {
+                        "code": "DEPENDENCY_UNAVAILABLE",
+                        "message": "Dependency unavailable",
+                        "request_id": "req_synthetic",
+                        "retryable": true,
+                        "details": {}
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "headers": {
+              "Retry-After": {
+                "schema": {
+                  "type": "integer",
+                  "minimum": 1,
+                  "maximum": 86400
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "EVIDENCE_REQUIRED",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error422_b8274eed78d72a76"
+                },
+                "examples": {
+                  "evidence_required": {
+                    "value": {
+                      "error": {
+                        "code": "EVIDENCE_REQUIRED",
+                        "message": "Evidence required",
+                        "request_id": "req_synthetic",
+                        "retryable": false,
+                        "details": {}
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "IDEMPOTENCY_KEY_REUSED, REQUEST_IN_PROGRESS, VERSION_CONFLICT",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error409_720b8c15d661ad1a"
+                },
+                "examples": {
+                  "idempotency_key_reused": {
+                    "value": {
+                      "error": {
+                        "code": "IDEMPOTENCY_KEY_REUSED",
+                        "message": "Idempotency key reused",
+                        "request_id": "req_synthetic",
+                        "retryable": false,
+                        "details": {}
+                      }
+                    }
+                  },
+                  "request_in_progress": {
+                    "value": {
+                      "error": {
+                        "code": "REQUEST_IN_PROGRESS",
+                        "message": "Request in progress",
+                        "request_id": "req_synthetic",
+                        "retryable": true,
+                        "details": {}
+                      }
+                    }
+                  },
+                  "version_conflict": {
+                    "value": {
+                      "error": {
+                        "code": "VERSION_CONFLICT",
+                        "message": "Version conflict",
+                        "request_id": "req_synthetic",
+                        "retryable": false,
+                        "details": {}
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "headers": {
+              "Retry-After": {
+                "schema": {
+                  "type": "integer",
+                  "minimum": 1,
+                  "maximum": 86400
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "RATE_LIMITED",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error429_54449437101d928c"
+                },
+                "examples": {
+                  "rate_limited": {
+                    "value": {
+                      "error": {
+                        "code": "RATE_LIMITED",
+                        "message": "Rate limited",
+                        "request_id": "req_synthetic",
+                        "retryable": true,
+                        "details": {}
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "headers": {
+              "Retry-After": {
+                "schema": {
+                  "type": "integer",
+                  "minimum": 1,
+                  "maximum": 86400
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "REQUEST_INVALID",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error400_7ecf44e0a0518585"
+                },
+                "examples": {
+                  "request_invalid": {
+                    "value": {
+                      "error": {
+                        "code": "REQUEST_INVALID",
+                        "message": "Request invalid",
+                        "request_id": "req_synthetic",
+                        "retryable": false,
+                        "details": {}
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/NotificationReadCommand"
+              },
+              "examples": {
+                "example": {
+                  "value": {
+                    "mode": "selected",
+                    "notification_ids": [
+                      "11111111-1111-4111-8111-111111111111"
+                    ],
+                    "expected_version": 1
+                  }
+                },
+                "snapshot": {
+                  "value": {
+                    "mode": "through_snapshot",
+                    "snapshot_id": "11111111-1111-4111-8111-111111111111",
+                    "expected_version": 1
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/realtime/tickets": {
+      "post": {
+        "operationId": "create_connection_ticket",
+        "summary": "Create connection ticket",
+        "tags": [
+          "realtime"
+        ],
+        "description": "Authorize explicit subjects with current session/device/origin and assignment access; issue short-lived hashed single-use ticket. No wildcard channel or durable message guarantee.",
+        "x-neki-policy": "self",
+        "x-neki-projection": "session",
+        "x-neki-source": "AP-02",
+        "x-neki-effects": "Authorize explicit subjects with current session/device/origin and assignment access; issue short-lived hashed single-use ticket. No wildcard channel or durable message guarantee.",
+        "x-neki-rate-class": "write",
+        "parameters": [
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 36,
+              "maxLength": 36,
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Authorize explicit subjects with current session/device/origin and assignment access; issue short-lived hashed single-use ticket. No wildcard channel or durable message guarantee.",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "type": "string"
+                },
+                "example": "private, no-store"
+              },
+              "X-Request-Id": {
+                "schema": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 100
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ConnectionTicket"
+                },
+                "examples": {
+                  "example": {
+                    "value": {
+                      "ticket": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+                      "expires_at": "2026-09-10T12:00:00Z",
+                      "single_use": true,
+                      "websocket_path": "/ws",
+                      "protocol": "neki.realtime.v1",
+                      "authorized_channels": [
+                        {
+                          "kind": "own_notifications"
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "ACTION_FORBIDDEN",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error403_18368efccc407b86"
+                },
+                "examples": {
+                  "action_forbidden": {
+                    "value": {
+                      "error": {
+                        "code": "ACTION_FORBIDDEN",
+                        "message": "Action forbidden",
+                        "request_id": "req_synthetic",
+                        "retryable": false,
+                        "details": {}
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "AUTH_REQUIRED, SESSION_EXPIRED",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error401_cae79a16b27d5425"
+                },
+                "examples": {
+                  "auth_required": {
+                    "value": {
+                      "error": {
+                        "code": "AUTH_REQUIRED",
+                        "message": "Auth required",
+                        "request_id": "req_synthetic",
+                        "retryable": false,
+                        "details": {}
+                      }
+                    }
+                  },
+                  "session_expired": {
+                    "value": {
+                      "error": {
+                        "code": "SESSION_EXPIRED",
+                        "message": "Session expired",
+                        "request_id": "req_synthetic",
+                        "retryable": false,
+                        "details": {}
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "DEPENDENCY_UNAVAILABLE",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error503_b9df10b9fb706b44"
+                },
+                "examples": {
+                  "dependency_unavailable": {
+                    "value": {
+                      "error": {
+                        "code": "DEPENDENCY_UNAVAILABLE",
+                        "message": "Dependency unavailable",
+                        "request_id": "req_synthetic",
+                        "retryable": true,
+                        "details": {}
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "headers": {
+              "Retry-After": {
+                "schema": {
+                  "type": "integer",
+                  "minimum": 1,
+                  "maximum": 86400
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "EVIDENCE_REQUIRED",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error422_b8274eed78d72a76"
+                },
+                "examples": {
+                  "evidence_required": {
+                    "value": {
+                      "error": {
+                        "code": "EVIDENCE_REQUIRED",
+                        "message": "Evidence required",
+                        "request_id": "req_synthetic",
+                        "retryable": false,
+                        "details": {}
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "IDEMPOTENCY_KEY_REUSED, REQUEST_IN_PROGRESS, VERSION_CONFLICT",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error409_720b8c15d661ad1a"
+                },
+                "examples": {
+                  "idempotency_key_reused": {
+                    "value": {
+                      "error": {
+                        "code": "IDEMPOTENCY_KEY_REUSED",
+                        "message": "Idempotency key reused",
+                        "request_id": "req_synthetic",
+                        "retryable": false,
+                        "details": {}
+                      }
+                    }
+                  },
+                  "request_in_progress": {
+                    "value": {
+                      "error": {
+                        "code": "REQUEST_IN_PROGRESS",
+                        "message": "Request in progress",
+                        "request_id": "req_synthetic",
+                        "retryable": true,
+                        "details": {}
+                      }
+                    }
+                  },
+                  "version_conflict": {
+                    "value": {
+                      "error": {
+                        "code": "VERSION_CONFLICT",
+                        "message": "Version conflict",
+                        "request_id": "req_synthetic",
+                        "retryable": false,
+                        "details": {}
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "headers": {
+              "Retry-After": {
+                "schema": {
+                  "type": "integer",
+                  "minimum": 1,
+                  "maximum": 86400
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "RATE_LIMITED",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error429_54449437101d928c"
+                },
+                "examples": {
+                  "rate_limited": {
+                    "value": {
+                      "error": {
+                        "code": "RATE_LIMITED",
+                        "message": "Rate limited",
+                        "request_id": "req_synthetic",
+                        "retryable": true,
+                        "details": {}
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "headers": {
+              "Retry-After": {
+                "schema": {
+                  "type": "integer",
+                  "minimum": 1,
+                  "maximum": 86400
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "REQUEST_INVALID",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error400_7ecf44e0a0518585"
+                },
+                "examples": {
+                  "request_invalid": {
+                    "value": {
+                      "error": {
+                        "code": "REQUEST_INVALID",
+                        "message": "Request invalid",
+                        "request_id": "req_synthetic",
+                        "retryable": false,
+                        "details": {}
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ConnectionTicketRequest"
+              },
+              "examples": {
+                "example": {
+                  "value": {
+                    "channels": [
+                      {
+                        "kind": "own_notifications"
+                      }
+                    ],
+                    "device_id": "11111111-1111-4111-8111-111111111111"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/health/live": {
       "get": {
         "operationId": "get_liveness",
@@ -120581,6 +122296,751 @@
           "items",
           "next_cursor",
           "has_more"
+        ]
+      },
+      "NotificationView": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string",
+            "minLength": 36,
+            "maxLength": 36,
+            "format": "uuid"
+          },
+          "category": {
+            "type": "string",
+            "enum": [
+              "contribution",
+              "tracking",
+              "volunteering",
+              "impact",
+              "account"
+            ]
+          },
+          "title": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 160
+          },
+          "body": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 500
+          },
+          "target": {
+            "anyOf": [
+              {
+                "oneOf": [
+                  {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "properties": {
+                      "kind": {
+                        "type": "string",
+                        "enum": [
+                          "mission"
+                        ]
+                      },
+                      "id": {
+                        "type": "string",
+                        "minLength": 36,
+                        "maxLength": 36,
+                        "format": "uuid"
+                      }
+                    },
+                    "required": [
+                      "kind",
+                      "id"
+                    ]
+                  },
+                  {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "properties": {
+                      "kind": {
+                        "type": "string",
+                        "enum": [
+                          "contribution"
+                        ]
+                      },
+                      "id": {
+                        "type": "string",
+                        "minLength": 36,
+                        "maxLength": 36,
+                        "format": "uuid"
+                      }
+                    },
+                    "required": [
+                      "kind",
+                      "id"
+                    ]
+                  },
+                  {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "properties": {
+                      "kind": {
+                        "type": "string",
+                        "enum": [
+                          "assignment"
+                        ]
+                      },
+                      "id": {
+                        "type": "string",
+                        "minLength": 36,
+                        "maxLength": 36,
+                        "format": "uuid"
+                      }
+                    },
+                    "required": [
+                      "kind",
+                      "id"
+                    ]
+                  },
+                  {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "properties": {
+                      "kind": {
+                        "type": "string",
+                        "enum": [
+                          "shipment"
+                        ]
+                      },
+                      "id": {
+                        "type": "string",
+                        "minLength": 36,
+                        "maxLength": 36,
+                        "format": "uuid"
+                      }
+                    },
+                    "required": [
+                      "kind",
+                      "id"
+                    ]
+                  },
+                  {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "properties": {
+                      "kind": {
+                        "type": "string",
+                        "enum": [
+                          "case"
+                        ]
+                      },
+                      "id": {
+                        "type": "string",
+                        "minLength": 36,
+                        "maxLength": 36,
+                        "format": "uuid"
+                      }
+                    },
+                    "required": [
+                      "kind",
+                      "id"
+                    ]
+                  },
+                  {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "properties": {
+                      "kind": {
+                        "type": "string",
+                        "enum": [
+                          "impact_record"
+                        ]
+                      },
+                      "id": {
+                        "type": "string",
+                        "minLength": 36,
+                        "maxLength": 36,
+                        "format": "uuid"
+                      }
+                    },
+                    "required": [
+                      "kind",
+                      "id"
+                    ]
+                  },
+                  {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "properties": {
+                      "kind": {
+                        "type": "string",
+                        "enum": [
+                          "account"
+                        ]
+                      }
+                    },
+                    "required": [
+                      "kind"
+                    ]
+                  }
+                ],
+                "discriminator": {
+                  "propertyName": "kind"
+                }
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "occurred_at": {
+            "type": "string",
+            "minLength": 20,
+            "maxLength": 32,
+            "format": "date-time",
+            "pattern": "Z$"
+          },
+          "read_at": {
+            "anyOf": [
+              {
+                "type": "string",
+                "minLength": 20,
+                "maxLength": 32,
+                "format": "date-time",
+                "pattern": "Z$"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "occurrence_id": {
+            "type": "string",
+            "minLength": 36,
+            "maxLength": 36,
+            "format": "uuid"
+          },
+          "version": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 2147483647
+          }
+        },
+        "required": [
+          "id",
+          "category",
+          "title",
+          "body",
+          "target",
+          "occurred_at",
+          "read_at",
+          "occurrence_id",
+          "version"
+        ]
+      },
+      "NotificationPage": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/NotificationView"
+            },
+            "maxItems": 50
+          },
+          "next_cursor": {
+            "anyOf": [
+              {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 2048
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "has_more": {
+            "type": "boolean"
+          },
+          "snapshot_id": {
+            "type": "string",
+            "minLength": 36,
+            "maxLength": 36,
+            "format": "uuid"
+          },
+          "inbox_version": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 2147483647
+          }
+        },
+        "required": [
+          "items",
+          "next_cursor",
+          "has_more",
+          "snapshot_id",
+          "inbox_version"
+        ]
+      },
+      "NotificationUnread": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "count": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 2147483647
+          },
+          "as_of": {
+            "type": "string",
+            "minLength": 20,
+            "maxLength": 32,
+            "format": "date-time",
+            "pattern": "Z$"
+          },
+          "inbox_version": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 2147483647
+          }
+        },
+        "required": [
+          "count",
+          "as_of",
+          "inbox_version"
+        ]
+      },
+      "NotificationReadCommand": {
+        "oneOf": [
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "mode": {
+                "type": "string",
+                "enum": [
+                  "selected"
+                ]
+              },
+              "notification_ids": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "minLength": 36,
+                  "maxLength": 36,
+                  "format": "uuid"
+                },
+                "maxItems": 100,
+                "minItems": 1,
+                "uniqueItems": true
+              },
+              "expected_version": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 2147483647
+              }
+            },
+            "required": [
+              "mode",
+              "notification_ids",
+              "expected_version"
+            ]
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "mode": {
+                "type": "string",
+                "enum": [
+                  "through_snapshot"
+                ]
+              },
+              "snapshot_id": {
+                "type": "string",
+                "minLength": 36,
+                "maxLength": 36,
+                "format": "uuid"
+              },
+              "expected_version": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 2147483647
+              }
+            },
+            "required": [
+              "mode",
+              "snapshot_id",
+              "expected_version"
+            ]
+          }
+        ],
+        "discriminator": {
+          "propertyName": "mode"
+        }
+      },
+      "NotificationReadResult": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "marked_count": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 2147483647
+          },
+          "unread_count": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 2147483647
+          },
+          "inbox_version": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 2147483647
+          }
+        },
+        "required": [
+          "marked_count",
+          "unread_count",
+          "inbox_version"
+        ]
+      },
+      "RealtimeChannel": {
+        "oneOf": [
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "kind": {
+                "type": "string",
+                "enum": [
+                  "shipment"
+                ]
+              },
+              "subject_id": {
+                "type": "string",
+                "minLength": 36,
+                "maxLength": 36,
+                "format": "uuid"
+              }
+            },
+            "required": [
+              "kind",
+              "subject_id"
+            ]
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "kind": {
+                "type": "string",
+                "enum": [
+                  "contribution"
+                ]
+              },
+              "subject_id": {
+                "type": "string",
+                "minLength": 36,
+                "maxLength": 36,
+                "format": "uuid"
+              }
+            },
+            "required": [
+              "kind",
+              "subject_id"
+            ]
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "kind": {
+                "type": "string",
+                "enum": [
+                  "assignment"
+                ]
+              },
+              "subject_id": {
+                "type": "string",
+                "minLength": 36,
+                "maxLength": 36,
+                "format": "uuid"
+              }
+            },
+            "required": [
+              "kind",
+              "subject_id"
+            ]
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "kind": {
+                "type": "string",
+                "enum": [
+                  "own_notifications"
+                ]
+              }
+            },
+            "required": [
+              "kind"
+            ]
+          }
+        ],
+        "discriminator": {
+          "propertyName": "kind"
+        }
+      },
+      "ConnectionTicketRequest": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "channels": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/RealtimeChannel"
+            },
+            "maxItems": 20,
+            "minItems": 1,
+            "uniqueItems": true
+          },
+          "device_id": {
+            "type": "string",
+            "minLength": 36,
+            "maxLength": 36,
+            "format": "uuid"
+          }
+        },
+        "required": [
+          "channels",
+          "device_id"
+        ]
+      },
+      "ConnectionTicket": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "ticket": {
+            "type": "string",
+            "minLength": 43,
+            "maxLength": 128,
+            "pattern": "^[A-Za-z0-9_-]+$",
+            "readOnly": true
+          },
+          "expires_at": {
+            "type": "string",
+            "minLength": 20,
+            "maxLength": 32,
+            "format": "date-time",
+            "pattern": "Z$"
+          },
+          "single_use": {
+            "type": "boolean",
+            "const": true
+          },
+          "websocket_path": {
+            "type": "string",
+            "enum": [
+              "/ws"
+            ]
+          },
+          "protocol": {
+            "type": "string",
+            "enum": [
+              "neki.realtime.v1"
+            ]
+          },
+          "authorized_channels": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/RealtimeChannel"
+            },
+            "maxItems": 20,
+            "minItems": 1,
+            "uniqueItems": true
+          }
+        },
+        "required": [
+          "ticket",
+          "expires_at",
+          "single_use",
+          "websocket_path",
+          "protocol",
+          "authorized_channels"
+        ]
+      },
+      "SavedPaymentMethod": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string",
+            "minLength": 36,
+            "maxLength": 36,
+            "format": "uuid"
+          },
+          "kind": {
+            "type": "string",
+            "enum": [
+              "card"
+            ]
+          },
+          "network": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 60
+          },
+          "last4": {
+            "type": "string",
+            "minLength": 4,
+            "maxLength": 4,
+            "pattern": "^[0-9]{4}$"
+          },
+          "expiry_month": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 12
+          },
+          "expiry_year": {
+            "type": "integer",
+            "minimum": 2020,
+            "maximum": 2200
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "AVAILABLE",
+              "EXPIRED",
+              "REMOVAL_PENDING"
+            ]
+          },
+          "version": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 2147483647
+          }
+        },
+        "required": [
+          "id",
+          "kind",
+          "network",
+          "last4",
+          "expiry_month",
+          "expiry_year",
+          "status",
+          "version"
+        ]
+      },
+      "SavedPaymentMethods": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "availability": {
+            "type": "string",
+            "enum": [
+              "AVAILABLE",
+              "UNAVAILABLE"
+            ]
+          },
+          "safe_reason": {
+            "anyOf": [
+              {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 300
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SavedPaymentMethod"
+            },
+            "maxItems": 50
+          },
+          "next_cursor": {
+            "anyOf": [
+              {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 2048
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "has_more": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "availability",
+          "safe_reason",
+          "items",
+          "next_cursor",
+          "has_more"
+        ],
+        "allOf": [
+          {
+            "if": {
+              "properties": {
+                "availability": {
+                  "const": "UNAVAILABLE"
+                }
+              }
+            },
+            "then": {
+              "properties": {
+                "items": {
+                  "maxItems": 0
+                },
+                "has_more": {
+                  "const": false
+                },
+                "next_cursor": {
+                  "type": "null"
+                }
+              }
+            }
+          }
+        ]
+      },
+      "PaymentMethodRemoval": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "operation_id": {
+            "type": "string",
+            "minLength": 36,
+            "maxLength": 36,
+            "format": "uuid"
+          },
+          "payment_method_id": {
+            "type": "string",
+            "minLength": 36,
+            "maxLength": 36,
+            "format": "uuid"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "PENDING"
+            ]
+          },
+          "provider_removal_confirmed": {
+            "type": "boolean",
+            "const": false
+          }
+        },
+        "required": [
+          "operation_id",
+          "payment_method_id",
+          "status",
+          "provider_removal_confirmed"
         ]
       },
       "Error503_b9df10b9fb706b44": {

@@ -25,6 +25,7 @@ import contract_logistics as logistics
 import contract_proof as proof
 import contract_impact as impact
 import contract_admin as admin
+import contract_engagement as engagement
 
 ROOT = Path(__file__).resolve().parents[1]
 API = ROOT / "docs" / "api"
@@ -134,6 +135,7 @@ def main():
     cases += proof.negative_cases()
     cases += impact.negative_cases()
     cases += admin.negative_cases()
+    cases += engagement.negative_cases()
     for schema, value, label in cases:
         assert not validator(identity.ref(schema)).is_valid(value), f"negative case accepted: {label}"
     parameter_cases = [("/search", "q", ""), ("/missions", "radius_km", 51),
