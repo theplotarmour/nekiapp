@@ -80703,6 +80703,3660 @@
         }
       }
     },
+    "/impact/summary": {
+      "get": {
+        "operationId": "get_impact_summary",
+        "summary": "Get impact summary",
+        "tags": [
+          "impact"
+        ],
+        "description": "Owner effective eligible records, deduplicated by mission/org and compatible item units; unknown beneficiaries stay null.",
+        "x-neki-policy": "self",
+        "x-neki-projection": "impact",
+        "x-neki-source": "FR-11",
+        "x-neki-effects": "Owner effective eligible records, deduplicated by mission/org and compatible item units; unknown beneficiaries stay null.",
+        "x-neki-rate-class": "private_read",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Owner effective eligible records, deduplicated by mission/org and compatible item units; unknown beneficiaries stay null.",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "type": "string"
+                },
+                "example": "private, no-store"
+              },
+              "X-Request-Id": {
+                "schema": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 100
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ImpactSummary"
+                },
+                "examples": {
+                  "example": {
+                    "value": {
+                      "verified_missions_distinct": 1,
+                      "verified_organizations_distinct": 1,
+                      "verified_seconds": 7200,
+                      "contributed_paise_in_verified_records": 0,
+                      "currency": "INR",
+                      "items": [],
+                      "mission_reported_beneficiaries": null,
+                      "beneficiary_scope": "distinct_mission_reports_not_unique_people",
+                      "as_of": "2026-09-10T12:00:00Z",
+                      "projection_revision_id": "11111111-1111-4111-8111-111111111111"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "ACTION_FORBIDDEN",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error403_18368efccc407b86"
+                },
+                "examples": {
+                  "action_forbidden": {
+                    "value": {
+                      "error": {
+                        "code": "ACTION_FORBIDDEN",
+                        "message": "Action forbidden",
+                        "request_id": "req_synthetic",
+                        "retryable": false,
+                        "details": {}
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "AUTH_REQUIRED, SESSION_EXPIRED",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error401_cae79a16b27d5425"
+                },
+                "examples": {
+                  "auth_required": {
+                    "value": {
+                      "error": {
+                        "code": "AUTH_REQUIRED",
+                        "message": "Auth required",
+                        "request_id": "req_synthetic",
+                        "retryable": false,
+                        "details": {}
+                      }
+                    }
+                  },
+                  "session_expired": {
+                    "value": {
+                      "error": {
+                        "code": "SESSION_EXPIRED",
+                        "message": "Session expired",
+                        "request_id": "req_synthetic",
+                        "retryable": false,
+                        "details": {}
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "DEPENDENCY_UNAVAILABLE",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error503_b9df10b9fb706b44"
+                },
+                "examples": {
+                  "dependency_unavailable": {
+                    "value": {
+                      "error": {
+                        "code": "DEPENDENCY_UNAVAILABLE",
+                        "message": "Dependency unavailable",
+                        "request_id": "req_synthetic",
+                        "retryable": true,
+                        "details": {}
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "headers": {
+              "Retry-After": {
+                "schema": {
+                  "type": "integer",
+                  "minimum": 1,
+                  "maximum": 86400
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "RATE_LIMITED",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error429_54449437101d928c"
+                },
+                "examples": {
+                  "rate_limited": {
+                    "value": {
+                      "error": {
+                        "code": "RATE_LIMITED",
+                        "message": "Rate limited",
+                        "request_id": "req_synthetic",
+                        "retryable": true,
+                        "details": {}
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "headers": {
+              "Retry-After": {
+                "schema": {
+                  "type": "integer",
+                  "minimum": 1,
+                  "maximum": 86400
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "REQUEST_INVALID",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error400_7ecf44e0a0518585"
+                },
+                "examples": {
+                  "request_invalid": {
+                    "value": {
+                      "error": {
+                        "code": "REQUEST_INVALID",
+                        "message": "Request invalid",
+                        "request_id": "req_synthetic",
+                        "retryable": false,
+                        "details": {}
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/impact/records": {
+      "get": {
+        "operationId": "list_impact_records",
+        "summary": "List impact records",
+        "tags": [
+          "impact"
+        ],
+        "description": "Owner final records with original immutable entry and current effective claims; not pending activity.",
+        "x-neki-policy": "self",
+        "x-neki-projection": "impact",
+        "x-neki-source": "FR-11",
+        "x-neki-effects": "Owner final records with original immutable entry and current effective claims; not pending activity.",
+        "x-neki-rate-class": "private_read",
+        "parameters": [
+          {
+            "name": "cursor",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 2048
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 50,
+              "default": 20
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Owner final records with original immutable entry and current effective claims; not pending activity.",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "type": "string"
+                },
+                "example": "private, no-store"
+              },
+              "X-Request-Id": {
+                "schema": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 100
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ImpactRecordPage"
+                },
+                "examples": {
+                  "example": {
+                    "value": {
+                      "items": [
+                        {
+                          "id": "11111111-1111-4111-8111-111111111111",
+                          "original_entry": {
+                            "id": "11111111-1111-4111-8111-111111111111",
+                            "payload": {
+                              "schema_version": "impact.v1-draft",
+                              "ledger_id": "11111111-1111-4111-8111-111111111111",
+                              "sequence": 1,
+                              "entry_kind": "ISSUANCE",
+                              "record_id": "11111111-1111-4111-8111-111111111111",
+                              "contribution_id": "11111111-1111-4111-8111-111111111111",
+                              "mission_id": "11111111-1111-4111-8111-111111111111",
+                              "organization_id": "11111111-1111-4111-8111-111111111111",
+                              "verification_decision_ids": [
+                                "11111111-1111-4111-8111-111111111111"
+                              ],
+                              "evidence_revision_ids": [
+                                "11111111-1111-4111-8111-111111111111"
+                              ],
+                              "issued_at": "2026-09-10T12:00:00Z",
+                              "resource": {
+                                "type": "TIME",
+                                "verified_seconds": 7200
+                              },
+                              "beneficiary_claim": null,
+                              "attribution_revision_id": "11111111-1111-4111-8111-111111111111",
+                              "supersedes_entry_id": null
+                            },
+                            "entry_hash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+                            "previous_hash": "0000000000000000000000000000000000000000000000000000000000000000"
+                          },
+                          "effective": {
+                            "resource": {
+                              "type": "TIME",
+                              "verified_seconds": 7200
+                            },
+                            "beneficiary_claim": null,
+                            "attribution_revision_id": "11111111-1111-4111-8111-111111111111",
+                            "effective_entry_id": "11111111-1111-4111-8111-111111111111",
+                            "effective_version": 1,
+                            "trust_status": "VERIFIED",
+                            "safe_explanation": null
+                          },
+                          "mission_title": "Synthetic mission",
+                          "organization_name": "Synthetic organization",
+                          "version": 1
+                        }
+                      ],
+                      "next_cursor": null,
+                      "has_more": false
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "ACTION_FORBIDDEN",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error403_18368efccc407b86"
+                },
+                "examples": {
+                  "action_forbidden": {
+                    "value": {
+                      "error": {
+                        "code": "ACTION_FORBIDDEN",
+                        "message": "Action forbidden",
+                        "request_id": "req_synthetic",
+                        "retryable": false,
+                        "details": {}
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "AUTH_REQUIRED, SESSION_EXPIRED",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error401_cae79a16b27d5425"
+                },
+                "examples": {
+                  "auth_required": {
+                    "value": {
+                      "error": {
+                        "code": "AUTH_REQUIRED",
+                        "message": "Auth required",
+                        "request_id": "req_synthetic",
+                        "retryable": false,
+                        "details": {}
+                      }
+                    }
+                  },
+                  "session_expired": {
+                    "value": {
+                      "error": {
+                        "code": "SESSION_EXPIRED",
+                        "message": "Session expired",
+                        "request_id": "req_synthetic",
+                        "retryable": false,
+                        "details": {}
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "410": {
+            "description": "CURSOR_EXPIRED",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error410_96a3e3626ef478f5"
+                },
+                "examples": {
+                  "cursor_expired": {
+                    "value": {
+                      "error": {
+                        "code": "CURSOR_EXPIRED",
+                        "message": "Cursor expired",
+                        "request_id": "req_synthetic",
+                        "retryable": false,
+                        "details": {}
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "CURSOR_INVALID, REQUEST_INVALID",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error400_7e060e86daabac3f"
+                },
+                "examples": {
+                  "cursor_invalid": {
+                    "value": {
+                      "error": {
+                        "code": "CURSOR_INVALID",
+                        "message": "Cursor invalid",
+                        "request_id": "req_synthetic",
+                        "retryable": false,
+                        "details": {}
+                      }
+                    }
+                  },
+                  "request_invalid": {
+                    "value": {
+                      "error": {
+                        "code": "REQUEST_INVALID",
+                        "message": "Request invalid",
+                        "request_id": "req_synthetic",
+                        "retryable": false,
+                        "details": {}
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "DEPENDENCY_UNAVAILABLE",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error503_b9df10b9fb706b44"
+                },
+                "examples": {
+                  "dependency_unavailable": {
+                    "value": {
+                      "error": {
+                        "code": "DEPENDENCY_UNAVAILABLE",
+                        "message": "Dependency unavailable",
+                        "request_id": "req_synthetic",
+                        "retryable": true,
+                        "details": {}
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "headers": {
+              "Retry-After": {
+                "schema": {
+                  "type": "integer",
+                  "minimum": 1,
+                  "maximum": 86400
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "RATE_LIMITED",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error429_54449437101d928c"
+                },
+                "examples": {
+                  "rate_limited": {
+                    "value": {
+                      "error": {
+                        "code": "RATE_LIMITED",
+                        "message": "Rate limited",
+                        "request_id": "req_synthetic",
+                        "retryable": true,
+                        "details": {}
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "headers": {
+              "Retry-After": {
+                "schema": {
+                  "type": "integer",
+                  "minimum": 1,
+                  "maximum": 86400
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/impact/records/{id}": {
+      "get": {
+        "operationId": "get_impact_record",
+        "summary": "Get impact record",
+        "tags": [
+          "impact"
+        ],
+        "description": "Authorize owner independently of opaque record ID; preserve historical entry when current trust changes.",
+        "x-neki-policy": "self",
+        "x-neki-projection": "impact",
+        "x-neki-source": "FR-11",
+        "x-neki-effects": "Authorize owner independently of opaque record ID; preserve historical entry when current trust changes.",
+        "x-neki-rate-class": "private_read",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 36,
+              "maxLength": 36,
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Authorize owner independently of opaque record ID; preserve historical entry when current trust changes.",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "type": "string"
+                },
+                "example": "private, no-store"
+              },
+              "X-Request-Id": {
+                "schema": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 100
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ImpactRecord"
+                },
+                "examples": {
+                  "example": {
+                    "value": {
+                      "id": "11111111-1111-4111-8111-111111111111",
+                      "original_entry": {
+                        "id": "11111111-1111-4111-8111-111111111111",
+                        "payload": {
+                          "schema_version": "impact.v1-draft",
+                          "ledger_id": "11111111-1111-4111-8111-111111111111",
+                          "sequence": 1,
+                          "entry_kind": "ISSUANCE",
+                          "record_id": "11111111-1111-4111-8111-111111111111",
+                          "contribution_id": "11111111-1111-4111-8111-111111111111",
+                          "mission_id": "11111111-1111-4111-8111-111111111111",
+                          "organization_id": "11111111-1111-4111-8111-111111111111",
+                          "verification_decision_ids": [
+                            "11111111-1111-4111-8111-111111111111"
+                          ],
+                          "evidence_revision_ids": [
+                            "11111111-1111-4111-8111-111111111111"
+                          ],
+                          "issued_at": "2026-09-10T12:00:00Z",
+                          "resource": {
+                            "type": "TIME",
+                            "verified_seconds": 7200
+                          },
+                          "beneficiary_claim": null,
+                          "attribution_revision_id": "11111111-1111-4111-8111-111111111111",
+                          "supersedes_entry_id": null
+                        },
+                        "entry_hash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+                        "previous_hash": "0000000000000000000000000000000000000000000000000000000000000000"
+                      },
+                      "effective": {
+                        "resource": {
+                          "type": "TIME",
+                          "verified_seconds": 7200
+                        },
+                        "beneficiary_claim": null,
+                        "attribution_revision_id": "11111111-1111-4111-8111-111111111111",
+                        "effective_entry_id": "11111111-1111-4111-8111-111111111111",
+                        "effective_version": 1,
+                        "trust_status": "VERIFIED",
+                        "safe_explanation": null
+                      },
+                      "mission_title": "Synthetic mission",
+                      "organization_name": "Synthetic organization",
+                      "version": 1
+                    }
+                  },
+                  "money": {
+                    "value": {
+                      "id": "11111111-1111-4111-8111-111111111111",
+                      "original_entry": {
+                        "id": "11111111-1111-4111-8111-111111111111",
+                        "payload": {
+                          "schema_version": "impact.v1-draft",
+                          "ledger_id": "11111111-1111-4111-8111-111111111111",
+                          "sequence": 1,
+                          "entry_kind": "ISSUANCE",
+                          "record_id": "11111111-1111-4111-8111-111111111111",
+                          "contribution_id": "11111111-1111-4111-8111-111111111111",
+                          "mission_id": "11111111-1111-4111-8111-111111111111",
+                          "organization_id": "11111111-1111-4111-8111-111111111111",
+                          "verification_decision_ids": [
+                            "11111111-1111-4111-8111-111111111111"
+                          ],
+                          "evidence_revision_ids": [
+                            "11111111-1111-4111-8111-111111111111"
+                          ],
+                          "issued_at": "2026-09-10T12:00:00Z",
+                          "resource": {
+                            "type": "MONEY",
+                            "contributed_paise": 10000,
+                            "currency": "INR"
+                          },
+                          "beneficiary_claim": null,
+                          "attribution_revision_id": "11111111-1111-4111-8111-111111111111",
+                          "supersedes_entry_id": null
+                        },
+                        "entry_hash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+                        "previous_hash": "0000000000000000000000000000000000000000000000000000000000000000"
+                      },
+                      "effective": {
+                        "resource": {
+                          "type": "MONEY",
+                          "contributed_paise": 10000,
+                          "currency": "INR"
+                        },
+                        "beneficiary_claim": null,
+                        "attribution_revision_id": "11111111-1111-4111-8111-111111111111",
+                        "effective_entry_id": "11111111-1111-4111-8111-111111111111",
+                        "effective_version": 1,
+                        "trust_status": "VERIFIED",
+                        "safe_explanation": null
+                      },
+                      "mission_title": "Synthetic mission",
+                      "organization_name": "Synthetic organization",
+                      "version": 1
+                    }
+                  },
+                  "item": {
+                    "value": {
+                      "id": "11111111-1111-4111-8111-111111111111",
+                      "original_entry": {
+                        "id": "11111111-1111-4111-8111-111111111111",
+                        "payload": {
+                          "schema_version": "impact.v1-draft",
+                          "ledger_id": "11111111-1111-4111-8111-111111111111",
+                          "sequence": 1,
+                          "entry_kind": "ISSUANCE",
+                          "record_id": "11111111-1111-4111-8111-111111111111",
+                          "contribution_id": "11111111-1111-4111-8111-111111111111",
+                          "mission_id": "11111111-1111-4111-8111-111111111111",
+                          "organization_id": "11111111-1111-4111-8111-111111111111",
+                          "verification_decision_ids": [
+                            "11111111-1111-4111-8111-111111111111"
+                          ],
+                          "evidence_revision_ids": [
+                            "11111111-1111-4111-8111-111111111111"
+                          ],
+                          "issued_at": "2026-09-10T12:00:00Z",
+                          "resource": {
+                            "type": "ITEM",
+                            "item_type_id": "11111111-1111-4111-8111-111111111111",
+                            "verified_quantity": "2.5",
+                            "unit": "kg"
+                          },
+                          "beneficiary_claim": null,
+                          "attribution_revision_id": "11111111-1111-4111-8111-111111111111",
+                          "supersedes_entry_id": null
+                        },
+                        "entry_hash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+                        "previous_hash": "0000000000000000000000000000000000000000000000000000000000000000"
+                      },
+                      "effective": {
+                        "resource": {
+                          "type": "ITEM",
+                          "item_type_id": "11111111-1111-4111-8111-111111111111",
+                          "verified_quantity": "2.5",
+                          "unit": "kg"
+                        },
+                        "beneficiary_claim": null,
+                        "attribution_revision_id": "11111111-1111-4111-8111-111111111111",
+                        "effective_entry_id": "11111111-1111-4111-8111-111111111111",
+                        "effective_version": 1,
+                        "trust_status": "VERIFIED",
+                        "safe_explanation": null
+                      },
+                      "mission_title": "Synthetic mission",
+                      "organization_name": "Synthetic organization",
+                      "version": 1
+                    }
+                  },
+                  "corrected": {
+                    "value": {
+                      "id": "11111111-1111-4111-8111-111111111111",
+                      "original_entry": {
+                        "id": "11111111-1111-4111-8111-111111111111",
+                        "payload": {
+                          "schema_version": "impact.v1-draft",
+                          "ledger_id": "11111111-1111-4111-8111-111111111111",
+                          "sequence": 1,
+                          "entry_kind": "ISSUANCE",
+                          "record_id": "11111111-1111-4111-8111-111111111111",
+                          "contribution_id": "11111111-1111-4111-8111-111111111111",
+                          "mission_id": "11111111-1111-4111-8111-111111111111",
+                          "organization_id": "11111111-1111-4111-8111-111111111111",
+                          "verification_decision_ids": [
+                            "11111111-1111-4111-8111-111111111111"
+                          ],
+                          "evidence_revision_ids": [
+                            "11111111-1111-4111-8111-111111111111"
+                          ],
+                          "issued_at": "2026-09-10T12:00:00Z",
+                          "resource": {
+                            "type": "TIME",
+                            "verified_seconds": 7200
+                          },
+                          "beneficiary_claim": null,
+                          "attribution_revision_id": "11111111-1111-4111-8111-111111111111",
+                          "supersedes_entry_id": null
+                        },
+                        "entry_hash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+                        "previous_hash": "0000000000000000000000000000000000000000000000000000000000000000"
+                      },
+                      "effective": {
+                        "resource": {
+                          "type": "TIME",
+                          "verified_seconds": 3600
+                        },
+                        "beneficiary_claim": null,
+                        "attribution_revision_id": "11111111-1111-4111-8111-111111111111",
+                        "effective_entry_id": "22222222-2222-4222-8222-222222222222",
+                        "effective_version": 2,
+                        "trust_status": "CORRECTED",
+                        "safe_explanation": "Hours corrected"
+                      },
+                      "mission_title": "Synthetic mission",
+                      "organization_name": "Synthetic organization",
+                      "version": 1
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "ACTION_FORBIDDEN",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error403_18368efccc407b86"
+                },
+                "examples": {
+                  "action_forbidden": {
+                    "value": {
+                      "error": {
+                        "code": "ACTION_FORBIDDEN",
+                        "message": "Action forbidden",
+                        "request_id": "req_synthetic",
+                        "retryable": false,
+                        "details": {}
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "AUTH_REQUIRED, SESSION_EXPIRED",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error401_cae79a16b27d5425"
+                },
+                "examples": {
+                  "auth_required": {
+                    "value": {
+                      "error": {
+                        "code": "AUTH_REQUIRED",
+                        "message": "Auth required",
+                        "request_id": "req_synthetic",
+                        "retryable": false,
+                        "details": {}
+                      }
+                    }
+                  },
+                  "session_expired": {
+                    "value": {
+                      "error": {
+                        "code": "SESSION_EXPIRED",
+                        "message": "Session expired",
+                        "request_id": "req_synthetic",
+                        "retryable": false,
+                        "details": {}
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "DEPENDENCY_UNAVAILABLE",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error503_b9df10b9fb706b44"
+                },
+                "examples": {
+                  "dependency_unavailable": {
+                    "value": {
+                      "error": {
+                        "code": "DEPENDENCY_UNAVAILABLE",
+                        "message": "Dependency unavailable",
+                        "request_id": "req_synthetic",
+                        "retryable": true,
+                        "details": {}
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "headers": {
+              "Retry-After": {
+                "schema": {
+                  "type": "integer",
+                  "minimum": 1,
+                  "maximum": 86400
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "NOT_FOUND",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error404_920b8d07262e4e92"
+                },
+                "examples": {
+                  "not_found": {
+                    "value": {
+                      "error": {
+                        "code": "NOT_FOUND",
+                        "message": "Not found",
+                        "request_id": "req_synthetic",
+                        "retryable": false,
+                        "details": {}
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "RATE_LIMITED",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error429_54449437101d928c"
+                },
+                "examples": {
+                  "rate_limited": {
+                    "value": {
+                      "error": {
+                        "code": "RATE_LIMITED",
+                        "message": "Rate limited",
+                        "request_id": "req_synthetic",
+                        "retryable": true,
+                        "details": {}
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "headers": {
+              "Retry-After": {
+                "schema": {
+                  "type": "integer",
+                  "minimum": 1,
+                  "maximum": 86400
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "REQUEST_INVALID",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error400_7ecf44e0a0518585"
+                },
+                "examples": {
+                  "request_invalid": {
+                    "value": {
+                      "error": {
+                        "code": "REQUEST_INVALID",
+                        "message": "Request invalid",
+                        "request_id": "req_synthetic",
+                        "retryable": false,
+                        "details": {}
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/impact/records/{id}/history": {
+      "get": {
+        "operationId": "get_effective_record_history",
+        "summary": "Get effective record history",
+        "tags": [
+          "impact"
+        ],
+        "description": "Ordered owner-safe issuance/correction history; each entry stays immutable.",
+        "x-neki-policy": "self",
+        "x-neki-projection": "impact",
+        "x-neki-source": "I03",
+        "x-neki-effects": "Ordered owner-safe issuance/correction history; each entry stays immutable.",
+        "x-neki-rate-class": "private_read",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 36,
+              "maxLength": 36,
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "cursor",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 2048
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 50,
+              "default": 20
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Ordered owner-safe issuance/correction history; each entry stays immutable.",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "type": "string"
+                },
+                "example": "private, no-store"
+              },
+              "X-Request-Id": {
+                "schema": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 100
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ImpactHistoryPage"
+                },
+                "examples": {
+                  "example": {
+                    "value": {
+                      "items": [
+                        {
+                          "entry": {
+                            "id": "11111111-1111-4111-8111-111111111111",
+                            "payload": {
+                              "schema_version": "impact.v1-draft",
+                              "ledger_id": "11111111-1111-4111-8111-111111111111",
+                              "sequence": 1,
+                              "entry_kind": "ISSUANCE",
+                              "record_id": "11111111-1111-4111-8111-111111111111",
+                              "contribution_id": "11111111-1111-4111-8111-111111111111",
+                              "mission_id": "11111111-1111-4111-8111-111111111111",
+                              "organization_id": "11111111-1111-4111-8111-111111111111",
+                              "verification_decision_ids": [
+                                "11111111-1111-4111-8111-111111111111"
+                              ],
+                              "evidence_revision_ids": [
+                                "11111111-1111-4111-8111-111111111111"
+                              ],
+                              "issued_at": "2026-09-10T12:00:00Z",
+                              "resource": {
+                                "type": "TIME",
+                                "verified_seconds": 7200
+                              },
+                              "beneficiary_claim": null,
+                              "attribution_revision_id": "11111111-1111-4111-8111-111111111111",
+                              "supersedes_entry_id": null
+                            },
+                            "entry_hash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+                            "previous_hash": "0000000000000000000000000000000000000000000000000000000000000000"
+                          },
+                          "safe_reason": null,
+                          "is_current_effective": true
+                        }
+                      ],
+                      "next_cursor": null,
+                      "has_more": false
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "ACTION_FORBIDDEN",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error403_18368efccc407b86"
+                },
+                "examples": {
+                  "action_forbidden": {
+                    "value": {
+                      "error": {
+                        "code": "ACTION_FORBIDDEN",
+                        "message": "Action forbidden",
+                        "request_id": "req_synthetic",
+                        "retryable": false,
+                        "details": {}
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "AUTH_REQUIRED, SESSION_EXPIRED",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error401_cae79a16b27d5425"
+                },
+                "examples": {
+                  "auth_required": {
+                    "value": {
+                      "error": {
+                        "code": "AUTH_REQUIRED",
+                        "message": "Auth required",
+                        "request_id": "req_synthetic",
+                        "retryable": false,
+                        "details": {}
+                      }
+                    }
+                  },
+                  "session_expired": {
+                    "value": {
+                      "error": {
+                        "code": "SESSION_EXPIRED",
+                        "message": "Session expired",
+                        "request_id": "req_synthetic",
+                        "retryable": false,
+                        "details": {}
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "410": {
+            "description": "CURSOR_EXPIRED",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error410_96a3e3626ef478f5"
+                },
+                "examples": {
+                  "cursor_expired": {
+                    "value": {
+                      "error": {
+                        "code": "CURSOR_EXPIRED",
+                        "message": "Cursor expired",
+                        "request_id": "req_synthetic",
+                        "retryable": false,
+                        "details": {}
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "CURSOR_INVALID, REQUEST_INVALID",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error400_7e060e86daabac3f"
+                },
+                "examples": {
+                  "cursor_invalid": {
+                    "value": {
+                      "error": {
+                        "code": "CURSOR_INVALID",
+                        "message": "Cursor invalid",
+                        "request_id": "req_synthetic",
+                        "retryable": false,
+                        "details": {}
+                      }
+                    }
+                  },
+                  "request_invalid": {
+                    "value": {
+                      "error": {
+                        "code": "REQUEST_INVALID",
+                        "message": "Request invalid",
+                        "request_id": "req_synthetic",
+                        "retryable": false,
+                        "details": {}
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "DEPENDENCY_UNAVAILABLE",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error503_b9df10b9fb706b44"
+                },
+                "examples": {
+                  "dependency_unavailable": {
+                    "value": {
+                      "error": {
+                        "code": "DEPENDENCY_UNAVAILABLE",
+                        "message": "Dependency unavailable",
+                        "request_id": "req_synthetic",
+                        "retryable": true,
+                        "details": {}
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "headers": {
+              "Retry-After": {
+                "schema": {
+                  "type": "integer",
+                  "minimum": 1,
+                  "maximum": 86400
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "NOT_FOUND",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error404_920b8d07262e4e92"
+                },
+                "examples": {
+                  "not_found": {
+                    "value": {
+                      "error": {
+                        "code": "NOT_FOUND",
+                        "message": "Not found",
+                        "request_id": "req_synthetic",
+                        "retryable": false,
+                        "details": {}
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "RATE_LIMITED",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error429_54449437101d928c"
+                },
+                "examples": {
+                  "rate_limited": {
+                    "value": {
+                      "error": {
+                        "code": "RATE_LIMITED",
+                        "message": "Rate limited",
+                        "request_id": "req_synthetic",
+                        "retryable": true,
+                        "details": {}
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "headers": {
+              "Retry-After": {
+                "schema": {
+                  "type": "integer",
+                  "minimum": 1,
+                  "maximum": 86400
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/impact/records/{id}/correction-requests": {
+      "post": {
+        "operationId": "request_impact_correction",
+        "summary": "Request impact correction",
+        "tags": [
+          "impact"
+        ],
+        "description": "Bind current effective version and source evidence; request does not mutate original or effective record.",
+        "x-neki-policy": "participant",
+        "x-neki-projection": "impact",
+        "x-neki-source": "I02",
+        "x-neki-effects": "Bind current effective version and source evidence; request does not mutate original or effective record.",
+        "x-neki-rate-class": "write",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 36,
+              "maxLength": 36,
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 36,
+              "maxLength": 36,
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Bind current effective version and source evidence; request does not mutate original or effective record.",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "type": "string"
+                },
+                "example": "private, no-store"
+              },
+              "X-Request-Id": {
+                "schema": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 100
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ImpactCorrectionView"
+                },
+                "examples": {
+                  "example": {
+                    "value": {
+                      "id": "11111111-1111-4111-8111-111111111111",
+                      "record_id": "11111111-1111-4111-8111-111111111111",
+                      "base_effective_version": 1,
+                      "status": "REQUESTED",
+                      "safe_reason": "Attendance correction requested",
+                      "effective_entry_id": null,
+                      "version": 1
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "ACTION_FORBIDDEN",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error403_18368efccc407b86"
+                },
+                "examples": {
+                  "action_forbidden": {
+                    "value": {
+                      "error": {
+                        "code": "ACTION_FORBIDDEN",
+                        "message": "Action forbidden",
+                        "request_id": "req_synthetic",
+                        "retryable": false,
+                        "details": {}
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "AUTH_REQUIRED, SESSION_EXPIRED",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error401_cae79a16b27d5425"
+                },
+                "examples": {
+                  "auth_required": {
+                    "value": {
+                      "error": {
+                        "code": "AUTH_REQUIRED",
+                        "message": "Auth required",
+                        "request_id": "req_synthetic",
+                        "retryable": false,
+                        "details": {}
+                      }
+                    }
+                  },
+                  "session_expired": {
+                    "value": {
+                      "error": {
+                        "code": "SESSION_EXPIRED",
+                        "message": "Session expired",
+                        "request_id": "req_synthetic",
+                        "retryable": false,
+                        "details": {}
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "DEPENDENCY_UNAVAILABLE",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error503_b9df10b9fb706b44"
+                },
+                "examples": {
+                  "dependency_unavailable": {
+                    "value": {
+                      "error": {
+                        "code": "DEPENDENCY_UNAVAILABLE",
+                        "message": "Dependency unavailable",
+                        "request_id": "req_synthetic",
+                        "retryable": true,
+                        "details": {}
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "headers": {
+              "Retry-After": {
+                "schema": {
+                  "type": "integer",
+                  "minimum": 1,
+                  "maximum": 86400
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "EVIDENCE_REQUIRED",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error422_b8274eed78d72a76"
+                },
+                "examples": {
+                  "evidence_required": {
+                    "value": {
+                      "error": {
+                        "code": "EVIDENCE_REQUIRED",
+                        "message": "Evidence required",
+                        "request_id": "req_synthetic",
+                        "retryable": false,
+                        "details": {}
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "IDEMPOTENCY_KEY_REUSED, REQUEST_IN_PROGRESS, VERSION_CONFLICT",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error409_720b8c15d661ad1a"
+                },
+                "examples": {
+                  "idempotency_key_reused": {
+                    "value": {
+                      "error": {
+                        "code": "IDEMPOTENCY_KEY_REUSED",
+                        "message": "Idempotency key reused",
+                        "request_id": "req_synthetic",
+                        "retryable": false,
+                        "details": {}
+                      }
+                    }
+                  },
+                  "request_in_progress": {
+                    "value": {
+                      "error": {
+                        "code": "REQUEST_IN_PROGRESS",
+                        "message": "Request in progress",
+                        "request_id": "req_synthetic",
+                        "retryable": true,
+                        "details": {}
+                      }
+                    }
+                  },
+                  "version_conflict": {
+                    "value": {
+                      "error": {
+                        "code": "VERSION_CONFLICT",
+                        "message": "Version conflict",
+                        "request_id": "req_synthetic",
+                        "retryable": false,
+                        "details": {}
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "headers": {
+              "Retry-After": {
+                "schema": {
+                  "type": "integer",
+                  "minimum": 1,
+                  "maximum": 86400
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "NOT_FOUND",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error404_920b8d07262e4e92"
+                },
+                "examples": {
+                  "not_found": {
+                    "value": {
+                      "error": {
+                        "code": "NOT_FOUND",
+                        "message": "Not found",
+                        "request_id": "req_synthetic",
+                        "retryable": false,
+                        "details": {}
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "RATE_LIMITED",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error429_54449437101d928c"
+                },
+                "examples": {
+                  "rate_limited": {
+                    "value": {
+                      "error": {
+                        "code": "RATE_LIMITED",
+                        "message": "Rate limited",
+                        "request_id": "req_synthetic",
+                        "retryable": true,
+                        "details": {}
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "headers": {
+              "Retry-After": {
+                "schema": {
+                  "type": "integer",
+                  "minimum": 1,
+                  "maximum": 86400
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "REQUEST_INVALID",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error400_7ecf44e0a0518585"
+                },
+                "examples": {
+                  "request_invalid": {
+                    "value": {
+                      "error": {
+                        "code": "REQUEST_INVALID",
+                        "message": "Request invalid",
+                        "request_id": "req_synthetic",
+                        "retryable": false,
+                        "details": {}
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ImpactCorrectionRequest"
+              },
+              "examples": {
+                "example": {
+                  "value": {
+                    "expected_version": 1,
+                    "expected_effective_version": 1,
+                    "reason": "Attendance correction requested",
+                    "evidence_ids": [
+                      "11111111-1111-4111-8111-111111111111"
+                    ],
+                    "source_decision_id": "11111111-1111-4111-8111-111111111111"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/certificates": {
+      "get": {
+        "operationId": "list_certificates",
+        "summary": "List certificates",
+        "tags": [
+          "impact"
+        ],
+        "description": "Owner verified-hours certificate metadata bound to effective record; no MVP PDF.",
+        "x-neki-policy": "self",
+        "x-neki-projection": "impact",
+        "x-neki-source": "FR-11",
+        "x-neki-effects": "Owner verified-hours certificate metadata bound to effective record; no MVP PDF.",
+        "x-neki-rate-class": "private_read",
+        "parameters": [
+          {
+            "name": "cursor",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 2048
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 50,
+              "default": 20
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Owner verified-hours certificate metadata bound to effective record; no MVP PDF.",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "type": "string"
+                },
+                "example": "private, no-store"
+              },
+              "X-Request-Id": {
+                "schema": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 100
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CertificatePage"
+                },
+                "examples": {
+                  "example": {
+                    "value": {
+                      "items": [
+                        {
+                          "id": "11111111-1111-4111-8111-111111111111",
+                          "record_id": "11111111-1111-4111-8111-111111111111",
+                          "effective_entry_id": "11111111-1111-4111-8111-111111111111",
+                          "effective_version": 1,
+                          "status": "CURRENT",
+                          "verified_seconds": 7200,
+                          "issued_at": "2026-09-10T12:00:00Z",
+                          "pdf_available": false
+                        }
+                      ],
+                      "next_cursor": null,
+                      "has_more": false
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "ACTION_FORBIDDEN",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error403_18368efccc407b86"
+                },
+                "examples": {
+                  "action_forbidden": {
+                    "value": {
+                      "error": {
+                        "code": "ACTION_FORBIDDEN",
+                        "message": "Action forbidden",
+                        "request_id": "req_synthetic",
+                        "retryable": false,
+                        "details": {}
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "AUTH_REQUIRED, SESSION_EXPIRED",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error401_cae79a16b27d5425"
+                },
+                "examples": {
+                  "auth_required": {
+                    "value": {
+                      "error": {
+                        "code": "AUTH_REQUIRED",
+                        "message": "Auth required",
+                        "request_id": "req_synthetic",
+                        "retryable": false,
+                        "details": {}
+                      }
+                    }
+                  },
+                  "session_expired": {
+                    "value": {
+                      "error": {
+                        "code": "SESSION_EXPIRED",
+                        "message": "Session expired",
+                        "request_id": "req_synthetic",
+                        "retryable": false,
+                        "details": {}
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "410": {
+            "description": "CURSOR_EXPIRED",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error410_96a3e3626ef478f5"
+                },
+                "examples": {
+                  "cursor_expired": {
+                    "value": {
+                      "error": {
+                        "code": "CURSOR_EXPIRED",
+                        "message": "Cursor expired",
+                        "request_id": "req_synthetic",
+                        "retryable": false,
+                        "details": {}
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "CURSOR_INVALID, REQUEST_INVALID",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error400_7e060e86daabac3f"
+                },
+                "examples": {
+                  "cursor_invalid": {
+                    "value": {
+                      "error": {
+                        "code": "CURSOR_INVALID",
+                        "message": "Cursor invalid",
+                        "request_id": "req_synthetic",
+                        "retryable": false,
+                        "details": {}
+                      }
+                    }
+                  },
+                  "request_invalid": {
+                    "value": {
+                      "error": {
+                        "code": "REQUEST_INVALID",
+                        "message": "Request invalid",
+                        "request_id": "req_synthetic",
+                        "retryable": false,
+                        "details": {}
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "DEPENDENCY_UNAVAILABLE",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error503_b9df10b9fb706b44"
+                },
+                "examples": {
+                  "dependency_unavailable": {
+                    "value": {
+                      "error": {
+                        "code": "DEPENDENCY_UNAVAILABLE",
+                        "message": "Dependency unavailable",
+                        "request_id": "req_synthetic",
+                        "retryable": true,
+                        "details": {}
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "headers": {
+              "Retry-After": {
+                "schema": {
+                  "type": "integer",
+                  "minimum": 1,
+                  "maximum": 86400
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "RATE_LIMITED",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error429_54449437101d928c"
+                },
+                "examples": {
+                  "rate_limited": {
+                    "value": {
+                      "error": {
+                        "code": "RATE_LIMITED",
+                        "message": "Rate limited",
+                        "request_id": "req_synthetic",
+                        "retryable": true,
+                        "details": {}
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "headers": {
+              "Retry-After": {
+                "schema": {
+                  "type": "integer",
+                  "minimum": 1,
+                  "maximum": 86400
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/certificates/{id}": {
+      "get": {
+        "operationId": "get_certificate_metadata",
+        "summary": "Get certificate metadata",
+        "tags": [
+          "impact"
+        ],
+        "description": "Show current/superseded/withdrawn status after correction; never use obsolete hours as current.",
+        "x-neki-policy": "self",
+        "x-neki-projection": "impact",
+        "x-neki-source": "FR-11",
+        "x-neki-effects": "Show current/superseded/withdrawn status after correction; never use obsolete hours as current.",
+        "x-neki-rate-class": "private_read",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 36,
+              "maxLength": 36,
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Show current/superseded/withdrawn status after correction; never use obsolete hours as current.",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "type": "string"
+                },
+                "example": "private, no-store"
+              },
+              "X-Request-Id": {
+                "schema": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 100
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CertificateMetadata"
+                },
+                "examples": {
+                  "example": {
+                    "value": {
+                      "id": "11111111-1111-4111-8111-111111111111",
+                      "record_id": "11111111-1111-4111-8111-111111111111",
+                      "effective_entry_id": "11111111-1111-4111-8111-111111111111",
+                      "effective_version": 1,
+                      "status": "CURRENT",
+                      "verified_seconds": 7200,
+                      "issued_at": "2026-09-10T12:00:00Z",
+                      "pdf_available": false
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "ACTION_FORBIDDEN",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error403_18368efccc407b86"
+                },
+                "examples": {
+                  "action_forbidden": {
+                    "value": {
+                      "error": {
+                        "code": "ACTION_FORBIDDEN",
+                        "message": "Action forbidden",
+                        "request_id": "req_synthetic",
+                        "retryable": false,
+                        "details": {}
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "AUTH_REQUIRED, SESSION_EXPIRED",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error401_cae79a16b27d5425"
+                },
+                "examples": {
+                  "auth_required": {
+                    "value": {
+                      "error": {
+                        "code": "AUTH_REQUIRED",
+                        "message": "Auth required",
+                        "request_id": "req_synthetic",
+                        "retryable": false,
+                        "details": {}
+                      }
+                    }
+                  },
+                  "session_expired": {
+                    "value": {
+                      "error": {
+                        "code": "SESSION_EXPIRED",
+                        "message": "Session expired",
+                        "request_id": "req_synthetic",
+                        "retryable": false,
+                        "details": {}
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "DEPENDENCY_UNAVAILABLE",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error503_b9df10b9fb706b44"
+                },
+                "examples": {
+                  "dependency_unavailable": {
+                    "value": {
+                      "error": {
+                        "code": "DEPENDENCY_UNAVAILABLE",
+                        "message": "Dependency unavailable",
+                        "request_id": "req_synthetic",
+                        "retryable": true,
+                        "details": {}
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "headers": {
+              "Retry-After": {
+                "schema": {
+                  "type": "integer",
+                  "minimum": 1,
+                  "maximum": 86400
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "NOT_FOUND",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error404_920b8d07262e4e92"
+                },
+                "examples": {
+                  "not_found": {
+                    "value": {
+                      "error": {
+                        "code": "NOT_FOUND",
+                        "message": "Not found",
+                        "request_id": "req_synthetic",
+                        "retryable": false,
+                        "details": {}
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "RATE_LIMITED",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error429_54449437101d928c"
+                },
+                "examples": {
+                  "rate_limited": {
+                    "value": {
+                      "error": {
+                        "code": "RATE_LIMITED",
+                        "message": "Rate limited",
+                        "request_id": "req_synthetic",
+                        "retryable": true,
+                        "details": {}
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "headers": {
+              "Retry-After": {
+                "schema": {
+                  "type": "integer",
+                  "minimum": 1,
+                  "maximum": 86400
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "REQUEST_INVALID",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error400_7ecf44e0a0518585"
+                },
+                "examples": {
+                  "request_invalid": {
+                    "value": {
+                      "error": {
+                        "code": "REQUEST_INVALID",
+                        "message": "Request invalid",
+                        "request_id": "req_synthetic",
+                        "retryable": false,
+                        "details": {}
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/impact/records/{id}/shares": {
+      "post": {
+        "operationId": "create_impact_share",
+        "summary": "Create impact share",
+        "tags": [
+          "impact"
+        ],
+        "description": "AP-04 disabled until privacy approval. When enabled, scoped revocable expiring token, exact consent/effective version and safe field projection.",
+        "x-neki-policy": "self_sensitive",
+        "x-neki-projection": "impact",
+        "x-neki-source": "AP-04",
+        "x-neki-effects": "AP-04 disabled until privacy approval. When enabled, scoped revocable expiring token, exact consent/effective version and safe field projection.",
+        "x-neki-rate-class": "write",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 36,
+              "maxLength": 36,
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 36,
+              "maxLength": 36,
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "X-Step-Up-Grant",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 32,
+              "maxLength": 4096
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "AP-04 disabled until privacy approval. When enabled, scoped revocable expiring token, exact consent/effective version and safe field projection.",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "type": "string"
+                },
+                "example": "private, no-store"
+              },
+              "X-Request-Id": {
+                "schema": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 100
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ImpactShareGrant"
+                },
+                "examples": {
+                  "example": {
+                    "value": {
+                      "id": "11111111-1111-4111-8111-111111111111",
+                      "share_url": "https://example.invalid/shared/impact/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+                      "expires_at": "2026-09-20T00:00:00Z",
+                      "effective_version": 1,
+                      "version": 1
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "ACTION_FORBIDDEN, FEATURE_DISABLED, STEP_UP_REQUIRED",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error403_0ef6f1be24e90181"
+                },
+                "examples": {
+                  "action_forbidden": {
+                    "value": {
+                      "error": {
+                        "code": "ACTION_FORBIDDEN",
+                        "message": "Action forbidden",
+                        "request_id": "req_synthetic",
+                        "retryable": false,
+                        "details": {}
+                      }
+                    }
+                  },
+                  "feature_disabled": {
+                    "value": {
+                      "error": {
+                        "code": "FEATURE_DISABLED",
+                        "message": "Feature disabled",
+                        "request_id": "req_synthetic",
+                        "retryable": false,
+                        "details": {}
+                      }
+                    }
+                  },
+                  "step_up_required": {
+                    "value": {
+                      "error": {
+                        "code": "STEP_UP_REQUIRED",
+                        "message": "Step up required",
+                        "request_id": "req_synthetic",
+                        "retryable": false,
+                        "details": {}
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "AUTH_REQUIRED, SESSION_EXPIRED",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error401_cae79a16b27d5425"
+                },
+                "examples": {
+                  "auth_required": {
+                    "value": {
+                      "error": {
+                        "code": "AUTH_REQUIRED",
+                        "message": "Auth required",
+                        "request_id": "req_synthetic",
+                        "retryable": false,
+                        "details": {}
+                      }
+                    }
+                  },
+                  "session_expired": {
+                    "value": {
+                      "error": {
+                        "code": "SESSION_EXPIRED",
+                        "message": "Session expired",
+                        "request_id": "req_synthetic",
+                        "retryable": false,
+                        "details": {}
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "DEPENDENCY_UNAVAILABLE",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error503_b9df10b9fb706b44"
+                },
+                "examples": {
+                  "dependency_unavailable": {
+                    "value": {
+                      "error": {
+                        "code": "DEPENDENCY_UNAVAILABLE",
+                        "message": "Dependency unavailable",
+                        "request_id": "req_synthetic",
+                        "retryable": true,
+                        "details": {}
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "headers": {
+              "Retry-After": {
+                "schema": {
+                  "type": "integer",
+                  "minimum": 1,
+                  "maximum": 86400
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "EVIDENCE_REQUIRED",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error422_b8274eed78d72a76"
+                },
+                "examples": {
+                  "evidence_required": {
+                    "value": {
+                      "error": {
+                        "code": "EVIDENCE_REQUIRED",
+                        "message": "Evidence required",
+                        "request_id": "req_synthetic",
+                        "retryable": false,
+                        "details": {}
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "IDEMPOTENCY_KEY_REUSED, REQUEST_IN_PROGRESS, VERSION_CONFLICT",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error409_720b8c15d661ad1a"
+                },
+                "examples": {
+                  "idempotency_key_reused": {
+                    "value": {
+                      "error": {
+                        "code": "IDEMPOTENCY_KEY_REUSED",
+                        "message": "Idempotency key reused",
+                        "request_id": "req_synthetic",
+                        "retryable": false,
+                        "details": {}
+                      }
+                    }
+                  },
+                  "request_in_progress": {
+                    "value": {
+                      "error": {
+                        "code": "REQUEST_IN_PROGRESS",
+                        "message": "Request in progress",
+                        "request_id": "req_synthetic",
+                        "retryable": true,
+                        "details": {}
+                      }
+                    }
+                  },
+                  "version_conflict": {
+                    "value": {
+                      "error": {
+                        "code": "VERSION_CONFLICT",
+                        "message": "Version conflict",
+                        "request_id": "req_synthetic",
+                        "retryable": false,
+                        "details": {}
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "headers": {
+              "Retry-After": {
+                "schema": {
+                  "type": "integer",
+                  "minimum": 1,
+                  "maximum": 86400
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "NOT_FOUND",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error404_920b8d07262e4e92"
+                },
+                "examples": {
+                  "not_found": {
+                    "value": {
+                      "error": {
+                        "code": "NOT_FOUND",
+                        "message": "Not found",
+                        "request_id": "req_synthetic",
+                        "retryable": false,
+                        "details": {}
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "RATE_LIMITED",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error429_54449437101d928c"
+                },
+                "examples": {
+                  "rate_limited": {
+                    "value": {
+                      "error": {
+                        "code": "RATE_LIMITED",
+                        "message": "Rate limited",
+                        "request_id": "req_synthetic",
+                        "retryable": true,
+                        "details": {}
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "headers": {
+              "Retry-After": {
+                "schema": {
+                  "type": "integer",
+                  "minimum": 1,
+                  "maximum": 86400
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "REQUEST_INVALID",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error400_7ecf44e0a0518585"
+                },
+                "examples": {
+                  "request_invalid": {
+                    "value": {
+                      "error": {
+                        "code": "REQUEST_INVALID",
+                        "message": "Request invalid",
+                        "request_id": "req_synthetic",
+                        "retryable": false,
+                        "details": {}
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "x-neki-feature-gate": {
+          "decision": "AP-04",
+          "default": "disabled"
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ImpactShareCreate"
+              },
+              "examples": {
+                "example": {
+                  "value": {
+                    "expected_version": 1,
+                    "expected_effective_version": 1,
+                    "consent_receipt_id": "11111111-1111-4111-8111-111111111111",
+                    "expires_at": "2026-09-20T00:00:00Z",
+                    "include_resource_quantity": false
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/impact/records/{id}/shares/{share_id}": {
+      "delete": {
+        "operationId": "revoke_impact_share",
+        "summary": "Revoke impact share",
+        "tags": [
+          "impact"
+        ],
+        "description": "Owner may revoke share even after feature disablement; delete grant, not historical impact.",
+        "x-neki-policy": "self",
+        "x-neki-projection": "operation",
+        "x-neki-source": "AP-04",
+        "x-neki-effects": "Owner may revoke share even after feature disablement; delete grant, not historical impact.",
+        "x-neki-rate-class": "write",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 36,
+              "maxLength": 36,
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "share_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 36,
+              "maxLength": 36,
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 36,
+              "maxLength": 36,
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "If-Match",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 3,
+              "maxLength": 24,
+              "pattern": "^\"[0-9]+\"$"
+            },
+            "description": "Quoted current aggregate version, e.g. \"1\"."
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Owner may revoke share even after feature disablement; delete grant, not historical impact.",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "type": "string"
+                },
+                "example": "private, no-store"
+              },
+              "X-Request-Id": {
+                "schema": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 100
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "ACTION_FORBIDDEN",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error403_18368efccc407b86"
+                },
+                "examples": {
+                  "action_forbidden": {
+                    "value": {
+                      "error": {
+                        "code": "ACTION_FORBIDDEN",
+                        "message": "Action forbidden",
+                        "request_id": "req_synthetic",
+                        "retryable": false,
+                        "details": {}
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "AUTH_REQUIRED, SESSION_EXPIRED",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error401_cae79a16b27d5425"
+                },
+                "examples": {
+                  "auth_required": {
+                    "value": {
+                      "error": {
+                        "code": "AUTH_REQUIRED",
+                        "message": "Auth required",
+                        "request_id": "req_synthetic",
+                        "retryable": false,
+                        "details": {}
+                      }
+                    }
+                  },
+                  "session_expired": {
+                    "value": {
+                      "error": {
+                        "code": "SESSION_EXPIRED",
+                        "message": "Session expired",
+                        "request_id": "req_synthetic",
+                        "retryable": false,
+                        "details": {}
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "DEPENDENCY_UNAVAILABLE",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error503_b9df10b9fb706b44"
+                },
+                "examples": {
+                  "dependency_unavailable": {
+                    "value": {
+                      "error": {
+                        "code": "DEPENDENCY_UNAVAILABLE",
+                        "message": "Dependency unavailable",
+                        "request_id": "req_synthetic",
+                        "retryable": true,
+                        "details": {}
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "headers": {
+              "Retry-After": {
+                "schema": {
+                  "type": "integer",
+                  "minimum": 1,
+                  "maximum": 86400
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "EVIDENCE_REQUIRED",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error422_b8274eed78d72a76"
+                },
+                "examples": {
+                  "evidence_required": {
+                    "value": {
+                      "error": {
+                        "code": "EVIDENCE_REQUIRED",
+                        "message": "Evidence required",
+                        "request_id": "req_synthetic",
+                        "retryable": false,
+                        "details": {}
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "IDEMPOTENCY_KEY_REUSED, REQUEST_IN_PROGRESS, VERSION_CONFLICT",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error409_720b8c15d661ad1a"
+                },
+                "examples": {
+                  "idempotency_key_reused": {
+                    "value": {
+                      "error": {
+                        "code": "IDEMPOTENCY_KEY_REUSED",
+                        "message": "Idempotency key reused",
+                        "request_id": "req_synthetic",
+                        "retryable": false,
+                        "details": {}
+                      }
+                    }
+                  },
+                  "request_in_progress": {
+                    "value": {
+                      "error": {
+                        "code": "REQUEST_IN_PROGRESS",
+                        "message": "Request in progress",
+                        "request_id": "req_synthetic",
+                        "retryable": true,
+                        "details": {}
+                      }
+                    }
+                  },
+                  "version_conflict": {
+                    "value": {
+                      "error": {
+                        "code": "VERSION_CONFLICT",
+                        "message": "Version conflict",
+                        "request_id": "req_synthetic",
+                        "retryable": false,
+                        "details": {}
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "headers": {
+              "Retry-After": {
+                "schema": {
+                  "type": "integer",
+                  "minimum": 1,
+                  "maximum": 86400
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "NOT_FOUND",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error404_920b8d07262e4e92"
+                },
+                "examples": {
+                  "not_found": {
+                    "value": {
+                      "error": {
+                        "code": "NOT_FOUND",
+                        "message": "Not found",
+                        "request_id": "req_synthetic",
+                        "retryable": false,
+                        "details": {}
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "RATE_LIMITED",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error429_54449437101d928c"
+                },
+                "examples": {
+                  "rate_limited": {
+                    "value": {
+                      "error": {
+                        "code": "RATE_LIMITED",
+                        "message": "Rate limited",
+                        "request_id": "req_synthetic",
+                        "retryable": true,
+                        "details": {}
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "headers": {
+              "Retry-After": {
+                "schema": {
+                  "type": "integer",
+                  "minimum": 1,
+                  "maximum": 86400
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "REQUEST_INVALID",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error400_7ecf44e0a0518585"
+                },
+                "examples": {
+                  "request_invalid": {
+                    "value": {
+                      "error": {
+                        "code": "REQUEST_INVALID",
+                        "message": "Request invalid",
+                        "request_id": "req_synthetic",
+                        "retryable": false,
+                        "details": {}
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/shared/impact/{token}": {
+      "get": {
+        "operationId": "get_shared_impact",
+        "summary": "Get shared impact",
+        "tags": [
+          "impact"
+        ],
+        "description": "AP-04 disabled until approved. Authenticate opaque path token via hashed lookup; check expiry/revocation/current trust and consent. No bearer session required. The required path token is the credential; empty OpenAPI security here means no header/cookie scheme, not anonymous record access. Redact the path in logs and analytics; prevent referrer leakage.",
+        "x-neki-policy": "share_token",
+        "x-neki-projection": "impact",
+        "x-neki-source": "AP-04",
+        "x-neki-effects": "AP-04 disabled until approved. Authenticate opaque path token via hashed lookup; check expiry/revocation/current trust and consent. No bearer session required.",
+        "x-neki-rate-class": "private_read",
+        "parameters": [
+          {
+            "name": "token",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 43,
+              "maxLength": 128,
+              "pattern": "^[A-Za-z0-9_-]+$"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "AP-04 disabled until approved. Authenticate opaque path token via hashed lookup; check expiry/revocation/current trust and consent. No bearer session required.",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "type": "string"
+                },
+                "example": "private, no-store"
+              },
+              "X-Request-Id": {
+                "schema": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 100
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ImpactSharedView"
+                },
+                "examples": {
+                  "example": {
+                    "value": {
+                      "mission_title": "Synthetic mission",
+                      "organization_name": "Synthetic organization",
+                      "contribution_type": "TIME",
+                      "verified_resource_label": null,
+                      "trust_status": "VERIFIED",
+                      "as_of": "2026-09-10T12:00:00Z"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "DEPENDENCY_UNAVAILABLE",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error503_b9df10b9fb706b44"
+                },
+                "examples": {
+                  "dependency_unavailable": {
+                    "value": {
+                      "error": {
+                        "code": "DEPENDENCY_UNAVAILABLE",
+                        "message": "Dependency unavailable",
+                        "request_id": "req_synthetic",
+                        "retryable": true,
+                        "details": {}
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "headers": {
+              "Retry-After": {
+                "schema": {
+                  "type": "integer",
+                  "minimum": 1,
+                  "maximum": 86400
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "FEATURE_DISABLED",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error403_f94af2371801c979"
+                },
+                "examples": {
+                  "feature_disabled": {
+                    "value": {
+                      "error": {
+                        "code": "FEATURE_DISABLED",
+                        "message": "Feature disabled",
+                        "request_id": "req_synthetic",
+                        "retryable": false,
+                        "details": {}
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "RATE_LIMITED",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error429_54449437101d928c"
+                },
+                "examples": {
+                  "rate_limited": {
+                    "value": {
+                      "error": {
+                        "code": "RATE_LIMITED",
+                        "message": "Rate limited",
+                        "request_id": "req_synthetic",
+                        "retryable": true,
+                        "details": {}
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "headers": {
+              "Retry-After": {
+                "schema": {
+                  "type": "integer",
+                  "minimum": 1,
+                  "maximum": 86400
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "REQUEST_INVALID",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error400_7ecf44e0a0518585"
+                },
+                "examples": {
+                  "request_invalid": {
+                    "value": {
+                      "error": {
+                        "code": "REQUEST_INVALID",
+                        "message": "Request invalid",
+                        "request_id": "req_synthetic",
+                        "retryable": false,
+                        "details": {}
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "SHARE_UNAVAILABLE",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error404_be4e3597864c667a"
+                },
+                "examples": {
+                  "share_unavailable": {
+                    "value": {
+                      "error": {
+                        "code": "SHARE_UNAVAILABLE",
+                        "message": "Share unavailable",
+                        "request_id": "req_synthetic",
+                        "retryable": false,
+                        "details": {}
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [],
+        "x-neki-path-credential": "token",
+        "x-neki-feature-gate": {
+          "decision": "AP-04",
+          "default": "disabled"
+        }
+      }
+    },
+    "/admin/impact/correction-requests": {
+      "get": {
+        "operationId": "list_impact_correction_queue",
+        "summary": "List impact correction queue",
+        "tags": [
+          "impact"
+        ],
+        "description": "Scoped reviewer queue with proposed claims and restricted source evidence.",
+        "x-neki-policy": "reviewer",
+        "x-neki-projection": "review",
+        "x-neki-source": "I02",
+        "x-neki-effects": "Scoped reviewer queue with proposed claims and restricted source evidence.",
+        "x-neki-rate-class": "private_read",
+        "parameters": [
+          {
+            "name": "cursor",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 2048
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 50,
+              "default": 20
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Scoped reviewer queue with proposed claims and restricted source evidence.",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "type": "string"
+                },
+                "example": "private, no-store"
+              },
+              "X-Request-Id": {
+                "schema": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 100
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ImpactCorrectionPage"
+                },
+                "examples": {
+                  "example": {
+                    "value": {
+                      "items": [
+                        {
+                          "request": {
+                            "id": "11111111-1111-4111-8111-111111111111",
+                            "record_id": "11111111-1111-4111-8111-111111111111",
+                            "base_effective_version": 1,
+                            "status": "REQUESTED",
+                            "safe_reason": "Attendance correction requested",
+                            "effective_entry_id": null,
+                            "version": 1
+                          },
+                          "source_decision_id": "11111111-1111-4111-8111-111111111111",
+                          "evidence_ids": [
+                            "11111111-1111-4111-8111-111111111111"
+                          ],
+                          "proposed_claims": {
+                            "resource": {
+                              "type": "TIME",
+                              "verified_seconds": 7200
+                            },
+                            "beneficiary_claim": null,
+                            "attribution_revision_id": "11111111-1111-4111-8111-111111111111"
+                          },
+                          "restricted_notes": [],
+                          "version": 1
+                        }
+                      ],
+                      "next_cursor": null,
+                      "has_more": false
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "ACTION_FORBIDDEN",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error403_18368efccc407b86"
+                },
+                "examples": {
+                  "action_forbidden": {
+                    "value": {
+                      "error": {
+                        "code": "ACTION_FORBIDDEN",
+                        "message": "Action forbidden",
+                        "request_id": "req_synthetic",
+                        "retryable": false,
+                        "details": {}
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "AUTH_REQUIRED, SESSION_EXPIRED",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error401_cae79a16b27d5425"
+                },
+                "examples": {
+                  "auth_required": {
+                    "value": {
+                      "error": {
+                        "code": "AUTH_REQUIRED",
+                        "message": "Auth required",
+                        "request_id": "req_synthetic",
+                        "retryable": false,
+                        "details": {}
+                      }
+                    }
+                  },
+                  "session_expired": {
+                    "value": {
+                      "error": {
+                        "code": "SESSION_EXPIRED",
+                        "message": "Session expired",
+                        "request_id": "req_synthetic",
+                        "retryable": false,
+                        "details": {}
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "410": {
+            "description": "CURSOR_EXPIRED",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error410_96a3e3626ef478f5"
+                },
+                "examples": {
+                  "cursor_expired": {
+                    "value": {
+                      "error": {
+                        "code": "CURSOR_EXPIRED",
+                        "message": "Cursor expired",
+                        "request_id": "req_synthetic",
+                        "retryable": false,
+                        "details": {}
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "CURSOR_INVALID, REQUEST_INVALID",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error400_7e060e86daabac3f"
+                },
+                "examples": {
+                  "cursor_invalid": {
+                    "value": {
+                      "error": {
+                        "code": "CURSOR_INVALID",
+                        "message": "Cursor invalid",
+                        "request_id": "req_synthetic",
+                        "retryable": false,
+                        "details": {}
+                      }
+                    }
+                  },
+                  "request_invalid": {
+                    "value": {
+                      "error": {
+                        "code": "REQUEST_INVALID",
+                        "message": "Request invalid",
+                        "request_id": "req_synthetic",
+                        "retryable": false,
+                        "details": {}
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "DEPENDENCY_UNAVAILABLE",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error503_b9df10b9fb706b44"
+                },
+                "examples": {
+                  "dependency_unavailable": {
+                    "value": {
+                      "error": {
+                        "code": "DEPENDENCY_UNAVAILABLE",
+                        "message": "Dependency unavailable",
+                        "request_id": "req_synthetic",
+                        "retryable": true,
+                        "details": {}
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "headers": {
+              "Retry-After": {
+                "schema": {
+                  "type": "integer",
+                  "minimum": 1,
+                  "maximum": 86400
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "RATE_LIMITED",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error429_54449437101d928c"
+                },
+                "examples": {
+                  "rate_limited": {
+                    "value": {
+                      "error": {
+                        "code": "RATE_LIMITED",
+                        "message": "Rate limited",
+                        "request_id": "req_synthetic",
+                        "retryable": true,
+                        "details": {}
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "headers": {
+              "Retry-After": {
+                "schema": {
+                  "type": "integer",
+                  "minimum": 1,
+                  "maximum": 86400
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/admin/impact/correction-requests/{id}/decision": {
+      "post": {
+        "operationId": "decide_impact_correction",
+        "summary": "Decide impact correction",
+        "tags": [
+          "impact"
+        ],
+        "description": "Independent approval locks current effective version and ledger head; append correction and rebuild intent atomically. Rejection changes request only.",
+        "x-neki-policy": "ops_lead",
+        "x-neki-projection": "review",
+        "x-neki-source": "I03/I04",
+        "x-neki-effects": "Independent approval locks current effective version and ledger head; append correction and rebuild intent atomically. Rejection changes request only.",
+        "x-neki-rate-class": "write",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 36,
+              "maxLength": 36,
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 36,
+              "maxLength": 36,
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "X-Step-Up-Grant",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 32,
+              "maxLength": 4096
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Independent approval locks current effective version and ledger head; append correction and rebuild intent atomically. Rejection changes request only.",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "type": "string"
+                },
+                "example": "private, no-store"
+              },
+              "X-Request-Id": {
+                "schema": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 100
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ImpactCorrectionView"
+                },
+                "examples": {
+                  "example": {
+                    "value": {
+                      "id": "11111111-1111-4111-8111-111111111111",
+                      "record_id": "11111111-1111-4111-8111-111111111111",
+                      "base_effective_version": 1,
+                      "status": "REQUESTED",
+                      "safe_reason": "Attendance correction requested",
+                      "effective_entry_id": null,
+                      "version": 1
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "ACTION_FORBIDDEN, STEP_UP_REQUIRED",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error403_f7eb6b64a78f440b"
+                },
+                "examples": {
+                  "action_forbidden": {
+                    "value": {
+                      "error": {
+                        "code": "ACTION_FORBIDDEN",
+                        "message": "Action forbidden",
+                        "request_id": "req_synthetic",
+                        "retryable": false,
+                        "details": {}
+                      }
+                    }
+                  },
+                  "step_up_required": {
+                    "value": {
+                      "error": {
+                        "code": "STEP_UP_REQUIRED",
+                        "message": "Step up required",
+                        "request_id": "req_synthetic",
+                        "retryable": false,
+                        "details": {}
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "AUTH_REQUIRED, SESSION_EXPIRED",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error401_cae79a16b27d5425"
+                },
+                "examples": {
+                  "auth_required": {
+                    "value": {
+                      "error": {
+                        "code": "AUTH_REQUIRED",
+                        "message": "Auth required",
+                        "request_id": "req_synthetic",
+                        "retryable": false,
+                        "details": {}
+                      }
+                    }
+                  },
+                  "session_expired": {
+                    "value": {
+                      "error": {
+                        "code": "SESSION_EXPIRED",
+                        "message": "Session expired",
+                        "request_id": "req_synthetic",
+                        "retryable": false,
+                        "details": {}
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "DEPENDENCY_UNAVAILABLE",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error503_b9df10b9fb706b44"
+                },
+                "examples": {
+                  "dependency_unavailable": {
+                    "value": {
+                      "error": {
+                        "code": "DEPENDENCY_UNAVAILABLE",
+                        "message": "Dependency unavailable",
+                        "request_id": "req_synthetic",
+                        "retryable": true,
+                        "details": {}
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "headers": {
+              "Retry-After": {
+                "schema": {
+                  "type": "integer",
+                  "minimum": 1,
+                  "maximum": 86400
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "EVIDENCE_REQUIRED",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error422_b8274eed78d72a76"
+                },
+                "examples": {
+                  "evidence_required": {
+                    "value": {
+                      "error": {
+                        "code": "EVIDENCE_REQUIRED",
+                        "message": "Evidence required",
+                        "request_id": "req_synthetic",
+                        "retryable": false,
+                        "details": {}
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "IDEMPOTENCY_KEY_REUSED, REQUEST_IN_PROGRESS, VERSION_CONFLICT",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error409_720b8c15d661ad1a"
+                },
+                "examples": {
+                  "idempotency_key_reused": {
+                    "value": {
+                      "error": {
+                        "code": "IDEMPOTENCY_KEY_REUSED",
+                        "message": "Idempotency key reused",
+                        "request_id": "req_synthetic",
+                        "retryable": false,
+                        "details": {}
+                      }
+                    }
+                  },
+                  "request_in_progress": {
+                    "value": {
+                      "error": {
+                        "code": "REQUEST_IN_PROGRESS",
+                        "message": "Request in progress",
+                        "request_id": "req_synthetic",
+                        "retryable": true,
+                        "details": {}
+                      }
+                    }
+                  },
+                  "version_conflict": {
+                    "value": {
+                      "error": {
+                        "code": "VERSION_CONFLICT",
+                        "message": "Version conflict",
+                        "request_id": "req_synthetic",
+                        "retryable": false,
+                        "details": {}
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "headers": {
+              "Retry-After": {
+                "schema": {
+                  "type": "integer",
+                  "minimum": 1,
+                  "maximum": 86400
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "NOT_FOUND",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error404_920b8d07262e4e92"
+                },
+                "examples": {
+                  "not_found": {
+                    "value": {
+                      "error": {
+                        "code": "NOT_FOUND",
+                        "message": "Not found",
+                        "request_id": "req_synthetic",
+                        "retryable": false,
+                        "details": {}
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "RATE_LIMITED",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error429_54449437101d928c"
+                },
+                "examples": {
+                  "rate_limited": {
+                    "value": {
+                      "error": {
+                        "code": "RATE_LIMITED",
+                        "message": "Rate limited",
+                        "request_id": "req_synthetic",
+                        "retryable": true,
+                        "details": {}
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "headers": {
+              "Retry-After": {
+                "schema": {
+                  "type": "integer",
+                  "minimum": 1,
+                  "maximum": 86400
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "REQUEST_INVALID",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error400_7ecf44e0a0518585"
+                },
+                "examples": {
+                  "request_invalid": {
+                    "value": {
+                      "error": {
+                        "code": "REQUEST_INVALID",
+                        "message": "Request invalid",
+                        "request_id": "req_synthetic",
+                        "retryable": false,
+                        "details": {}
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ImpactCorrectionDecision"
+              },
+              "examples": {
+                "example": {
+                  "value": {
+                    "expected_version": 1,
+                    "expected_effective_version": 1,
+                    "safe_reason": "Source correction reviewed",
+                    "evidence_ids": [
+                      "11111111-1111-4111-8111-111111111111"
+                    ],
+                    "decision": "APPROVE",
+                    "review_snapshot_id": "11111111-1111-4111-8111-111111111111",
+                    "source_decision_id": "11111111-1111-4111-8111-111111111111"
+                  }
+                },
+                "rejected": {
+                  "value": {
+                    "expected_version": 1,
+                    "expected_effective_version": 1,
+                    "safe_reason": "Source correction reviewed",
+                    "evidence_ids": [
+                      "11111111-1111-4111-8111-111111111111"
+                    ],
+                    "decision": "REJECT"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/admin/queues/organizations": {
       "get": {
         "operationId": "list_org_review_queue",
@@ -104936,6 +108590,1213 @@
           "policy_decision_id"
         ]
       },
+      "ImpactResource": {
+        "oneOf": [
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "type": {
+                "type": "string",
+                "enum": [
+                  "MONEY"
+                ]
+              },
+              "contributed_paise": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 9007199254740991
+              },
+              "currency": {
+                "type": "string",
+                "enum": [
+                  "INR"
+                ]
+              }
+            },
+            "required": [
+              "type",
+              "contributed_paise",
+              "currency"
+            ]
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "type": {
+                "type": "string",
+                "enum": [
+                  "ITEM"
+                ]
+              },
+              "item_type_id": {
+                "type": "string",
+                "minLength": 36,
+                "maxLength": 36,
+                "format": "uuid"
+              },
+              "verified_quantity": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 18,
+                "pattern": "^(0|[1-9][0-9]{0,11})(\\.[0-9]{1,2})?$"
+              },
+              "unit": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 30
+              }
+            },
+            "required": [
+              "type",
+              "item_type_id",
+              "verified_quantity",
+              "unit"
+            ]
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "type": {
+                "type": "string",
+                "enum": [
+                  "TIME"
+                ]
+              },
+              "verified_seconds": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 2147483647
+              }
+            },
+            "required": [
+              "type",
+              "verified_seconds"
+            ]
+          }
+        ],
+        "discriminator": {
+          "propertyName": "type"
+        }
+      },
+      "ImpactBeneficiaryClaim": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "mission_id": {
+            "type": "string",
+            "minLength": 36,
+            "maxLength": 36,
+            "format": "uuid"
+          },
+          "reported_count": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 2147483647
+          },
+          "source_decision_id": {
+            "type": "string",
+            "minLength": 36,
+            "maxLength": 36,
+            "format": "uuid"
+          },
+          "observed_at": {
+            "type": "string",
+            "minLength": 20,
+            "maxLength": 32,
+            "format": "date-time",
+            "pattern": "Z$"
+          },
+          "scope": {
+            "type": "string",
+            "enum": [
+              "mission_reported_not_unique_people"
+            ]
+          }
+        },
+        "required": [
+          "mission_id",
+          "reported_count",
+          "source_decision_id",
+          "observed_at",
+          "scope"
+        ]
+      },
+      "ImpactImmutablePayload": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "schema_version": {
+            "type": "string",
+            "enum": [
+              "impact.v1-draft"
+            ]
+          },
+          "ledger_id": {
+            "type": "string",
+            "minLength": 36,
+            "maxLength": 36,
+            "format": "uuid"
+          },
+          "sequence": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 9007199254740991
+          },
+          "entry_kind": {
+            "type": "string",
+            "enum": [
+              "ISSUANCE",
+              "CORRECTION"
+            ]
+          },
+          "record_id": {
+            "type": "string",
+            "minLength": 36,
+            "maxLength": 36,
+            "format": "uuid"
+          },
+          "contribution_id": {
+            "type": "string",
+            "minLength": 36,
+            "maxLength": 36,
+            "format": "uuid"
+          },
+          "mission_id": {
+            "type": "string",
+            "minLength": 36,
+            "maxLength": 36,
+            "format": "uuid"
+          },
+          "organization_id": {
+            "type": "string",
+            "minLength": 36,
+            "maxLength": 36,
+            "format": "uuid"
+          },
+          "verification_decision_ids": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 36,
+              "maxLength": 36,
+              "format": "uuid"
+            },
+            "maxItems": 50,
+            "minItems": 1,
+            "uniqueItems": true
+          },
+          "evidence_revision_ids": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 36,
+              "maxLength": 36,
+              "format": "uuid"
+            },
+            "maxItems": 50,
+            "minItems": 1,
+            "uniqueItems": true
+          },
+          "issued_at": {
+            "type": "string",
+            "minLength": 20,
+            "maxLength": 32,
+            "format": "date-time",
+            "pattern": "Z$"
+          },
+          "resource": {
+            "$ref": "#/components/schemas/ImpactResource"
+          },
+          "beneficiary_claim": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/ImpactBeneficiaryClaim"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "attribution_revision_id": {
+            "type": "string",
+            "minLength": 36,
+            "maxLength": 36,
+            "format": "uuid"
+          },
+          "supersedes_entry_id": {
+            "anyOf": [
+              {
+                "type": "string",
+                "minLength": 36,
+                "maxLength": 36,
+                "format": "uuid"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "required": [
+          "schema_version",
+          "ledger_id",
+          "sequence",
+          "entry_kind",
+          "record_id",
+          "contribution_id",
+          "mission_id",
+          "organization_id",
+          "verification_decision_ids",
+          "evidence_revision_ids",
+          "issued_at",
+          "resource",
+          "beneficiary_claim",
+          "attribution_revision_id",
+          "supersedes_entry_id"
+        ],
+        "allOf": [
+          {
+            "if": {
+              "properties": {
+                "entry_kind": {
+                  "const": "CORRECTION"
+                }
+              }
+            },
+            "then": {
+              "properties": {
+                "supersedes_entry_id": {
+                  "type": "string",
+                  "minLength": 36,
+                  "maxLength": 36,
+                  "format": "uuid"
+                }
+              }
+            },
+            "else": {
+              "properties": {
+                "supersedes_entry_id": {
+                  "type": "null"
+                }
+              }
+            }
+          }
+        ]
+      },
+      "ImpactChainEntry": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string",
+            "minLength": 36,
+            "maxLength": 36,
+            "format": "uuid"
+          },
+          "payload": {
+            "$ref": "#/components/schemas/ImpactImmutablePayload"
+          },
+          "entry_hash": {
+            "type": "string",
+            "minLength": 64,
+            "maxLength": 64,
+            "pattern": "^[a-f0-9]{64}$"
+          },
+          "previous_hash": {
+            "type": "string",
+            "minLength": 64,
+            "maxLength": 64,
+            "pattern": "^[a-f0-9]{64}$"
+          }
+        },
+        "required": [
+          "id",
+          "payload",
+          "entry_hash",
+          "previous_hash"
+        ]
+      },
+      "ImpactEffectiveView": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "resource": {
+            "$ref": "#/components/schemas/ImpactResource"
+          },
+          "beneficiary_claim": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/ImpactBeneficiaryClaim"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "attribution_revision_id": {
+            "type": "string",
+            "minLength": 36,
+            "maxLength": 36,
+            "format": "uuid"
+          },
+          "effective_entry_id": {
+            "type": "string",
+            "minLength": 36,
+            "maxLength": 36,
+            "format": "uuid"
+          },
+          "effective_version": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 2147483647
+          },
+          "trust_status": {
+            "type": "string",
+            "enum": [
+              "VERIFIED",
+              "UNDER_REVIEW",
+              "CORRECTED",
+              "CLAIM_WITHDRAWN"
+            ]
+          },
+          "safe_explanation": {
+            "anyOf": [
+              {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 1000
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "required": [
+          "resource",
+          "beneficiary_claim",
+          "attribution_revision_id",
+          "effective_entry_id",
+          "effective_version",
+          "trust_status",
+          "safe_explanation"
+        ]
+      },
+      "ImpactRecord": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string",
+            "minLength": 36,
+            "maxLength": 36,
+            "format": "uuid"
+          },
+          "original_entry": {
+            "$ref": "#/components/schemas/ImpactChainEntry"
+          },
+          "effective": {
+            "$ref": "#/components/schemas/ImpactEffectiveView"
+          },
+          "mission_title": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 160
+          },
+          "organization_name": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 160
+          },
+          "version": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 2147483647
+          }
+        },
+        "required": [
+          "id",
+          "original_entry",
+          "effective",
+          "mission_title",
+          "organization_name",
+          "version"
+        ]
+      },
+      "ImpactRecordPage": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ImpactRecord"
+            },
+            "maxItems": 50
+          },
+          "next_cursor": {
+            "anyOf": [
+              {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 2048
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "has_more": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "items",
+          "next_cursor",
+          "has_more"
+        ]
+      },
+      "ImpactHistoryPage": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "items": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "entry": {
+                  "$ref": "#/components/schemas/ImpactChainEntry"
+                },
+                "safe_reason": {
+                  "anyOf": [
+                    {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 1000
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "is_current_effective": {
+                  "type": "boolean"
+                }
+              },
+              "required": [
+                "entry",
+                "safe_reason",
+                "is_current_effective"
+              ]
+            },
+            "maxItems": 50
+          },
+          "next_cursor": {
+            "anyOf": [
+              {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 2048
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "has_more": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "items",
+          "next_cursor",
+          "has_more"
+        ]
+      },
+      "ImpactSummary": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "verified_missions_distinct": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 2147483647
+          },
+          "verified_organizations_distinct": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 2147483647
+          },
+          "verified_seconds": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 2147483647
+          },
+          "contributed_paise_in_verified_records": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 9007199254740991
+          },
+          "currency": {
+            "type": "string",
+            "enum": [
+              "INR"
+            ]
+          },
+          "items": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "item_type_id": {
+                  "type": "string",
+                  "minLength": 36,
+                  "maxLength": 36,
+                  "format": "uuid"
+                },
+                "unit": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 30
+                },
+                "verified_quantity": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 18,
+                  "pattern": "^(0|[1-9][0-9]{0,11})(\\.[0-9]{1,2})?$"
+                }
+              },
+              "required": [
+                "item_type_id",
+                "unit",
+                "verified_quantity"
+              ]
+            },
+            "maxItems": 100
+          },
+          "mission_reported_beneficiaries": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 2147483647
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "beneficiary_scope": {
+            "type": "string",
+            "enum": [
+              "distinct_mission_reports_not_unique_people"
+            ]
+          },
+          "as_of": {
+            "type": "string",
+            "minLength": 20,
+            "maxLength": 32,
+            "format": "date-time",
+            "pattern": "Z$"
+          },
+          "projection_revision_id": {
+            "type": "string",
+            "minLength": 36,
+            "maxLength": 36,
+            "format": "uuid"
+          }
+        },
+        "required": [
+          "verified_missions_distinct",
+          "verified_organizations_distinct",
+          "verified_seconds",
+          "contributed_paise_in_verified_records",
+          "currency",
+          "items",
+          "mission_reported_beneficiaries",
+          "beneficiary_scope",
+          "as_of",
+          "projection_revision_id"
+        ]
+      },
+      "ImpactCorrectionRequest": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "expected_version": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 2147483647
+          },
+          "expected_effective_version": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 2147483647
+          },
+          "reason": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 1000
+          },
+          "evidence_ids": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 36,
+              "maxLength": 36,
+              "format": "uuid"
+            },
+            "maxItems": 50,
+            "minItems": 1,
+            "uniqueItems": true
+          },
+          "source_decision_id": {
+            "type": "string",
+            "minLength": 36,
+            "maxLength": 36,
+            "format": "uuid"
+          }
+        },
+        "required": [
+          "expected_version",
+          "expected_effective_version",
+          "reason",
+          "evidence_ids",
+          "source_decision_id"
+        ]
+      },
+      "ImpactCorrectionView": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string",
+            "minLength": 36,
+            "maxLength": 36,
+            "format": "uuid"
+          },
+          "record_id": {
+            "type": "string",
+            "minLength": 36,
+            "maxLength": 36,
+            "format": "uuid"
+          },
+          "base_effective_version": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 2147483647
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "REQUESTED",
+              "UNDER_REVIEW",
+              "APPROVED",
+              "REJECTED"
+            ]
+          },
+          "safe_reason": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 1000
+          },
+          "effective_entry_id": {
+            "anyOf": [
+              {
+                "type": "string",
+                "minLength": 36,
+                "maxLength": 36,
+                "format": "uuid"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "version": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 2147483647
+          }
+        },
+        "required": [
+          "id",
+          "record_id",
+          "base_effective_version",
+          "status",
+          "safe_reason",
+          "effective_entry_id",
+          "version"
+        ]
+      },
+      "ImpactCorrectionReview": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "request": {
+            "$ref": "#/components/schemas/ImpactCorrectionView"
+          },
+          "source_decision_id": {
+            "type": "string",
+            "minLength": 36,
+            "maxLength": 36,
+            "format": "uuid"
+          },
+          "evidence_ids": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 36,
+              "maxLength": 36,
+              "format": "uuid"
+            },
+            "maxItems": 50,
+            "minItems": 1,
+            "uniqueItems": true
+          },
+          "proposed_claims": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "resource": {
+                "$ref": "#/components/schemas/ImpactResource"
+              },
+              "beneficiary_claim": {
+                "anyOf": [
+                  {
+                    "$ref": "#/components/schemas/ImpactBeneficiaryClaim"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "attribution_revision_id": {
+                "type": "string",
+                "minLength": 36,
+                "maxLength": 36,
+                "format": "uuid"
+              }
+            },
+            "required": [
+              "resource",
+              "beneficiary_claim",
+              "attribution_revision_id"
+            ]
+          },
+          "restricted_notes": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 2000
+            },
+            "maxItems": 100
+          },
+          "version": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 2147483647
+          }
+        },
+        "required": [
+          "request",
+          "source_decision_id",
+          "evidence_ids",
+          "proposed_claims",
+          "restricted_notes",
+          "version"
+        ]
+      },
+      "ImpactCorrectionPage": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ImpactCorrectionReview"
+            },
+            "maxItems": 50
+          },
+          "next_cursor": {
+            "anyOf": [
+              {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 2048
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "has_more": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "items",
+          "next_cursor",
+          "has_more"
+        ]
+      },
+      "ImpactCorrectionDecision": {
+        "oneOf": [
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "expected_version": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 2147483647
+              },
+              "expected_effective_version": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 2147483647
+              },
+              "safe_reason": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 1000
+              },
+              "evidence_ids": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "minLength": 36,
+                  "maxLength": 36,
+                  "format": "uuid"
+                },
+                "maxItems": 50,
+                "minItems": 1,
+                "uniqueItems": true
+              },
+              "decision": {
+                "type": "string",
+                "enum": [
+                  "APPROVE"
+                ]
+              },
+              "review_snapshot_id": {
+                "type": "string",
+                "minLength": 36,
+                "maxLength": 36,
+                "format": "uuid"
+              },
+              "source_decision_id": {
+                "type": "string",
+                "minLength": 36,
+                "maxLength": 36,
+                "format": "uuid"
+              }
+            },
+            "required": [
+              "expected_version",
+              "expected_effective_version",
+              "safe_reason",
+              "evidence_ids",
+              "decision",
+              "review_snapshot_id",
+              "source_decision_id"
+            ]
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "expected_version": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 2147483647
+              },
+              "expected_effective_version": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 2147483647
+              },
+              "safe_reason": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 1000
+              },
+              "evidence_ids": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "minLength": 36,
+                  "maxLength": 36,
+                  "format": "uuid"
+                },
+                "maxItems": 50,
+                "minItems": 1,
+                "uniqueItems": true
+              },
+              "decision": {
+                "type": "string",
+                "enum": [
+                  "REJECT"
+                ]
+              }
+            },
+            "required": [
+              "expected_version",
+              "expected_effective_version",
+              "safe_reason",
+              "evidence_ids",
+              "decision"
+            ]
+          }
+        ],
+        "discriminator": {
+          "propertyName": "decision"
+        }
+      },
+      "CertificateMetadata": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string",
+            "minLength": 36,
+            "maxLength": 36,
+            "format": "uuid"
+          },
+          "record_id": {
+            "type": "string",
+            "minLength": 36,
+            "maxLength": 36,
+            "format": "uuid"
+          },
+          "effective_entry_id": {
+            "type": "string",
+            "minLength": 36,
+            "maxLength": 36,
+            "format": "uuid"
+          },
+          "effective_version": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 2147483647
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "CURRENT",
+              "UNDER_REVIEW",
+              "SUPERSEDED",
+              "WITHDRAWN"
+            ]
+          },
+          "verified_seconds": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 2147483647
+          },
+          "issued_at": {
+            "type": "string",
+            "minLength": 20,
+            "maxLength": 32,
+            "format": "date-time",
+            "pattern": "Z$"
+          },
+          "pdf_available": {
+            "type": "boolean",
+            "const": false
+          }
+        },
+        "required": [
+          "id",
+          "record_id",
+          "effective_entry_id",
+          "effective_version",
+          "status",
+          "verified_seconds",
+          "issued_at",
+          "pdf_available"
+        ]
+      },
+      "CertificatePage": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/CertificateMetadata"
+            },
+            "maxItems": 50
+          },
+          "next_cursor": {
+            "anyOf": [
+              {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 2048
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "has_more": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "items",
+          "next_cursor",
+          "has_more"
+        ]
+      },
+      "ImpactShareCreate": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "expected_version": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 2147483647
+          },
+          "expected_effective_version": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 2147483647
+          },
+          "consent_receipt_id": {
+            "type": "string",
+            "minLength": 36,
+            "maxLength": 36,
+            "format": "uuid"
+          },
+          "expires_at": {
+            "type": "string",
+            "minLength": 20,
+            "maxLength": 32,
+            "format": "date-time",
+            "pattern": "Z$"
+          },
+          "include_resource_quantity": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "expected_version",
+          "expected_effective_version",
+          "consent_receipt_id",
+          "expires_at",
+          "include_resource_quantity"
+        ]
+      },
+      "ImpactShareGrant": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string",
+            "minLength": 36,
+            "maxLength": 36,
+            "format": "uuid"
+          },
+          "share_url": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 2048,
+            "format": "uri",
+            "pattern": "^https://"
+          },
+          "expires_at": {
+            "type": "string",
+            "minLength": 20,
+            "maxLength": 32,
+            "format": "date-time",
+            "pattern": "Z$"
+          },
+          "effective_version": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 2147483647
+          },
+          "version": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 2147483647
+          }
+        },
+        "required": [
+          "id",
+          "share_url",
+          "expires_at",
+          "effective_version",
+          "version"
+        ]
+      },
+      "ImpactSharedView": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "mission_title": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 160
+          },
+          "organization_name": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 160
+          },
+          "contribution_type": {
+            "type": "string",
+            "enum": [
+              "MONEY",
+              "ITEM",
+              "TIME"
+            ]
+          },
+          "verified_resource_label": {
+            "anyOf": [
+              {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 200
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "trust_status": {
+            "type": "string",
+            "enum": [
+              "VERIFIED",
+              "CORRECTED"
+            ]
+          },
+          "as_of": {
+            "type": "string",
+            "minLength": 20,
+            "maxLength": 32,
+            "format": "date-time",
+            "pattern": "Z$"
+          }
+        },
+        "required": [
+          "mission_title",
+          "organization_name",
+          "contribution_type",
+          "verified_resource_label",
+          "trust_status",
+          "as_of"
+        ]
+      },
       "Error503_b9df10b9fb706b44": {
         "type": "object",
         "additionalProperties": false,
@@ -108356,6 +113217,182 @@
                 "enum": [
                   "EVIDENCE_REQUIRED",
                   "PROOF_NOT_READY"
+                ]
+              },
+              "message": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 300
+              },
+              "request_id": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 100
+              },
+              "retryable": {
+                "type": "boolean"
+              },
+              "details": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "current_version": {
+                    "type": "integer",
+                    "minimum": 0,
+                    "maximum": 2147483647
+                  },
+                  "retry_after_seconds": {
+                    "type": "integer",
+                    "minimum": 1,
+                    "maximum": 86400
+                  }
+                },
+                "required": []
+              }
+            },
+            "required": [
+              "code",
+              "message",
+              "request_id",
+              "retryable",
+              "details"
+            ]
+          }
+        },
+        "required": [
+          "error"
+        ]
+      },
+      "Error403_0ef6f1be24e90181": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "error": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "code": {
+                "type": "string",
+                "enum": [
+                  "ACTION_FORBIDDEN",
+                  "FEATURE_DISABLED",
+                  "STEP_UP_REQUIRED"
+                ]
+              },
+              "message": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 300
+              },
+              "request_id": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 100
+              },
+              "retryable": {
+                "type": "boolean"
+              },
+              "details": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "current_version": {
+                    "type": "integer",
+                    "minimum": 0,
+                    "maximum": 2147483647
+                  },
+                  "retry_after_seconds": {
+                    "type": "integer",
+                    "minimum": 1,
+                    "maximum": 86400
+                  }
+                },
+                "required": []
+              }
+            },
+            "required": [
+              "code",
+              "message",
+              "request_id",
+              "retryable",
+              "details"
+            ]
+          }
+        },
+        "required": [
+          "error"
+        ]
+      },
+      "Error403_f94af2371801c979": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "error": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "code": {
+                "type": "string",
+                "enum": [
+                  "FEATURE_DISABLED"
+                ]
+              },
+              "message": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 300
+              },
+              "request_id": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 100
+              },
+              "retryable": {
+                "type": "boolean"
+              },
+              "details": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "current_version": {
+                    "type": "integer",
+                    "minimum": 0,
+                    "maximum": 2147483647
+                  },
+                  "retry_after_seconds": {
+                    "type": "integer",
+                    "minimum": 1,
+                    "maximum": 86400
+                  }
+                },
+                "required": []
+              }
+            },
+            "required": [
+              "code",
+              "message",
+              "request_id",
+              "retryable",
+              "details"
+            ]
+          }
+        },
+        "required": [
+          "error"
+        ]
+      },
+      "Error404_be4e3597864c667a": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "error": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "code": {
+                "type": "string",
+                "enum": [
+                  "SHARE_UNAVAILABLE"
                 ]
               },
               "message": {

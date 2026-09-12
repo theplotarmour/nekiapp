@@ -19,6 +19,7 @@ import contract_provider as provider
 import contract_volunteers as volunteers
 import contract_logistics as logistics
 import contract_proof as proof
+import contract_impact as impact
 
 ROOT = Path(__file__).resolve().parents[1]
 API = ROOT / "docs" / "api"
@@ -27,7 +28,7 @@ API = ROOT / "docs" / "api"
 def build():
     inventory = list(csv.DictReader((API / "operations.tsv").open(encoding="utf-8-sig"), delimiter="\t"))
     definitions, examples, schemas, variants, parameters = {}, {}, {}, {}, {}
-    for module in (identity, discovery, organizations, contributions, cases, payouts, provider, volunteers, logistics, proof):
+    for module in (identity, discovery, organizations, contributions, cases, payouts, provider, volunteers, logistics, proof, impact):
         for target, values in [(definitions, module.definitions()), (examples, module.examples()), (schemas, module.schemas())]:
             duplicates = target.keys() & values.keys()
             if duplicates:
@@ -67,6 +68,8 @@ def build():
     errors["403"] += ["DROPOFF_NOT_ALLOWED"]
     errors["403"] += ["SUBJECT_SCOPE_DENIED"]
     errors["422"] += ["PROOF_NOT_READY"]
+    errors["403"] += ["FEATURE_DISABLED"]
+    errors["404"] += ["SHARE_UNAVAILABLE"]
     code_status = {code: status for status, codes in errors.items() for code in codes}
     doc = {"openapi": "3.1.1", "info": {"title": "NEKI API — partial P0 review contract", "version": "0.0.1-draft",
            "description": "Explicit typed P0 slices only. No server exists; uncovered inventory operations are reported separately."},
@@ -88,13 +91,20 @@ def build():
               "parameters": [], "responses": {}}
         if row["policy"] == "public" or op_id in {"request_otp", "verify_otp", "refresh_session"}:
             op["security"] = []
+        if row["policy"] == "share_token":
+            op["security"] = []
+            op["x-neki-path-credential"] = "token"
+            op["description"] += " The required path token is the credential; empty OpenAPI security here means no header/cookie scheme, not anonymous record access. Redact the path in logs and analytics; prevent referrer leakage."
+        if op_id in {"create_impact_share", "get_shared_impact"}:
+            op["x-neki-feature-gate"] = {"decision": "AP-04", "default": "disabled"}
         if row["policy"] == "provider":
             op["security"] = [{"RazorpayWebhookSignature": []}]
             op["x-neki-rate-class"] = "provider_inbox"
             op["x-neki-raw-body-signature"] = True
             op["x-neki-body-limit-bytes"] = 1048576
         for name in re.findall(r"\{([^}]+)\}", row["path"]):
-            op["parameters"].append({"name": name, "in": "path", "required": True, "schema": identity.ID})
+            op["parameters"].append({"name": name, "in": "path", "required": True,
+                                     "schema": impact.SHARE_TOKEN if row["policy"] == "share_token" and name == "token" else identity.ID})
         if row["profile"] == "list":
             op["parameters"] += [{"name": "cursor", "in": "query", "schema": identity.text(1, 2048)},
                                  {"name": "limit", "in": "query", "schema": {**identity.integer(1, 50), "default": 20}}]

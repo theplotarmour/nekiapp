@@ -23,6 +23,7 @@ import contract_provider as provider
 import contract_volunteers as volunteers
 import contract_logistics as logistics
 import contract_proof as proof
+import contract_impact as impact
 
 ROOT = Path(__file__).resolve().parents[1]
 API = ROOT / "docs" / "api"
@@ -54,10 +55,16 @@ def main():
             row = inventory[op_id]
             assert (row["path"], row["method"].lower()) == (path, method), op_id
             assert operation["x-neki-policy"] == row["policy"], op_id
-            if row["policy"] not in {"public", "challenge", "provider"}:
+            if row["policy"] not in {"public", "challenge", "provider", "share_token"}:
                 assert operation.get("security", doc["security"]) == [{"BearerAuth": []}], op_id
             if row["policy"] == "public":
                 assert operation.get("security") == [], op_id
+            if row["policy"] == "share_token":
+                assert operation.get("security") == [] and operation.get("x-neki-path-credential") == "token", op_id
+                token = next(p for p in operation["parameters"] if p["name"] == "token")
+                assert token["required"] and token["in"] == "path" and token["schema"] == impact.SHARE_TOKEN, op_id
+            if op_id in {"create_impact_share", "get_shared_impact"}:
+                assert operation.get("x-neki-feature-gate") == {"decision": "AP-04", "default": "disabled"}, op_id
             if row["policy"] == "provider":
                 assert operation.get("security") == [{"RazorpayWebhookSignature": []}], op_id
                 assert operation.get("x-neki-raw-body-signature") is True, op_id
@@ -124,6 +131,7 @@ def main():
     cases += volunteers.negative_cases()
     cases += logistics.negative_cases()
     cases += proof.negative_cases()
+    cases += impact.negative_cases()
     for schema, value, label in cases:
         assert not validator(identity.ref(schema)).is_valid(value), f"negative case accepted: {label}"
     parameter_cases = [("/search", "q", ""), ("/missions", "radius_km", 51),
