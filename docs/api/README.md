@@ -14,6 +14,7 @@
 - [Payment webhook transport](provider-contract.md): provider signature/inbox contract plus 20 synthetic local verification tests; sandbox and production behavior remain unverified.
 - [Volunteer and attendance contracts](volunteer-attendance-contract.md): another 43 operations for approval, skills interest, booking, waitlists and evidenced attendance.
 - [Logistics and custody contracts](logistics-contract.md): another 24 operations for private field access, assignment revisions, receipts, tracking and recovery.
+- [Media and proof contracts](media-proof-contract.md): another 26 operations for upload/read authorization, processed evidence revisions and human review.
 
 Columns: family (plan §18.1); method; path; operation_id; policy; projection; profile; contract. `contract` refers to a transition ID, decision ID or governing PRD requirement; it is traceability, not approval. The next schema pass must give every row typed parameters/request/response/errors/examples and precise event effects, then produce reviewed OpenAPI. No `object` placeholders or blanket success responses can pass that later gate.
 
