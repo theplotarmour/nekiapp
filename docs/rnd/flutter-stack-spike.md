@@ -1,12 +1,12 @@
-# Flutter stack compatibility spike
+# Flutter stack compatibility spike: historical Riverpod 2 baseline
 
-Executed 12–13 September 2026 under P0 §5.3. [Fixture](../../tools/spikes/flutter_stack/README.md) is isolated under `tools/spikes/flutter_stack`; it is not the application scaffold. No provider account, real user data, production database or live financial action was involved.
+Historical result at commit `4097edcd11d4104ab1f8d6110961b26eb41f4191`, executed 12–13 September 2026 under P0 §5.3. The working fixture is being evaluated with a current stack; this report preserves the earlier result and does not describe later dependency changes. [Fixture](https://github.com/theplotarmour/nekiapp/blob/4097edcd11d4104ab1f8d6110961b26eb41f4191/tools/spikes/flutter_stack/README.md) is isolated under `tools/spikes/flutter_stack`; it is not the application scaffold. No provider account, real user data, production database or live financial action was involved.
 
 **Result:** dependency resolution, four generators, static analysis, 14 native/widget tests, Drift worker compilation and a Flutter JavaScript web build passed. This is a **partial compatibility result**, not approval of this package set for production. The older generator analyzer warns that it does not fully support the installed Dart language version. Browser database execution, mobile packaging, migration/encryption, and current-stack evaluation remain open.
 
 ## Tested versions
 
-[SDK evidence](../../tools/spikes/flutter_stack/sdk-evidence.json) records Flutter **3.44.1**, framework revision `924134a44c189315be2148659913dda1671cbe99`, Dart **3.12.1**, stable channel. No global SDK upgrade was performed. The fixture bounds Dart to `>=3.12.1 <3.13.0`; reproduction should use this exact recorded SDK, not merely another SDK satisfying the range.
+[SDK evidence](https://github.com/theplotarmour/nekiapp/blob/4097edcd11d4104ab1f8d6110961b26eb41f4191/tools/spikes/flutter_stack/sdk-evidence.json) records Flutter **3.44.1**, framework revision `924134a44c189315be2148659913dda1671cbe99`, Dart **3.12.1**, stable channel. No global SDK upgrade was performed. The fixture bounds Dart to `>=3.12.1 <3.13.0`; reproduction should use this exact recorded SDK, not merely another SDK satisfying the range.
 
 | Package | Exact direct constraint |
 |---|---|
@@ -18,7 +18,7 @@ Executed 12–13 September 2026 under P0 §5.3. [Fixture](../../tools/spikes/flu
 | build_runner | 2.4.15 |
 | sqlite3, test-only direct dependency | 2.9.4 |
 
-The committed [pubspec.lock](../../tools/spikes/flutter_stack/pubspec.lock) records resolved transitive versions and hosted archive hashes, including analyzer 7.6.0 and source_gen 2.0.0. Native database tests explicitly load Windows system `winsqlite3.dll`; the observed file version was 3.51.1. This does **not** test how SQLite is bundled on Android/iOS or establish a reproducible SQLite binary on every Windows installation.
+The committed [pubspec.lock](https://github.com/theplotarmour/nekiapp/blob/4097edcd11d4104ab1f8d6110961b26eb41f4191/tools/spikes/flutter_stack/pubspec.lock) records resolved transitive versions and hosted archive hashes, including analyzer 7.6.0 and source_gen 2.0.0. Native database tests explicitly load Windows system `winsqlite3.dll`; the observed file version was 3.51.1. This does **not** test how SQLite is bundled on Android/iOS or establish a reproducible SQLite binary on every Windows installation.
 
 ## Dependency failures that changed the test candidate
 

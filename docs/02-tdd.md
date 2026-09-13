@@ -61,7 +61,7 @@ Single deployable API image; worker is the same image with a different entrypoin
 | Concern | Choice | Reason |
 |---|---|---|
 | Language/SDK | Flutter 3.x stable, Dart 3 | Single codebase iOS/Android/web (portal + console reuse design system) |
-| State | **Riverpod 2 (code-gen)** | Compile-time safe providers, fine-grained rebuilds, testable without widget tree, `AsyncNotifier` maps cleanly to loading/error/data, easy stream integration for realtime. BLoC evaluated: more boilerplate per feature, weaker DI story. |
+| State | **Riverpod 3 (code-gen)** | Compile-time safe providers, fine-grained rebuilds, testable without widget tree, `AsyncNotifier` maps cleanly to loading/error/data, easy stream integration for realtime. Current compatibility evidence and explicit retry boundaries are recorded in ADR-002; no measured NEKI comparison against BLoC is claimed. |
 | Navigation | **go_router** with typed routes | Deep links (`neki://`, universal links), nested shell for bottom nav, redirect guards for auth |
 | Networking | Dio + interceptors (auth, retry, idempotency, logging) + generated client from OpenAPI | Contract-first; generated DTOs avoid hand-written drift |
 | Models | Freezed + json_serializable | Immutable, union types for states |
@@ -269,8 +269,9 @@ VERIFIED → EXPIRED (org docs expiry, annual)
 
 ### 7.1 Mechanism
 
-**P0 blocker G13:** [Event/recovery proposal](state-machines/events-and-recovery.md) adds an aggregate dispatch cursor, transactional handler receipts, poison-event blocking and durable external-effect intents. SKIP LOCKED over event rows alone does not establish the ordering claimed below. The proposal also resolves the incomplete retry schedule; ADR acceptance and database crash/concurrency proof remain pending.
-Transactional outbox: `domain_events(id, type, aggregate_type, aggregate_id, payload jsonb, occurred_at, published_at, attempts)`. Relay worker polls (`FOR UPDATE SKIP LOCKED`, batch 100, 250 ms), dispatches to registered handlers in order per aggregate, publishes to Redis channel `events.<type>`, marks published. Handler failures retry with backoff (1 s, 5 s, 30 s, 5 min, 1 h; max 8) then move to `domain_events_dlq` with error; ops console shows DLQ and allows replay. Handlers are idempotent (keyed on event id in `event_handler_receipts`).
+[ADR-014](adr/ADR-014-event-architecture.md) and the [event/recovery protocol](state-machines/events-and-recovery.md) govern the mechanism. Producers serialize state/history/outbox writes and contiguous per-aggregate event sequence. Workers claim aggregate dispatch cursors, then handle exactly the next event with atomic effect/receipt/cursor changes. A handler savepoint preserves the outer cursor lock while retry metadata is recorded after a known failure. Eight total attempts use seven delays: 1, 5, 30, 300, 3600, 3600, 3600 seconds. Exhaustion blocks that stream; DLQ references the retained immutable event. Scoped replay preserves identity/history.
+
+External effects become durable delivery intents committed before network I/O, with provider-specific uncertainty and reconciliation. Redis publication is a recoverable hint. [Fourteen synthetic PostgreSQL 17.11 tests](rnd/postgres-outbox-spike.md) prove bounded transaction/order/recovery cases; PostgreSQL 16 target, real handlers, grants, Redis/arq and external delivery remain unverified. The abbreviated earlier event-row polling mechanism is superseded.
 
 ### 7.2 Catalogue (MVP)
 
@@ -529,7 +530,7 @@ Coverage gates: backend 85% lines on `modules/*`, mobile 80% on `domain` + `pres
 | ADR | Decision | Key alternatives rejected |
 |---|---|---|
 | 001 | Flutter for mobile + web portals | React Native (weaker web reuse of design system), native ×2 (cost) |
-| 002 | Riverpod 2 code-gen | BLoC (boilerplate), GetX (untestable globals) |
+| 002 | Riverpod 3 code-gen | BLoC (boilerplate), GetX (untestable globals) |
 | 003 | go_router typed routes | auto_route (heavier codegen), Navigator 1 (no deep links) |
 | 004 | FastAPI modular monolith with outbox | Microservices (premature), Django (sync-first) |
 | 005 | PostgreSQL 16 | MongoDB (relational needs, transactions) |

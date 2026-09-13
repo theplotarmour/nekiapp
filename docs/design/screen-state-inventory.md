@@ -81,3 +81,6 @@ The source flow's single contribution-success milestone and Activity-to-record s
 Next deliverables: component variants/token contrast evidence, linked prototypes for all rows used in A–I, assets with provenance, and formative sessions with contributor, volunteer, organization and ops representatives. Record observed failures and design changes before closing NK-DES-2 or the P0 gate. Structural inventory validation only checks IDs, references and coverage bookkeeping.
 
 Reproduce the reference checks from the repository root with `.venv-contracts/Scripts/python tools/check_screen_inventory.py`. The check rejects duplicate IDs/routes, unknown API families, missing requirement/flow references, undefined state profiles and mismatched public-web paths. It does not validate the correctness or completeness of a screen design.
+
+
+2026-09-13 update: the [interactive journey prototype](prototype/README.md) now supplies 36 simulated steps across A–I and five generic recovery variants. [Token/asset handoff](asset-handoff.md) includes 64 measured passing pairs and source-board inspection. These additions do not fulfill every row or replace formative participant review.

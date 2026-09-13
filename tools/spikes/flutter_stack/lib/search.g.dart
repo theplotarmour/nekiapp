@@ -6,175 +6,121 @@ part of 'search.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$searchSourceHash() => r'e1967ebb143116d595507302d95c57f1a28a9a40';
+// GENERATED CODE - DO NOT MODIFY BY HAND
+// ignore_for_file: type=lint, type=warning
 
-/// See also [searchSource].
 @ProviderFor(searchSource)
-final searchSourceProvider = AutoDisposeProvider<SearchSource>.internal(
-  searchSource,
-  name: r'searchSourceProvider',
-  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-      ? null
-      : _$searchSourceHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
-);
+final searchSourceProvider = SearchSourceProvider._();
 
-@Deprecated('Will be removed in 3.0. Use Ref instead')
-// ignore: unused_element
-typedef SearchSourceRef = AutoDisposeProviderRef<SearchSource>;
-String _$scopedSearchHash() => r'1c544f6dd29719fa843bc9ac61d6b2a779c8e348';
-
-/// Copied from Dart SDK
-class _SystemHash {
-  _SystemHash._();
-
-  static int combine(int hash, int value) {
-    // ignore: parameter_assignments
-    hash = 0x1fffffff & (hash + value);
-    // ignore: parameter_assignments
-    hash = 0x1fffffff & (hash + ((0x0007ffff & hash) << 10));
-    return hash ^ (hash >> 6);
-  }
-
-  static int finish(int hash) {
-    // ignore: parameter_assignments
-    hash = 0x1fffffff & (hash + ((0x03ffffff & hash) << 3));
-    // ignore: parameter_assignments
-    hash = hash ^ (hash >> 11);
-    return 0x1fffffff & (hash + ((0x00003fff & hash) << 15));
-  }
-}
-
-/// See also [scopedSearch].
-@ProviderFor(scopedSearch)
-const scopedSearchProvider = ScopedSearchFamily();
-
-/// See also [scopedSearch].
-class ScopedSearchFamily extends Family<AsyncValue<List<String>>> {
-  /// See also [scopedSearch].
-  const ScopedSearchFamily();
-
-  /// See also [scopedSearch].
-  ScopedSearchProvider call(String account, String query) {
-    return ScopedSearchProvider(account, query);
-  }
-
-  @override
-  ScopedSearchProvider getProviderOverride(
-    covariant ScopedSearchProvider provider,
-  ) {
-    return call(provider.account, provider.query);
-  }
-
-  static const Iterable<ProviderOrFamily>? _dependencies = null;
-
-  @override
-  Iterable<ProviderOrFamily>? get dependencies => _dependencies;
-
-  static const Iterable<ProviderOrFamily>? _allTransitiveDependencies = null;
-
-  @override
-  Iterable<ProviderOrFamily>? get allTransitiveDependencies =>
-      _allTransitiveDependencies;
-
-  @override
-  String? get name => r'scopedSearchProvider';
-}
-
-/// See also [scopedSearch].
-class ScopedSearchProvider extends AutoDisposeFutureProvider<List<String>> {
-  /// See also [scopedSearch].
-  ScopedSearchProvider(String account, String query)
-    : this._internal(
-        (ref) => scopedSearch(ref as ScopedSearchRef, account, query),
-        from: scopedSearchProvider,
-        name: r'scopedSearchProvider',
-        debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-            ? null
-            : _$scopedSearchHash,
-        dependencies: ScopedSearchFamily._dependencies,
-        allTransitiveDependencies:
-            ScopedSearchFamily._allTransitiveDependencies,
-        account: account,
-        query: query,
+final class SearchSourceProvider
+    extends $FunctionalProvider<SearchSource, SearchSource, SearchSource>
+    with $Provider<SearchSource> {
+  SearchSourceProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'searchSourceProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
       );
 
-  ScopedSearchProvider._internal(
-    super._createNotifier, {
-    required super.name,
-    required super.dependencies,
-    required super.allTransitiveDependencies,
-    required super.debugGetCreateSourceHash,
-    required super.from,
-    required this.account,
-    required this.query,
-  }) : super.internal();
+  @override
+  String debugGetCreateSourceHash() => _$searchSourceHash();
 
-  final String account;
-  final String query;
+  @$internal
+  @override
+  $ProviderElement<SearchSource> $createElement($ProviderPointer pointer) =>
+      $ProviderElement(pointer);
 
   @override
-  Override overrideWith(
-    FutureOr<List<String>> Function(ScopedSearchRef provider) create,
-  ) {
-    return ProviderOverride(
-      origin: this,
-      override: ScopedSearchProvider._internal(
-        (ref) => create(ref as ScopedSearchRef),
-        from: from,
-        name: null,
-        dependencies: null,
-        allTransitiveDependencies: null,
-        debugGetCreateSourceHash: null,
-        account: account,
-        query: query,
-      ),
-    );
+  SearchSource create(Ref ref) {
+    return searchSource(ref);
   }
 
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(SearchSource value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<SearchSource>(value),
+    );
+  }
+}
+
+String _$searchSourceHash() => r'e1967ebb143116d595507302d95c57f1a28a9a40';
+
+@ProviderFor(scopedSearch)
+final scopedSearchProvider = ScopedSearchFamily._();
+
+final class ScopedSearchProvider
+    extends
+        $FunctionalProvider<
+          AsyncValue<List<String>>,
+          List<String>,
+          FutureOr<List<String>>
+        >
+    with $FutureModifier<List<String>>, $FutureProvider<List<String>> {
+  ScopedSearchProvider._({
+    required ScopedSearchFamily super.from,
+    required (String, String) super.argument,
+  }) : super(
+         retry: noAutomaticRetry,
+         name: r'scopedSearchProvider',
+         isAutoDispose: true,
+         dependencies: null,
+         $allTransitiveDependencies: null,
+       );
+
   @override
-  AutoDisposeFutureProviderElement<List<String>> createElement() {
-    return _ScopedSearchProviderElement(this);
+  String debugGetCreateSourceHash() => _$scopedSearchHash();
+
+  @override
+  String toString() {
+    return r'scopedSearchProvider'
+        ''
+        '$argument';
+  }
+
+  @$internal
+  @override
+  $FutureProviderElement<List<String>> $createElement(
+    $ProviderPointer pointer,
+  ) => $FutureProviderElement(pointer);
+
+  @override
+  FutureOr<List<String>> create(Ref ref) {
+    final argument = this.argument as (String, String);
+    return scopedSearch(ref, argument.$1, argument.$2);
   }
 
   @override
   bool operator ==(Object other) {
-    return other is ScopedSearchProvider &&
-        other.account == account &&
-        other.query == query;
+    return other is ScopedSearchProvider && other.argument == argument;
   }
 
   @override
   int get hashCode {
-    var hash = _SystemHash.combine(0, runtimeType.hashCode);
-    hash = _SystemHash.combine(hash, account.hashCode);
-    hash = _SystemHash.combine(hash, query.hashCode);
-
-    return _SystemHash.finish(hash);
+    return argument.hashCode;
   }
 }
 
-@Deprecated('Will be removed in 3.0. Use Ref instead')
-// ignore: unused_element
-mixin ScopedSearchRef on AutoDisposeFutureProviderRef<List<String>> {
-  /// The parameter `account` of this provider.
-  String get account;
+String _$scopedSearchHash() => r'fbf6d65f6e061b0196afe66f2ac546f0f60a5a01';
 
-  /// The parameter `query` of this provider.
-  String get query;
-}
+final class ScopedSearchFamily extends $Family
+    with $FunctionalFamilyOverride<FutureOr<List<String>>, (String, String)> {
+  ScopedSearchFamily._()
+    : super(
+        retry: noAutomaticRetry,
+        name: r'scopedSearchProvider',
+        dependencies: null,
+        $allTransitiveDependencies: null,
+        isAutoDispose: true,
+      );
 
-class _ScopedSearchProviderElement
-    extends AutoDisposeFutureProviderElement<List<String>>
-    with ScopedSearchRef {
-  _ScopedSearchProviderElement(super.provider);
+  ScopedSearchProvider call(String account, String query) =>
+      ScopedSearchProvider._(argument: (account, query), from: this);
 
   @override
-  String get account => (origin as ScopedSearchProvider).account;
-  @override
-  String get query => (origin as ScopedSearchProvider).query;
+  String toString() => r'scopedSearchProvider';
 }
-
-// ignore_for_file: type=lint
-// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package

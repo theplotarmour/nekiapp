@@ -457,19 +457,26 @@ Guards: `assignments` and `shipments.assigned_volunteer_id` require `volunteer_a
 ### 4.9 Notifications and analytics
 
 **notification_templates** (`key` e.g. `shipment.picked_up`, `category`, `title_tpl`, `body_tpl`, `deep_link_tpl`, `is_critical`).
-**notifications** (`id`, `user_id`, `category`, `template_key`, `title`, `body`, `deep_link`, `subject_type`, `subject_id`, `sent_push_at`, `read_at`, `created_at`). Index `(user_id, created_at desc)`; unique `(user_id, subject_type, subject_id, template_key)` for dedupe.
+**notifications** (`id`, `user_id`, `category`, `template_key`, `title`, `body`, `deep_link`, `subject_type`, `subject_id`, `sent_push_at`, `read_at`, `created_at`). Index `(user_id, created_at desc)`; unique `(occurrence_id, user_id, channel, template_key, template_version)` for dedupe; occurrence references the source event or scheduled occurrence, allowing repeated legitimate updates.
 **notification_preferences** (`user_id`, `category`, `push bool`, `quiet_hours bool`).
 **funnel_events** (`user_pseudo_id`, `event`, `props jsonb`, `at`) — server-side mirror of critical funnel events for reconciliation with PostHog; monthly partitions, 13-month retention.
 
 ### 4.10 Platform
 
-P0 follow-up: [event/recovery draft](state-machines/events-and-recovery.md) requires sequence uniqueness, independent dispatch cursors, recorded handler versions/receipts and external delivery intents absent from this abbreviated schema. Notification uniqueness must be per occurrence, not one notification per subject/template for its entire lifetime.
+The 2026-09-13 ADR-014 amendment replaces the abbreviated outbox rows. [PostgreSQL probe DDL](../tools/spikes/outbox_schema.sql) proves the synthetic stream/effect subset; it is not the complete application migration. Production rows require these structural contracts:
 
-**domain_events** (`id uuid`, `type text`, `aggregate_type`, `aggregate_id uuid`, `payload jsonb`, `occurred_at`, `status event_status`, `attempts int`, `published_at`, `last_error`). Index `(status, occurred_at)`; `(aggregate_id, occurred_at)`.
-**domain_events_dlq** (same + `dead_at`).
-**event_handler_receipts** (`event_id`, `handler`, `processed_at`; pk both).
+- **domain_events:** immutable event ID; versioned type; aggregate type/ID, positive event sequence and state version; allowlisted payload; server UTC occurrence time; correlation/causation/transition IDs; recorded required handler plan. Unique `(aggregate_type, aggregate_id, aggregate_sequence)`. Never delete the sole event when moving work to DLQ.
+- **aggregate_dispatch_cursors:** PK `(aggregate_type, aggregate_id)`, last handled sequence, failures in current retry cycle, next-attempt timestamp, blocked status/reason. Cursor lock covers handler savepoint, failure metadata or successful effect/receipt/advance.
+- **event_handler_receipts:** FK event ID, handler name and handler version, processing timestamp; unique `(event_id, handler_name, handler_version)`. Receipt/effect commits are atomic; version changes require a reviewed migration, not blind historical replay.
+- **event_failed_attempts:** append-only event FK, attempt/cycle, safe failure code and timestamp. Do not serialize private request payloads in errors.
+- **domain_events_dlq:** retained event FK, failure/retry-cycle identity, blocked timestamp and restricted diagnostic reference. This is metadata, not a duplicate mutable event payload.
+- **event_replay_audit:** original event FK, current scoped operator, reason, authorization/step-up evidence and timestamp; retain previous failures.
+- **external_delivery_intents:** unique effect identity, original event FK, recipient/provider operation, immutable request revision, send/reconciliation status and provider reference. Sensitive content remains purpose-scoped. Local handler completion is not external delivery confirmation.
+
+Notification identity is occurrence + recipient + channel/template revision, allowing later legitimate reschedules while deduplicating replay. Aggregate foreign keys, the complete event registry, grant/retention rules and managed target migrations remain implementation gates.
+
 **idempotency_keys** (`key`, `user_id`, `route`, `request_hash`, `response_status`, `response_body jsonb`, `created_at`, `expires_at`). TTL 24 h.
-**audit_log** (`id bigserial`, `actor_type`, `actor_id`, `action` e.g. `admin.mission.publish`, `subject_type`, `subject_id`, `before jsonb`, `after jsonb`, `reason`, `ip`, `request_id`, `at`). Append-only; 3-year retention.
+**audit_log** (`id bigserial`, `actor_type`, `actor_id`, `action` e.g. `admin.mission.publish`, `subject_type`, `subject_id`, `before jsonb`, `after jsonb`, `reason`, `ip`, `request_id`, `at`). Append-only; retention requires the approved data-class policy, not the historical three-year example.
 **fraud_signals** (`id`, `kind` e.g. `duplicate_proof_image`, `impossible_speed`, `mock_location`, `velocity_contributions`, `subject_type`, `subject_id`, `score`, `details jsonb`, `status enum(open,reviewed,dismissed)`, `created_at`).
 **feature_flags** (`key`, `enabled`, `rollout_pct`, `rules jsonb`) — kill switches for payments/tracking.
 **search_queries** (`id`, `user_pseudo_id`, `q`, `parsed jsonb`, `results_count`, `at`) — trending suggestions, 90 d.

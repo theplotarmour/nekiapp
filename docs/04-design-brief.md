@@ -73,6 +73,8 @@ What the board shows that we **change**:
 
 ## 4. Design tokens
 
+**2026-09-13 handoff amendment:** [tokens.json](design/tokens.json) supersedes the example semantic color values below for implementation. [Measured evidence](design/contrast-evidence.json) covers 64 opaque foreground/background pairs, including explicit on-primary text, readable tertiary/status colors, control borders and focus indicators. [Asset handoff](design/asset-handoff.md) records rights and remaining design checks; this does not certify whole-screen accessibility.
+
 ### 4.1 Color — light theme (default)
 
 | Token | Hex | Use |

@@ -1,12 +1,16 @@
 """Regenerate the isolated Flutter fixture and normalize generated whitespace."""
 
 import os
+import argparse
 import subprocess
 from pathlib import Path
 
 root = Path(__file__).resolve().parent / "spikes/flutter_stack"
-dart = "dart.bat" if os.name == "nt" else "dart"
-subprocess.run([dart, "run", "build_runner", "build", "--delete-conflicting-outputs"], cwd=root, check=True)
+parser = argparse.ArgumentParser()
+parser.add_argument("--dart", default="dart.bat" if os.name == "nt" else "dart", help="Exact SDK Dart executable; does not change global SDK")
+args = parser.parse_args()
+dart = args.dart
+subprocess.run([dart, "run", "build_runner", "build"], cwd=root, check=True)
 subprocess.run([dart, "format", "lib", "test", "web/worker.dart"], cwd=root, check=True)
 for path in (root / "lib").glob("*.dart"):
     if path.name.endswith((".g.dart", ".freezed.dart")):

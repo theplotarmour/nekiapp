@@ -10,12 +10,15 @@ Every state transition (mission, contribution, payment, shipment, assignment, pr
 
 ## Decision
 
-**2026-09-10 P0 review finding (G13):** The [event/recovery proposal](../state-machines/events-and-recovery.md) addresses missing aggregate locking/cursors, atomic receipt effects, poison-event ordering, external-effect uncertainty and the incomplete retry schedule in this ADR. This note does not accept that amendment or prove current ordering/exactly-once claims. Resolve the proposal and run database fault cases before implementation readiness is claimed.
-- **Write:** services append typed events to `domain_events` in the same DB transaction as the state change (outbox). No event emitted outside a transaction.
-- **Relay:** `arq` worker polls `PENDING` with `FOR UPDATE SKIP LOCKED` (batch 100, 250 ms), processes events **sequentially per aggregate_id**, invokes registered in-process handlers, publishes to Redis `events.<type>` and `ws.*`, marks `PUBLISHED`.
-- **Idempotent handlers:** `event_handler_receipts(event_id, handler)`; handlers check-and-record.
-- **Retry:** 1 s, 5 s, 30 s, 5 min, 1 h; max 8 → `domain_events_dlq`; ops console lists and replays.
-- **Schema:** `type` versioned (`PaymentCaptured.v1`), payload JSON with ids and minimal denormalized fields; consumers read current state from DB, never trust payload as latest truth.
+**2026-09-13 engineering amendment:** The [event/recovery protocol](../state-machines/events-and-recovery.md) and [14-test PostgreSQL probe](../rnd/postgres-outbox-spike.md) replace the earlier incomplete cursor/receipt/retry design. Evidence is synthetic PostgreSQL 17.11; target-version, real-handler, grants and external-effect gates remain mandatory.
+
+- **Write:** append an immutable typed event and business/history change in one transaction. Lock the producer aggregate and assign a contiguous event sequence, separately from state version. Unique key includes aggregate type, ID and sequence.
+- **Claim:** workers lock runnable aggregate dispatch cursors with `FOR UPDATE SKIP LOCKED`; fetch only the next sequence. Do not independently claim adjacent event rows. Bound each transaction's work for fairness and perform no external network request while holding the cursor.
+- **Handle:** retain the cursor in an outer transaction. Handler effects, derived outbox rows, versioned receipts and cursor advance are atomic. Use a savepoint for handler work so a known failure can roll it back while retaining the cursor lock through retry recording. Connection failure rolls back the outer transaction; a stale-head watchdog covers repeated crashes.
+- **Retry:** eight total attempts; waits before attempts 2–8 are 1 s, 5 s, 30 s, 300 s, 3600 s, 3600 s and 3600 s. Exhaustion blocks the stream at the original event. Later events cannot leapfrog; other streams continue.
+- **Recover:** DLQ is metadata linked to the retained event. Scoped, reasoned ops replay preserves original identity, attempts and audit. No generic skip. Handler plan/version changes need an explicit migration/replay decision.
+- **External effects:** persist a unique delivery intent in the handler transaction, then send outside it. Track uncertain outcomes and use provider-supported reconciliation; a local receipt is not a provider delivery acknowledgement. Redis hints are recoverable from authorized durable snapshots.
+- **Schema:** minimal allowlisted payload, versioned type, immutable revision references, correlation/causation IDs and transition provenance. Read current state for authorization; read historical immutable facts for financial effects.
 
 ## Alternatives
 - **Direct in-transaction calls between modules** — simplest; couples modules; any consumer failure rolls back money paths. Rejected for cross-module effects (notifications, search) but allowed for same-aggregate invariants.
@@ -25,16 +28,16 @@ Every state transition (mission, contribution, payment, shipment, assignment, pr
 - **Celery** — heavier than arq, sync-first.
 
 ## Pros
-Exactly-once *effects* via idempotent handlers; atomic with business writes; simple to test; DLQ visibility for ops; per-aggregate ordering.
+One committed local database effect per recorded handler identity when the transaction protocol is enforced; atomic with business writes; simple to test; DLQ visibility for ops; per-aggregate ordering.
 
 ## Cons
 Polling latency (~250 ms) acceptable; single relay per partition set (scale by hashing aggregate_id to N workers later); at-least-once delivery requires idempotent consumers.
 
 ## Risks
-Handler that performs external side effects (FCM, Razorpay refund) retried → external calls carry idempotency keys derived from event id.
+External request acceptance can be uncertain. A derived request key helps only when that provider/operation supports it; otherwise use a recorded delivery state and reconciliation. Never assert universal external exactly-once delivery.
 
 ## Consequences
-Event catalogue in `02-tdd.md §7.2` is the contract; adding an event requires a handler test and a catalogue entry. Business metrics computed from events.
+The reviewed event/recovery protocol governs ordering; TDD event catalogue and per-event schemas must be reconciled before each handler ships; adding an event requires a handler test and a catalogue entry. Business metrics computed from events.
 
 ## Migration path
 Relay publishes to a broker instead of in-process handlers when a module is extracted; outbox table unchanged.

@@ -5,7 +5,7 @@ Format per ADR: Context · Decision · Alternatives · Pros · Cons · Risks · 
 | ADR | Title | Status |
 |---|---|---|
 | [001](ADR-001-flutter.md) | Flutter for mobile and web surfaces | Accepted |
-| [002](ADR-002-state-management.md) | Riverpod 2 with code generation | Accepted |
+| [002](ADR-002-state-management.md) | Riverpod 3 with code generation | Accepted |
 | [003](ADR-003-navigation.md) | go_router with typed routes | Accepted |
 | [004](ADR-004-modular-monolith.md) | FastAPI modular monolith with transactional outbox | Accepted |
 | [005](ADR-005-postgresql.md) | PostgreSQL 16 | Accepted |

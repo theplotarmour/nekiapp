@@ -1,4 +1,4 @@
-# ADR-002 — State management: Riverpod 2 with code generation
+# ADR-002 — State management: Riverpod 3 with code generation
 
 | Status | Accepted |
 |---|---|
@@ -9,7 +9,9 @@
 Requirements: predictable state, minimal rebuilds, unit-testable without widgets, lifecycle awareness (dispose streams), realtime stream merging (WebSocket + REST snapshot), offline queue integration, safe optimistic updates for bookmarks only. Master prompt asks to evaluate Riverpod vs BLoC/Cubit and document reasoning.
 
 ## Decision
-Use **Riverpod 2.x with `riverpod_generator`** (`@riverpod` notifiers, `AsyncNotifier` for async screens), `Freezed` for immutable state/unions. One controller per screen/feature; repositories injected via providers; `ProviderScope` overrides for tests.
+
+**2026-09-13 implementation baseline amendment:** retain the accepted Riverpod/codegen architecture and use the [validated current stack](../rnd/flutter-current-stack-spike.md): Flutter 3.47.4, Dart 3.13.3, flutter_riverpod 3.4.3 and the exact fixture lockfile as the starting compatibility reference. Analysis, 14 local tests and Chrome IndexedDB reload/account-clear checks pass. Add production packages only after their compatibility tests; Android/iOS/provider and migration tests remain required. Controller retry behavior must be explicit and tested; never automatically replay financial commands. This engineering amendment does not approve any domain/financial policy.
+Use **Riverpod 3.x with `riverpod_generator`** (`@riverpod` notifiers, `AsyncNotifier` for async screens), `Freezed` for immutable state/unions. One controller per screen/feature; repositories injected via providers; `ProviderScope` overrides for tests.
 
 ## Alternatives
 - **BLoC/Cubit** — explicit event/state and separate dependency-injection choices. References D/E/F demonstrate Cubit/BLoC patterns, but no equivalent-screen benchmark establishes a numerical code-volume penalty. The previous 1.6× claim was unsupported and is withdrawn. The [pinned source review](../rnd/open-source-review.md) also identifies B as a same-domain comparison across state libraries. This evidence correction preserves the accepted Riverpod direction; NEKI-specific compatibility and lifecycle tests remain required.

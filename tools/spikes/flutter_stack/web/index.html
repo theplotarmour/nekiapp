@@ -7,6 +7,11 @@
   <title>NEKI isolated compatibility probe</title>
 </head>
 <body>
+  <script>
+    window.__probeErrors = [];
+    window.addEventListener('error', (event) => window.__probeErrors.push(event.message));
+    window.addEventListener('unhandledrejection', (event) => window.__probeErrors.push(String(event.reason)));
+  </script>
   <script src="flutter_bootstrap.js" async></script>
 </body>
 </html>

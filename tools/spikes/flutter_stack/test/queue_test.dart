@@ -1,18 +1,10 @@
-import 'dart:ffi';
 import 'dart:io';
+
 import 'package:drift/native.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:sqlite3/open.dart';
 import 'package:neki_stack_spike/queue.dart';
 
 void main() {
-  // Windows system SQLite for this local probe only. Mobile packaging is untested.
-  if (Platform.isWindows) {
-    open.overrideFor(
-      OperatingSystem.windows,
-      () => DynamicLibrary.open('winsqlite3.dll'),
-    );
-  }
   late Directory directory;
   late File file;
   late ProbeDatabase db;

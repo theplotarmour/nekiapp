@@ -1,6 +1,6 @@
 # Durable events, consumers and recovery
 
-**Status:** Proposed ADR-014/TDD §7 amendment for G13, NK-DOC-3.03. No runtime proof yet. Technical choices below are reviewable designs; infrastructure compatibility and real Postgres crash/concurrency tests remain gate evidence. [Shared transition rules](README.md) define producer authorization/audit.
+**Status:** Proposed ADR-014/TDD §7 amendment for G13, NK-DOC-3.03. A synthetic PostgreSQL 17.11 probe passes 14 ordering/recovery tests; see [evidence and limits](../rnd/postgres-outbox-spike.md). Technical choices below are reviewable designs; infrastructure compatibility and real Postgres crash/concurrency tests remain gate evidence. [Shared transition rules](README.md) define producer authorization/audit.
 
 ## Evidence and design boundary
 
@@ -31,7 +31,7 @@ Unique `(aggregate_type, aggregate_id, aggregate_sequence)` and event ID. Schema
 4. Process that event's reviewed required handler set. Each database handler commits its business effect, derived outbox events and unique `(event_id, handler_name, handler_version)` receipt in the same transaction as cursor advance. A transaction crash rolls back all those changes; commit-response loss is safe because the receipt and cursor already advanced. Record applicable handler set/version for deployment compatibility.
 5. Handlers lock target aggregates in a documented consistent order. Cross-stream target contention/deadlock can abort the transaction; retry the entire transaction with no receipt-only success. Do not mark completion in a `finally` block. Read latest state for current authorization/projection, but use immutable event facts/revision references for transition effects; never lose a historical capture because current state says refunded.
 6. Database handler success may create a durable **external delivery intent** with unique effect identity. Committing that intent is the handler's local completion; it is not proof that SMS/push/provider received it. A separate worker sends after commit, tracks provider request/response/uncertainty and reconciles using provider-supported mechanisms. See payment/refund contract for external money requests.
-7. On handler error, rollback event/handler effects, then record failed attempt and next-attempt time under the cursor lock only if its expected sequence is still pending. Proposed complete schedule: eight total attempts, waits before attempts 2–8 of 1 s, 5 s, 30 s, 300 s, 3600 s, 3600 s, 3600 s. This resolves the source's five-delay/eight-attempt ambiguity and requires acceptance. Jitter bounds/alerts remain infrastructure config review.
+7. Keep the cursor lock in an outer transaction. Run handler effects/receipts in a savepoint; on a known handler error, roll back that savepoint and record the failed attempt and next-attempt time before committing the outer transaction. Do not release the cursor lock between rollback and retry recording: the PostgreSQL probe demonstrates why a competing worker must remain excluded. A connection/database crash rolls back the entire transaction and may lose the attempt record; a stale-head watchdog must detect repeated crashes. A delayed failure record must also check that its expected sequence remains pending. Proposed complete schedule: eight total attempts, waits before attempts 2–8 of 1 s, 5 s, 30 s, 300 s, 3600 s, 3600 s, 3600 s. This resolves the source's five-delay/eight-attempt ambiguity and requires acceptance. Jitter bounds/alerts remain infrastructure config review.
 8. Exhaustion blocks this aggregate cursor at the failed event and records DLQ metadata linked to the original immutable event; do not delete/move away its sole source row. Other aggregates continue. Subsequent events on this stream do not leapfrog the poison event. Monitor oldest pending/blocked age, not only queue length.
 9. Scoped ops replay requires reason, current policy/step-up where applicable and corrected cause. Reuse original event ID, preserve failed attempts/audit, reset retry scheduling under cursor lock. Existing committed handler receipts remain. No generic skip button; irrecoverable event handling needs an explicitly reviewed compensation procedure preserving financial truth.
 10. Deploys drain bounded transactions gracefully; a killed worker releases its DB lock. New handler versions require explicit replay/migration decisions: silently changing a handler's version must not apply historical side effects twice. Do not change the required handler set for an in-flight event without a migration plan.
@@ -63,7 +63,7 @@ Replace the source's lifetime uniqueness `(user, subject, template)` with durabl
 
 Realtime is a hint, not the durable record. Snapshots carry owner-scoped aggregate version; old events never regress a client. Sequence gaps trigger authenticated snapshot fetch. Redis restart may lose ephemeral hints without losing database events. Offline commands retain expected assignment version and must not silently change their meaning after revocation.
 
-## Acceptance cases (not executed)
+## Acceptance cases (bounded execution evidence linked below)
 
 | ID | Fault / scenario | Required evidence |
 |---|---|---|
@@ -80,4 +80,4 @@ Realtime is a hint, not the durable record. Snapshots carry owner-scoped aggrega
 | EV-11 | Consumer reads captured event after refund already applied. | Capture/refund facts separately retained; correct allocation/recovery without regression. |
 | EV-12 | Redis outage/reconnect and stale private notification. | Durable DB state survives; current auth checked; client restores snapshot without private leak. |
 
-Remaining: per-event JSON schemas, actual handler registry/error contracts, live Postgres concurrency/crash proof, Redis/arq compatibility, metrics thresholds and reviewed ADR amendment. G13 is partial, not closed.
+Execution evidence: [14-test PostgreSQL probe](../rnd/postgres-outbox-spike.md) exercises EV-01–06 database subcases and unsupported handler-plan rejection on PostgreSQL 17.11. The table remains the broader acceptance specification; its external/provider and production recovery cases are not thereby passed. Remaining: per-event schemas, actual registry/grants, PostgreSQL 16 target proof, Redis/arq, external delivery, metrics/watchdog and complete ADR/schema reconciliation. G13 remains partial.

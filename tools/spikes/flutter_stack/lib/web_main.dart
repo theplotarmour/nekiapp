@@ -1,12 +1,18 @@
-// Compile target only until the matching wasm artifact and browser probe run.
+// Synthetic browser persistence probe, not a product UI.
 import 'package:drift/wasm.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/semantics.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+
 import 'queue.dart';
 import 'routes.dart';
 
-void main() => runApp(const ProviderScope(child: WebProbe()));
+void main() {
+  WidgetsFlutterBinding.ensureInitialized();
+  SemanticsBinding.instance.ensureSemantics();
+  runApp(const ProviderScope(child: WebProbe()));
+}
 
 class WebProbe extends StatefulWidget {
   const WebProbe({super.key});
@@ -20,9 +26,9 @@ class _WebProbeState extends State<WebProbe> {
     routes: $appRoutes,
     initialLocation: '/probe/web',
   );
-  late final Future<String> result = probeDatabase();
+  late Future<String> result = probeDatabase();
 
-  Future<String> probeDatabase() async {
+  Future<String> probeDatabase({bool clear = false}) async {
     final opened = await WasmDatabase.open(
       databaseName: 'neki-synthetic-compatibility',
       sqlite3Uri: Uri.parse('sqlite3.wasm'),
@@ -30,16 +36,23 @@ class _WebProbeState extends State<WebProbe> {
     );
     final db = ProbeDatabase(opened.resolvedExecutor);
     try {
-      await db.enqueue(
-        account: 'synthetic',
-        key: 'web-key',
-        action: 'check_in',
-        payload: 'fixture',
-        expectedVersion: 1,
-      );
-      final count = (await db.pending('synthetic')).length;
-      await db.clearAccount('synthetic');
-      return 'Synthetic database round-trip: $count pending command';
+      final restored = (await db.pending('synthetic-a')).length;
+      if (clear) {
+        await db.clearAccount('synthetic-a');
+      } else {
+        for (final account in ['synthetic-a', 'synthetic-b']) {
+          await db.enqueue(
+            account: account,
+            key: 'web-key',
+            action: 'check_in',
+            payload: 'fixture',
+            expectedVersion: 1,
+          );
+        }
+      }
+      final countA = (await db.pending('synthetic-a')).length;
+      final countB = (await db.pending('synthetic-b')).length;
+      return '${clear ? 'Cleared account A' : 'Database ready'}; restored A=$restored; pending A=$countA; pending B=$countB; storage=${opened.chosenImplementation}';
     } finally {
       await db.close();
     }
@@ -62,10 +75,22 @@ class _WebProbeState extends State<WebProbe> {
             future: result,
             builder: (context, snapshot) => Padding(
               padding: const EdgeInsets.all(16),
-              child: Text(
-                snapshot.hasError
-                    ? 'Database probe failed'
-                    : snapshot.data ?? 'Opening synthetic database',
+              child: Column(
+                children: [
+                  Text(
+                    snapshot.hasError
+                        ? 'Database probe failed: ${snapshot.error}'
+                        : snapshot.data ?? 'Opening synthetic database',
+                  ),
+                  ElevatedButton(
+                    onPressed: snapshot.connectionState != ConnectionState.done
+                        ? null
+                        : () => setState(() {
+                            result = probeDatabase(clear: true);
+                          }),
+                    child: const Text('Clear fixture account A'),
+                  ),
+                ],
               ),
             ),
           ),

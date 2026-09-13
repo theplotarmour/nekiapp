@@ -1,4 +1,5 @@
 import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -9,9 +10,13 @@ import 'package:neki_stack_spike/search.dart';
 class FakeSource implements SearchSource {
   final requests = <String, Completer<List<String>>>{};
   final cancelled = <String>[];
+  int calls = 0;
   @override
-  Future<List<String>> find(String account, String query) =>
-      (requests['$account/$query'] = Completer<List<String>>()).future;
+  Future<List<String>> find(String account, String query) {
+    calls++;
+    return (requests['$account/$query'] = Completer<List<String>>()).future;
+  }
+
   @override
   void cancel(String account, String query) => cancelled.add('$account/$query');
 }
@@ -65,6 +70,8 @@ void main() {
     final assertion = expectLater(result, throwsStateError);
     source.requests['a/failure']!.completeError(StateError('unavailable'));
     await assertion;
+    await container.pump();
+    expect(source.calls, 1);
   });
   testWidgets('typed generated route builds after a deep-link start', (
     tester,

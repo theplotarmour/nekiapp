@@ -4,7 +4,7 @@ import 'package:go_router/go_router.dart';
 part 'routes.g.dart';
 
 @TypedGoRoute<ProbeRoute>(path: '/probe/:id')
-class ProbeRoute extends GoRouteData {
+class ProbeRoute extends GoRouteData with $ProbeRoute {
   const ProbeRoute({required this.id});
   final String id;
 

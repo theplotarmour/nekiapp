@@ -1,0 +1,366 @@
+:root {
+  --background: #faf9f6;
+  --surface: #ffffff;
+  --surfaceTint: #f3f1ec;
+  --primary: #0b5d45;
+  --onPrimary: #ffffff;
+  --primarySoft: #e7f4ed;
+  --textPrimary: #171a18;
+  --textSecondary: #59665e;
+  --textTertiary: #5f6b63;
+  --controlBorder: #718078;
+  --focus: #0b5d45;
+  --error: #ac3535;
+  --warning: #805a14;
+  --scale: 1;
+  color-scheme: light;
+}
+* {
+  box-sizing: border-box;
+}
+body {
+  margin: 0;
+  background: var(--background);
+  color: var(--textPrimary);
+  font-family: Inter, Arial, sans-serif;
+  font-size: calc(16px * var(--scale));
+  line-height: 1.5;
+}
+button,
+input,
+select {
+  font: inherit;
+}
+button,
+select,
+input {
+  min-height: 48px;
+  border-radius: 12px;
+  border: 1px solid var(--controlBorder);
+  max-width: 100%;
+}
+button {
+  cursor: pointer;
+  padding: 12px 18px;
+  background: var(--primary);
+  color: var(--onPrimary);
+  font-weight: 600;
+  white-space: normal;
+  overflow-wrap: anywhere;
+}
+button:disabled {
+  cursor: default;
+  background: var(--surfaceTint);
+  color: var(--textSecondary);
+}
+input,
+select {
+  padding: 10px;
+  background: var(--surface);
+  color: var(--textPrimary);
+  width: 100%;
+}
+button:hover:not(:disabled) {
+  filter: brightness(0.95);
+}
+:focus-visible {
+  outline: 3px solid var(--focus);
+  outline-offset: 3px;
+}
+h1,
+h2,
+h3,
+p {
+  margin-top: 0;
+}
+h1 {
+  font-size: 1.8em;
+  line-height: 1.2;
+  letter-spacing: -0.04em;
+}
+h2 {
+  font-family: "Instrument Serif", Georgia, serif;
+  font-size: 2.2em;
+  font-weight: 400;
+  line-height: 1.14;
+  margin-bottom: 20px;
+  overflow-wrap: anywhere;
+}
+h3 {
+  font-size: 1em;
+}
+.review-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  padding: 24px 5vw;
+  border-bottom: 1px solid var(--controlBorder);
+}
+.review-bar p {
+  max-width: 500px;
+  margin: 0;
+  color: var(--textSecondary);
+  font-size: 0.8em;
+}
+.wordmark {
+  text-decoration: none;
+  color: var(--textPrimary);
+  font-family: Georgia, serif;
+  font-style: italic;
+  font-size: 2em;
+}
+.wordmark span {
+  display: block;
+  font:
+    normal 0.3em Arial,
+    sans-serif;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+}
+.layout {
+  max-width: 1240px;
+  margin: 0 auto;
+  padding: 48px 32px;
+  display: grid;
+  grid-template-columns: minmax(240px, 300px) minmax(0, 1fr);
+  gap: 72px;
+}
+.eyebrow {
+  font-size: 0.75em;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--primary);
+}
+.muted,
+.privacy,
+.footnote {
+  color: var(--textSecondary);
+}
+nav {
+  display: grid;
+  gap: 8px;
+  margin: 28px 0;
+}
+nav button {
+  text-align: left;
+  background: transparent;
+  color: var(--textPrimary);
+  border: 1px solid transparent;
+  font-weight: 400;
+}
+nav button[aria-current="true"] {
+  background: var(--primarySoft);
+  color: var(--primary);
+  border-color: var(--primary);
+  font-weight: 600;
+}
+.review-controls {
+  display: grid;
+  gap: 8px;
+  padding-top: 24px;
+  border-top: 1px solid var(--controlBorder);
+}
+.path-heading,
+.screen-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+.path-heading {
+  margin-bottom: 20px;
+}
+.path-heading p {
+  margin: 0;
+}
+.quiet {
+  background: transparent;
+  color: var(--primary);
+  border: 1px solid var(--controlBorder);
+}
+.screen {
+  background: var(--surface);
+  border-radius: 24px;
+  padding: 32px;
+  box-shadow: 0 10px 40px #14281e0d;
+  border: 1px solid var(--controlBorder);
+}
+.screen-top {
+  font-size: 0.8em;
+  color: var(--textSecondary);
+}
+.location {
+  padding: 6px 12px;
+  border-radius: 999px;
+  background: var(--primarySoft);
+  color: var(--primary);
+}
+.progress {
+  height: 4px;
+  background: var(--surfaceTint);
+  border-radius: 10px;
+  margin: 24px 0 32px;
+}
+.progress span {
+  display: block;
+  height: 100%;
+  background: var(--primary);
+  border-radius: 10px;
+}
+.intro {
+  color: var(--textSecondary);
+}
+dl {
+  display: grid;
+  gap: 0;
+  padding: 8px 20px;
+  background: var(--surfaceTint);
+  border-radius: 16px;
+  margin: 24px 0;
+}
+dl div {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 12px;
+  padding: 12px 0;
+}
+dt {
+  color: var(--textSecondary);
+}
+dd {
+  margin: 0;
+  text-align: right;
+  font-weight: 600;
+  overflow-wrap: anywhere;
+}
+.actions {
+  display: grid;
+  gap: 12px;
+  margin-top: 28px;
+}
+.privacy,
+.footnote {
+  font-size: 0.8em;
+  margin: 24px 0 0;
+}
+.scenario-panel {
+  padding: 24px;
+  margin-top: 24px;
+  border-radius: 16px;
+  border: 1px solid var(--controlBorder);
+}
+.scenario-panel p {
+  font-size: 0.85em;
+  margin: 16px 0 0;
+}
+.scenario-panel label {
+  display: block;
+  margin-bottom: 8px;
+}
+fieldset {
+  border: 0;
+  padding: 0;
+  margin: 24px 0;
+}
+legend {
+  font-weight: 600;
+  margin-bottom: 12px;
+}
+.amounts {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-bottom: 16px;
+}
+.amounts button {
+  flex: 1;
+  background: var(--primarySoft);
+  color: var(--primary);
+}
+fieldset label {
+  display: block;
+  margin-bottom: 8px;
+}
+#state-message {
+  padding: 16px;
+  background: var(--primarySoft);
+  color: var(--primary);
+  border-radius: 12px;
+  margin-top: 20px;
+}
+.error {
+  color: var(--error);
+}
+[hidden] {
+  display: none !important;
+}
+@media (max-width: 850px) {
+  .layout {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 32px;
+    padding: 28px 20px;
+  }
+  nav {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .review-controls {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    align-items: center;
+  }
+  .review-bar {
+    align-items: flex-start;
+  }
+  .screen {
+    padding: 24px;
+  }
+  .workspace {
+    min-width: 0;
+  }
+}
+@media (max-width: 359px) {
+  .layout {
+    padding: 24px 16px;
+  }
+  .review-bar {
+    padding: 20px 16px;
+    flex-direction: column;
+  }
+  .screen {
+    padding: 20px;
+  }
+  nav {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  dl {
+    padding: 8px 12px;
+  }
+  dl div {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 2px;
+  }
+  dd {
+    text-align: left;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  * {
+    scroll-behavior: auto !important;
+    animation: none !important;
+    transition: none !important;
+  }
+}
+/* Narrow review controls and amount chips must reflow at 200% text. */
+@media (max-width: 359px) {
+  .review-controls {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .amounts button {
+    flex: 1 1 120px;
+  }
+  h2 {
+    font-size: 1.5em;
+  }
+}

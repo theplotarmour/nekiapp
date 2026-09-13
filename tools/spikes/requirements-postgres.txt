@@ -1,0 +1,2 @@
+# Isolated P0 PostgreSQL probe, not application dependencies.
+psycopg[binary]==3.3.5

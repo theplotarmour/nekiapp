@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>NEKI · Journey review</title>
+    <link rel="icon" href="data:," />
+    <link rel="stylesheet" href="prototype.css" />
+  </head>
+  <body>
+    <header class="review-bar">
+      <a class="wordmark" href="#">Neki<span>Humanity, delivered.</span></a>
+      <p>
+        Interactive design review · All people, amounts and outcomes are
+        simulated.
+      </p>
+    </header>
+    <main class="layout">
+      <aside>
+        <p class="eyebrow">From intent to impact</p>
+        <h1>Review the journeys.</h1>
+        <p class="muted">
+          Explore the main path and the moments that need care.
+        </p>
+        <nav id="journeys" aria-label="Review journeys"></nav>
+        <div class="review-controls">
+          <label for="theme">Appearance</label
+          ><select id="theme">
+            <option value="light">Light</option>
+            <option value="dark">Dark</option></select
+          ><label for="scale">Text size</label
+          ><select id="scale">
+            <option value="1">100%</option>
+            <option value="2">200%</option>
+          </select>
+        </div>
+      </aside>
+      <section class="workspace" aria-label="Journey prototype">
+        <div class="path-heading">
+          <p id="path-name" class="eyebrow"></p>
+          <button id="restart" class="quiet" type="button">Start again</button>
+        </div>
+        <article class="screen" aria-labelledby="screen-title">
+          <div class="screen-top">
+            <span class="location">New Delhi</span><span id="step-count"></span>
+          </div>
+          <div class="progress" aria-hidden="true">
+            <span id="progress-fill"></span>
+          </div>
+          <p class="eyebrow" id="section-name"></p>
+          <h2 id="screen-title" tabindex="-1"></h2>
+          <p id="screen-copy" class="intro"></p>
+          <dl id="details"></dl>
+          <fieldset id="amount-field" hidden>
+            <legend>Choose your contribution</legend>
+            <div class="amounts">
+              <button type="button" data-amount="500">₹500</button
+              ><button type="button" data-amount="1000">₹1,000</button
+              ><button type="button" data-amount="2500">₹2,500</button>
+            </div>
+            <label for="amount">Other amount (rupees)</label
+            ><input
+              id="amount"
+              type="number"
+              min="1"
+              max="100000"
+              step="1"
+              value="1000"
+              inputmode="numeric"
+            />
+            <p id="amount-error" class="error" hidden>
+              Enter a whole rupee amount from 1 to 1,00,000 for this simulation.
+            </p>
+          </fieldset>
+          <div id="state-message" role="status" aria-live="polite" hidden></div>
+          <div class="actions">
+            <button id="continue" type="button">Continue</button
+            ><button id="back" class="quiet" type="button">Back</button>
+          </div>
+          <p class="privacy" id="privacy"></p>
+        </article>
+        <section class="scenario-panel" aria-labelledby="scenario-title">
+          <h3 id="scenario-title">Review a recovery state</h3>
+          <label for="scenario">Scenario</label
+          ><select id="scenario">
+            <option value="normal">Main path</option>
+            <option value="offline">Connection unavailable</option>
+            <option value="revoked">Access changed</option>
+            <option value="stale">Another reviewer changed this record</option>
+            <option value="uncertain">Outcome not yet confirmed</option>
+            <option value="rework">More information needed</option>
+          </select>
+          <p id="scenario-note" class="muted"></p>
+        </section>
+        <p class="footnote">
+          This prototype explores interaction and copy. It does not contact
+          providers, submit applications, transfer money, verify evidence or
+          delete accounts.
+        </p>
+      </section>
+    </main>
+    <script src="prototype.js" defer></script>
+  </body>
+</html>

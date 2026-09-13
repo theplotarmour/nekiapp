@@ -1,7 +1,6 @@
-// dart format width=80
-// coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
-// ignore_for_file: type=lint
+// coverage:ignore-file
+// ignore_for_file: type=lint, type=warning, deprecated_member_use, deprecated_member_use_from_same_package
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
 part of 'queue.dart';
@@ -10,6 +9,7 @@ part of 'queue.dart';
 // FreezedGenerator
 // **************************************************************************
 
+// GENERATED CODE - DO NOT MODIFY BY HAND
 // dart format off
 T _$identity<T>(T value) => value;
 /// @nodoc
@@ -21,7 +21,7 @@ mixin _$Receipt {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is Receipt);
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is Receipt);
 }
 
 
@@ -30,7 +30,7 @@ int get hashCode => runtimeType.hashCode;
 
 @override
 String toString() {
-  return 'Receipt()';
+    return 'Receipt()';
 }
 
 
@@ -41,6 +41,136 @@ class $ReceiptCopyWith<$Res>  {
 $ReceiptCopyWith(Receipt _, $Res Function(Receipt) __);
 }
 
+
+/// Adds pattern-matching-related methods to [Receipt].
+extension ReceiptPatterns on Receipt {
+/// A variant of `map` that fallback to returning `orElse`.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case _:
+///     return orElse();
+/// }
+/// ```
+
+@optionalTypeArgs TResult maybeMap<TResult extends Object?>({TResult Function( Accepted value)?  accepted,TResult Function( Rejected value)?  rejected,required TResult orElse(),}){
+final _that = this;
+switch (_that) {
+case Accepted() when accepted != null:
+return accepted(_that);case Rejected() when rejected != null:
+return rejected(_that);case _:
+  return orElse();
+
+}
+}
+/// A `switch`-like method, using callbacks.
+///
+/// Callbacks receives the raw object, upcasted.
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case final Subclass2 value:
+///     return ...;
+/// }
+/// ```
+
+@optionalTypeArgs TResult map<TResult extends Object?>({required TResult Function( Accepted value)  accepted,required TResult Function( Rejected value)  rejected,}){
+final _that = this;
+switch (_that) {
+case Accepted():
+return accepted(_that);case Rejected():
+return rejected(_that);}
+}
+/// A variant of `map` that fallback to returning `null`.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case _:
+///     return null;
+/// }
+/// ```
+
+@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>({TResult? Function( Accepted value)?  accepted,TResult? Function( Rejected value)?  rejected,}){
+final _that = this;
+switch (_that) {
+case Accepted() when accepted != null:
+return accepted(_that);case Rejected() when rejected != null:
+return rejected(_that);case _:
+  return null;
+
+}
+}
+/// A variant of `when` that fallback to an `orElse` callback.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case _:
+///     return orElse();
+/// }
+/// ```
+
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function( int version)?  accepted,TResult Function( String reason)?  rejected,required TResult orElse(),}) {final _that = this;
+switch (_that) {
+case Accepted() when accepted != null:
+return accepted(_that.version);case Rejected() when rejected != null:
+return rejected(_that.reason);case _:
+  return orElse();
+
+}
+}
+/// A `switch`-like method, using callbacks.
+///
+/// As opposed to `map`, this offers destructuring.
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case Subclass2(:final field2):
+///     return ...;
+/// }
+/// ```
+
+@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function( int version)  accepted,required TResult Function( String reason)  rejected,}) {final _that = this;
+switch (_that) {
+case Accepted():
+return accepted(_that.version);case Rejected():
+return rejected(_that.reason);}
+}
+/// A variant of `when` that fallback to returning `null`
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case _:
+///     return null;
+/// }
+/// ```
+
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function( int version)?  accepted,TResult? Function( String reason)?  rejected,}) {final _that = this;
+switch (_that) {
+case Accepted() when accepted != null:
+return accepted(_that.version);case Rejected() when rejected != null:
+return rejected(_that.reason);case _:
+  return null;
+
+}
+}
+
+}
 
 /// @nodoc
 
@@ -61,16 +191,18 @@ $AcceptedCopyWith<Accepted> get copyWith => _$AcceptedCopyWithImpl<Accepted>(thi
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is Accepted&&(identical(other.version, version) || other.version == version));
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is Accepted&&(identical(other.version, version) || other.version == version));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,version);
+int get hashCode {
+    return Object.hash(runtimeType,version);
+}
 
 @override
 String toString() {
-  return 'Receipt.accepted(version: $version)';
+    return 'Receipt.accepted(version: $version)';
 }
 
 
@@ -127,16 +259,18 @@ $RejectedCopyWith<Rejected> get copyWith => _$RejectedCopyWithImpl<Rejected>(thi
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is Rejected&&(identical(other.reason, reason) || other.reason == reason));
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is Rejected&&(identical(other.reason, reason) || other.reason == reason));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,reason);
+int get hashCode {
+    return Object.hash(runtimeType,reason);
+}
 
 @override
 String toString() {
-  return 'Receipt.rejected(reason: $reason)';
+    return 'Receipt.rejected(reason: $reason)';
 }
 
 

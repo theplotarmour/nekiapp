@@ -786,7 +786,16 @@ class $$PendingCommandsTableTableManager
                 rowid: rowid,
               ),
           withReferenceMapper: (p0) => p0
-              .map((e) => (e.readTable(table), BaseReferences(db, table, e)))
+              .map(
+                (e) => (
+                  e.readTable<$PendingCommandsTable, PendingCommand>(table),
+                  BaseReferences<
+                    _$ProbeDatabase,
+                    $PendingCommandsTable,
+                    PendingCommand
+                  >(db, table, e),
+                ),
+              )
               .toList(),
           prefetchHooksCallback: null,
         ),
