@@ -43,10 +43,19 @@ class PostgresRuntime:
         self.root.mkdir(parents=True, exist_ok=False)
         self.run("initdb", "-D", self.data, "-U", self.user,
                  "--auth=trust", "--encoding=UTF8", "--locale=C")
+        # Debian/Ubuntu defaults can require a system socket directory owned by
+        # postgres. This fixture connects via loopback TCP only, on every OS.
+        with (self.data / "postgresql.conf").open("a", encoding="utf8") as config:
+            config.write("\nunix_socket_directories = ''\n")
         # If launch times out, cleanup must still check/stop our possible server.
         self.started = True
-        self.run("pg_ctl", "-D", self.data, "-l", self.root / "server.log",
-                 "-o", f"-h 127.0.0.1 -p {self.port}", "-w", "start")
+        try:
+            self.run("pg_ctl", "-D", self.data, "-l", self.root / "server.log",
+                     "-o", f"-h 127.0.0.1 -p {self.port}", "-w", "start")
+        except subprocess.CalledProcessError as error:
+            server_log = self.root / "server.log"
+            evidence = server_log.read_text(errors="replace") if server_log.exists() else error.stdout
+            raise RuntimeError(f"Isolated PostgreSQL startup failed:\n{evidence}") from None
         return self
 
     def restart(self):
