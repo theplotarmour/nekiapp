@@ -250,7 +250,7 @@ Start external onboarding in W1: payment account and approved methods, SMS/DLT a
 
 Deliver: scope/decision register; R&D report; provider/version spike notes; complete transition and event catalogues; OpenAPI/error examples; revised schema; authorization matrix; screen/state inventory and prototypes; asset plan; operating policy drafts; staffing/cost model; prioritized tickets with dependencies.
 
-**Exit evidence:** Every MVP behavior has a contract owner and acceptance case; architecture contradictions that block foundation are resolved; accepted ADRs are reconciled; Phase 1 backlog is sized; provider/legal work has named owners and dates. Production feature coding starts after this gate. Future domain-specific gates remain explicit rather than pretending all live-funds approvals already exist.
+**Exit evidence:** Every MVP behavior has a contract owner and acceptance case; architecture contradictions that block foundation are resolved; accepted ADRs are reconciled; Phase 1 backlog is sized; provider/legal work has named owners and dates. Production feature coding starts after this gate. **2026-09-15 execution exception:** the user explicitly instructed starting P1; independent platform bootstrap/configuration/migration work may proceed under the [recorded handoff](execution/p0-handoff.md). Unclosed P0 domain/policy/provider/design requirements still block their dependent behavior and formal phase closure. Future domain-specific gates remain explicit rather than pretending all live-funds approvals already exist.
 
 **Original tickets:** NK-DOC-1…5, NK-DES-1…2. NK-DOC-1 is validation/amendment of existing ADRs, not recreation.
 

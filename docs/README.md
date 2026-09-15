@@ -34,3 +34,6 @@ The [API contract workspace](api/README.md) adds a machine-readable operation in
 
 
 [Interactive journey review](design/prototype/README.md) covers nine simulated journeys, alongside [tokens/asset handoff](design/asset-handoff.md) and measured contrast. [Operating policy draft](policies/foundation-draft.md) separates proposed operating rules from unapproved values. The [P1 backlog](execution/phase-1-backlog.md) supplies 33 dependency-linked tickets, estimates and a capacity/cost model; no P1 completion is implied.
+
+
+[P1 execution](execution/phase-1.md) started on 2026-09-15 with a runnable [FastAPI foundation](../api/README.md), under the bounded [P0 handoff](execution/p0-handoff.md). Formal P0 and P1 acceptance remain open.

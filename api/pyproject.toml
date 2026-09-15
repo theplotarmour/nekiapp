@@ -1,0 +1,39 @@
+[build-system]
+requires = ["hatchling>=1.27,<2"]
+build-backend = "hatchling.build"
+
+[project]
+name = "neki-api"
+version = "0.1.0"
+description = "NEKI FastAPI platform foundation"
+requires-python = ">=3.12,<3.13"
+dependencies = [
+  "fastapi==0.141.1",
+  "uvicorn==0.53.0",
+  "pydantic-settings==2.15.0",
+  "sqlalchemy[asyncio]==2.0.53",
+  "psycopg[binary]==3.3.5",
+  "alembic==1.20.0",
+]
+
+[dependency-groups]
+dev = ["httpx==0.28.1", "pytest==9.1.1", "ruff==0.16.7", "mypy==2.3.1"]
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/neki_api"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+markers = ["postgres: isolated real PostgreSQL integration; requires NEKI_TEST_PG_BIN"]
+
+[tool.ruff]
+target-version = "py312"
+line-length = 100
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B"]
+
+[tool.mypy]
+python_version = "3.12"
+strict = true
+files = ["src/neki_api"]

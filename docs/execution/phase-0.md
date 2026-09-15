@@ -125,3 +125,8 @@ NK-DOC-3.01 draft delivered: [catalogue](../state-machines/README.md), [open dec
 Delivered the current Flutter compatibility/browser probe, real isolated PostgreSQL outbox probe, ADR-002/014 and linked technical-source amendments, measured semantic tokens, asset handoff, interactive nine-journey design review, operating policy draft and sized P1 backlog. No production app/API has been introduced and no P1–P7 acceptance gate has passed.
 
 Remaining P0 work is explicit: reconcile domain schema and per-event payloads after the open policy decisions; execute mobile/SMS/maps/storage/Redis/managed-database/deployment provider checks; complete design/asset/accessibility and actual participant review; assign provider/legal owners and dates and record policy decisions. Named-owner input has been requested. A technical counter/queue test does not settle policy, prove a live provider flow or validate an entire phase.
+
+
+## 2026-09-15 handoff
+
+The user explicitly instructed starting P1. The [handoff](p0-handoff.md) permits independent platform work while retaining every unclosed policy/provider/domain/design requirement above. [P1 implementation](phase-1.md) has started in `api/`; P0 has not been falsely marked complete.

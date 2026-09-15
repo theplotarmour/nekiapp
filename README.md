@@ -2,7 +2,7 @@
 
 Humanity, Delivered.
 
-This repository currently contains specifications and execution planning. There is no runnable application yet.
+This repository now includes the first runnable [FastAPI platform foundation](api/README.md), alongside product contracts and design prototypes. Consumer/volunteer Flutter and organization/ops applications are not implemented yet.
 
 Start with the [documentation index](docs/README.md), [complete phased plan](docs/08-complete-phased-plan.md), and [Phase 0 execution register](docs/execution/phase-0.md).
 
@@ -14,4 +14,4 @@ Run commands from the root returned by `git rev-parse --show-toplevel`. On the v
 
 ## Current milestone
 
-Phase 0 is in progress. Production feature coding begins after the evidence gate in document 08 §5.5. Contracts, provider research, design validation, and accountable operating decisions remain outstanding; accepted ADR labels alone do not pass this gate.
+P1 foundation work started on 2026-09-15 under the explicit user instruction recorded in the [P0 handoff](docs/execution/p0-handoff.md). Full P0 closure still requires the named policy/provider/design evidence. [P1 execution](docs/execution/phase-1.md) distinguishes implemented platform code from pending OTP, authorization, apps and staging acceptance. Neither phase is marked complete.
