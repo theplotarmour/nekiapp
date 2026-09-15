@@ -12,7 +12,7 @@ Entry is the user's explicit instruction to start P1, recorded in the [P0 handof
 | P1-03 API factory/config | Lifecycle and pooled DB disposal, redacted configuration failures, safe common errors, UUID correlation, liveness/readiness and exact-origin CORS implemented. Full tracing and domain errors remain open. |
 | P1-04 database/migrations | Async transaction context and first event-storage Alembic migration implemented; disposable-DB upgrade/downgrade/reapply and rollback tests supplied. Full domain schema and production grants remain open. |
 | P1-19 contract export | Runtime OpenAPI exports two implemented health routes; deterministic export check. Domain export migration and generated Dart client remain open. |
-| P1-32 CI | API format/lint/type/contract/unit/PostgreSQL 16 job added. A checked-in workflow is not a successful remote run; actual run evidence is recorded separately when available. |
+| P1-32 CI | API format/lint/type/contract/unit/PostgreSQL 16 job added. Remote PostgreSQL 16 execution passed; see the exact run/commit evidence below. |
 
 ## Acceptance boundaries
 
@@ -25,6 +25,6 @@ Reproduce checks with [API README](../../api/README.md). Local PostgreSQL tests 
 
 ## Local evidence — 2026-09-15
 
-Python 3.12.14 with the committed uv lock: Ruff lint/format and strict mypy pass; runtime OpenAPI regenerates without drift. **19 tests passed** against an isolated PostgreSQL 17.11 cluster, including configuration rejection, secret-safe errors, UUID request IDs, exact-origin preflight, absent-route 404, missing/mismatched schema readiness, migration downgrade/reapply, transaction rollback/commit, event sequence uniqueness, FK enforcement and immutable-event writes. Two upstream Starlette/httpx/AnyIO deprecation warnings remain visible; they are not suppressed. PostgreSQL 16 remote CI evidence is pending until the job completes.
+Python 3.12.14 with the committed uv lock: Ruff lint/format and strict mypy pass; runtime OpenAPI regenerates without drift. **19 tests passed** against an isolated PostgreSQL 17.11 cluster, including configuration rejection, secret-safe errors, UUID request IDs, exact-origin preflight, absent-route 404, missing/mismatched schema readiness, migration downgrade/reapply, transaction rollback/commit, event sequence uniqueness, FK enforcement and immutable-event writes. Two upstream Starlette/httpx/AnyIO deprecation warnings remain visible; they are not suppressed. [CI run 34968476360](https://github.com/theplotarmour/nekiapp/actions/runs/34968476360) passed on commit `510f166`: all 19 API tests and all 14 P0 outbox tests passed on PostgreSQL 16.15, alongside format/lint/type/export checks. The initial Linux cluster startup failed; isolating Unix sockets fixed the harness without weakening database assertions. GitHub also reports a Node-20-action deprecation warning; the actions currently run under Node 24.
 
 This is actual P1 backend code and tests, not a design simulation. Its bounded success does not complete P1 authentication, authorization, worker, infrastructure or client acceptance.

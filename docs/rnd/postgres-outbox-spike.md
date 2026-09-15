@@ -47,3 +47,8 @@ A genuine connection/process/database failure may lose the attempt record becaus
 The counter handler is synthetic. The schema does not model all NEKI business aggregates, approved per-event payloads, migration compatibility, production grants or all event consumers. `repair_for_test` is a SQL recovery primitive, not authorized ops replay. The sequence-gap error still needs production quarantine/alert plumbing. The receipt PK does not by itself guarantee exactly-once external effects.
 
 Not executed: PostgreSQL 16/PostGIS target, arbitrary process kill or power loss, Redis/arq integration, external delivery uncertainty/reconciliation, scoped replay/step-up API, deployment handler migrations, notification occurrence delivery, cross-aggregate dependency reconciliation, or provider end-to-end cases. EV-01–06 receive bounded database evidence; EV-07–12 remain open except the unknown-handler rejection subcase. G13 remains partial.
+
+
+## Target-version follow-up — 2026-09-15
+
+[CI run 34968476360](https://github.com/theplotarmour/nekiapp/actions/runs/34968476360) at `510f166` passes all 14 outbox tests on PostgreSQL 16.15/Linux using the same isolated protocol fixture. An initial cluster startup failure was resolved by disabling unnecessary Unix sockets for this TCP-only fixture and exposing startup-log evidence. This closes the target-major-version gap for these synthetic database cases. PostGIS, managed service semantics, production handlers/grants and external delivery remain unverified.

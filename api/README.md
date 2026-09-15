@@ -39,7 +39,7 @@ $env:NEKI_TEST_PG_BIN = 'C:/Program Files/PostgreSQL/17/bin'
 .venv/Scripts/python -m pytest -q
 ```
 
-Database tests create an isolated loopback cluster from the supplied binaries, with unique test databases and cleanup. They never read an existing application DSN. Without `NEKI_TEST_PG_BIN`, PostgreSQL cases are explicitly skipped; such a run is not full integration evidence. Windows local evidence currently uses PostgreSQL 17.11; CI targets the accepted PostgreSQL 16 baseline. Local trust authentication in the isolated fixture is not deployment configuration.
+Database tests create an isolated loopback cluster from the supplied binaries, with unique test databases and cleanup. They never read an existing application DSN. Without `NEKI_TEST_PG_BIN`, PostgreSQL cases are explicitly skipped; such a run is not full integration evidence. Windows local evidence currently uses PostgreSQL 17.11; [CI](https://github.com/theplotarmour/nekiapp/actions/runs/34968476360) passed all 19 API tests and 14 outbox protocol tests against the accepted PostgreSQL 16 baseline. Local trust authentication in the isolated fixture is not deployment configuration.
 
 `api/openapi.json` is generated exclusively from implemented FastAPI routes. Use `export_openapi.py` without `--check` after intentional route changes. `docs/api/openapi.json` remains the unimplemented P0 contract draft; migrate each implemented domain into the runtime export and reconcile its contract before generating a production Dart client. The two platform health routes do not imply implementation of the 324 draft operations.
 

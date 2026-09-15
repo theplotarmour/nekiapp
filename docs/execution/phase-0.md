@@ -130,3 +130,5 @@ Remaining P0 work is explicit: reconcile domain schema and per-event payloads af
 ## 2026-09-15 handoff
 
 The user explicitly instructed starting P1. The [handoff](p0-handoff.md) permits independent platform work while retaining every unclosed policy/provider/domain/design requirement above. [P1 implementation](phase-1.md) has started in `api/`; P0 has not been falsely marked complete.
+
+Target DB follow-up: [CI run 34968476360](https://github.com/theplotarmour/nekiapp/actions/runs/34968476360) now passes the same 14 outbox cases on PostgreSQL 16 plus 19 new API foundation tests. The synthetic outbox target-version gap is closed; remaining domain, provider, policy and design obligations are unchanged.
