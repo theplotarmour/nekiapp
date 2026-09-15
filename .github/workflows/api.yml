@@ -2,9 +2,9 @@ name: API foundation
 on:
   push:
     branches: [main]
-    paths: ['api/**', 'tools/spikes/postgres_runtime.py', '.github/workflows/api.yml']
+    paths: ['api/**', 'tools/spikes/**', '.github/workflows/api.yml']
   pull_request:
-    paths: ['api/**', 'tools/spikes/postgres_runtime.py', '.github/workflows/api.yml']
+    paths: ['api/**', 'tools/spikes/**', '.github/workflows/api.yml']
 permissions:
   contents: read
 jobs:
@@ -33,3 +33,7 @@ jobs:
         env:
           NEKI_TEST_PG_BIN: /usr/lib/postgresql/16/bin
         run: uv run --locked pytest -q
+      - name: P0 outbox protocol on target PostgreSQL 16
+        run: >-
+          uv run --locked python ../tools/spikes/test_outbox_postgres.py
+          --pg-bin /usr/lib/postgresql/16/bin
