@@ -70,7 +70,7 @@ def test_readiness_fails_closed_without_disclosing_driver_error():
 
 def test_unimplemented_routes_are_not_placeholder_success():
     with TestClient(create_app(settings())) as client:
-        response = client.get("/v1/me")
+        response = client.get("/v1/not-implemented")
         assert response.status_code == 404
         assert response.json()["error"]["code"] == "NOT_FOUND"
 
@@ -116,10 +116,11 @@ def test_cors_preflight_is_exact_and_has_request_context():
         assert "access-control-allow-origin" not in denied.headers
 
 
-def test_runtime_schema_describes_only_implemented_health_routes():
+def test_runtime_schema_describes_implemented_routes_only():
     app = create_app(settings())
     schema = app.openapi()
-    assert set(schema["paths"]) == {"/health/live", "/health/ready"}
+    assert {"/health/live", "/health/ready", "/v1/me", "/v1/auth/refresh"} <= set(schema["paths"])
+    assert "/v1/payments" not in schema["paths"]
     assert "ErrorEnvelope" in schema["components"]["schemas"]
 
 

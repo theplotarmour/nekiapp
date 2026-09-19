@@ -8,7 +8,7 @@ from fastapi.testclient import TestClient
 from sqlalchemy import text
 
 from neki_api.config import Settings
-from neki_api.database import Database
+from neki_api.database import SCHEMA_REVISION, Database
 from neki_api.main import create_app
 
 pytestmark = pytest.mark.postgres
@@ -36,7 +36,7 @@ def test_migration_downgrade_and_reapply(database):
     migrate(database, "upgrade", "head")
     with psycopg.connect(dsn(database)) as conn:
         assert (
-            conn.execute("select version_num from alembic_version").fetchone()[0] == "0001_platform"
+            conn.execute("select version_num from alembic_version").fetchone()[0] == SCHEMA_REVISION
         )
 
 

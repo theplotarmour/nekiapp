@@ -20,4 +20,4 @@ if args.check:
         raise SystemExit("Runtime OpenAPI drift; regenerate api/openapi.json")
 else:
     target.write_text(content, encoding="utf8")
-print("Runtime OpenAPI: 2 implemented platform routes")
+print(f"Runtime OpenAPI: {len(app.openapi()['paths'])} implemented paths")

@@ -7,7 +7,7 @@ from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker, create_asyn
 
 from neki_api.config import Settings
 
-SCHEMA_REVISION = "0001_platform"
+SCHEMA_REVISION = "0002_identity"
 
 
 class Database:

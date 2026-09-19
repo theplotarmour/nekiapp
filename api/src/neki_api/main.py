@@ -14,6 +14,9 @@ from starlette.types import ASGIApp, Message, Receive, Scope, Send
 
 from neki_api.config import Settings
 from neki_api.database import Database
+from neki_api.errors import DomainError
+from neki_api.identity import Identity
+from neki_api.identity import router as identity_router
 
 logger = logging.getLogger("neki.request")
 
@@ -68,7 +71,7 @@ class ErrorDetails(BaseModel):
 
 class ErrorPayload(BaseModel):
     model_config = ConfigDict(extra="forbid")
-    code: Literal["INTERNAL_ERROR", "REQUEST_INVALID", "NOT_FOUND", "DEPENDENCY_UNAVAILABLE"]
+    code: str
     message: str
     request_id: UUID
     details: ErrorDetails
@@ -102,6 +105,7 @@ def create_app(settings: Settings | None = None) -> FastAPI:
     async def lifespan(app: FastAPI) -> AsyncIterator[None]:
         db = Database(settings)
         app.state.database = db
+        app.state.identity = Identity(db, settings)
         try:
             yield
         finally:
@@ -116,6 +120,21 @@ def create_app(settings: Settings | None = None) -> FastAPI:
         redoc_url=None,
         openapi_url="/openapi.json" if local_docs else None,
     )
+    app.include_router(
+        identity_router,
+        responses={
+            status: {"model": ErrorEnvelope} for status in (400, 401, 403, 409, 422, 429, 503)
+        },
+    )
+
+    @app.exception_handler(DomainError)
+    async def domain_error(request: Request, exc: DomainError) -> JSONResponse:
+        response = error_response(
+            exc.status, exc.code, "Request could not be completed.", request.state.request_id
+        )
+        if exc.retry_after is not None:
+            response.headers["Retry-After"] = str(exc.retry_after)
+        return response
 
     @app.exception_handler(HTTPException)
     async def http_error(request: Request, exc: HTTPException) -> JSONResponse:

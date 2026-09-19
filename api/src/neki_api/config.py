@@ -16,6 +16,7 @@ class Settings(BaseSettings):
     allowed_origins: list[str] = []
     sms_provider: Literal["disabled", "test", "msg91"] = "disabled"
     payments_enabled: Literal[False] = False
+    auth_secret: SecretStr | None = None
 
     @model_validator(mode="after")
     def validate_boundaries(self) -> Self:
@@ -26,6 +27,8 @@ class Settings(BaseSettings):
         if url.drivername != "postgresql+psycopg" or not url.database:
             raise ValueError("Use a named PostgreSQL database with postgresql+psycopg")
         remote = self.environment in {"staging", "production"}
+        if self.auth_secret and len(self.auth_secret.get_secret_value()) < 48:
+            raise ValueError("Authentication secret must contain at least 48 characters")
         if remote and (not url.password or url.query.get("sslmode") != "verify-full"):
             raise ValueError(
                 "Deployed database connections require credentials and verify-full TLS"
